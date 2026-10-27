@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inflation compound interest calculator | {Brand}</title>
+<meta name="description" content="Free compound interest calculator with inflation: see what your savings could be worth in today's dollars, at an inflation rate you choose.">
+<link rel="canonical" href="https://{main-domain}/compound-interest-calculator-with-inflation/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Compound interest calculator with inflation">
+<meta property="og:description" content="Free compound interest calculator with inflation: see what your savings could be worth in today's dollars, at an inflation rate you choose.">
+<meta property="og:url" content="https://{main-domain}/compound-interest-calculator-with-inflation/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0f5132">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5132'/%3E%3Cpath d='M7 23l6-6 4 4 8-9' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Compound interest calculator with inflation",
+  "url": "https://{main-domain}/compound-interest-calculator-with-inflation/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "This calculator shows what a compound interest balance would be worth in today's dollars, at an inflation rate you choose."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://{main-domain}/" },
+    { "@type": "ListItem", "position": 2, "name": "Compound interest with inflation", "item": "https://{main-domain}/compound-interest-calculator-with-inflation/" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#calculator">Skip to the calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/">{Brand}</a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li aria-current="page">Compound interest with inflation</li></ol>
+  </nav>
+
+  <section class="hero wrap">
+    <h1>Compound interest calculator with inflation</h1>
+    <p class="lede">A dollar in the future buys less than a dollar today, because prices tend to rise. This calculator shows what a compound interest balance would be worth in today's dollars, at an inflation rate you choose.</p>
+  </section>
+
+  <section id="calculator" class="tool wrap" aria-labelledby="calc-title">
+    <h2 id="calc-title">See your balance in today's dollars</h2>
+    <div class="calculator">
+      <form id="infl-form" class="panel inputs" novalidate>
+        <div class="field">
+          <label for="principal">Initial deposit</label>
+          <div class="affix"><span aria-hidden="true">$</span>
+            <input id="principal" name="principal" inputmode="decimal" autocomplete="off" value="10,000" aria-describedby="principal-err">
+          </div>
+          <p class="err" id="principal-err" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="monthly">Monthly contribution</label>
+          <div class="affix"><span aria-hidden="true">$</span>
+            <input id="monthly" name="monthly" inputmode="decimal" autocomplete="off" value="100" aria-describedby="monthly-err">
+          </div>
+          <p class="err" id="monthly-err" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="ratePct">Annual interest rate</label>
+          <div class="affix suffix">
+            <input id="ratePct" name="ratePct" inputmode="decimal" autocomplete="off" value="5" aria-describedby="ratePct-err">
+            <span aria-hidden="true">%</span>
+          </div>
+          <p class="err" id="ratePct-err" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="years">Years</label>
+          <input id="years" name="years" type="number" inputmode="numeric" min="1" max="100" step="1" value="10" aria-describedby="years-err">
+          <p class="err" id="years-err" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="frequency">Compounding</label>
+          <select id="frequency" name="frequency">
+            <option value="annually">Annually</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="monthly" selected>Monthly</option>
+            <option value="daily">Daily</option>
+          </select>
+        </div>
+        <fieldset class="field">
+          <legend>Contribution timing</legend>
+          <div class="toggle">
+            <label><input type="radio" name="timing" value="end" checked> End of each month</label>
+            <label><input type="radio" name="timing" value="start"> Start of each month</label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="inflation">Inflation rate (your assumption)</label>
+          <div class="affix suffix">
+            <input id="inflation" name="inflation" inputmode="decimal" autocomplete="off" value="3" aria-describedby="inflation-help inflation-err">
+            <span aria-hidden="true">%</span>
+          </div>
+          <p class="help" id="inflation-help">The 3% starting value is only an example. Try a few rates; none of them is a forecast.</p>
+          <p class="err" id="inflation-err" role="alert"></p>
+        </div>
+      </form>
+
+      <div class="panel results" id="results">
+        <p class="label">Future dollars and today's dollars</p>
+        <div class="chart" id="chart" role="img" aria-label="Growth over 10 years. Final balance $31,998.32 in future dollars, worth $23,809.76 in today's dollars. Money put in $22,000.00."></div>
+        <ul class="legend">
+          <li><span class="key key-compound"></span>Balance (future dollars)</li>
+          <li><span class="key key-real"></span>In today's dollars</li>
+          <li><span class="key key-put"></span>Money put in</li>
+        </ul>
+        <dl class="split">
+          <div class="hi"><dt>Balance (future dollars)</dt><dd id="out-final">$31,998.32</dd></div>
+          <div><dt>Would be worth in today's dollars</dt><dd id="out-today">$23,809.76</dd></div>
+          <div><dt>Real annual rate (after inflation)</dt><dd><span id="out-real">2.05%</span><span class="tile-note" id="out-basis">Based on the 5.12% APY of 5% compounded monthly.</span></dd></div>
+        </dl>
+        <p class="muted" id="out-summary" aria-live="polite">You put in $22,000.00. At 3% inflation a year, the final balance would buy about what $23,809.76 buys today.</p>
+        <p class="disclaimer">For education only, not financial advice. The starting rates (5% interest, 3% inflation) are examples, not forecasts; change them to your own assumptions. Actual returns and inflation vary and are not guaranteed. Taxes and fees are not included.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap table-section">
+    <details id="table-details">
+      <summary>Year by year breakdown</summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Year</th><th scope="col">Money put in</th><th scope="col">Balance</th><th scope="col">Balance in today's dollars</th></tr></thead>
+          <tbody id="out-table"></tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <article class="guide wrap">
+    <h2>Future dollars and today's dollars</h2>
+    <p>The balance on a statement is in <strong>future dollars</strong> (also called nominal dollars): the number of dollars in the account on that date. <strong>Today's dollars</strong> turn that number into what it would buy at today's prices.</p>
+    <p>The chart shows both, side by side. The gap between the two lines is what inflation would take from the balance's buying power. The longer the time, the wider the gap.</p>
+    <p>The year by year table gives the same figures. With $10,000 to start, $100 added at the end of each month, an example rate of 5% compounded monthly, 10 years and an example inflation rate of 3%, the last row reads:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Year</th><th scope="col">Money put in</th><th scope="col">Balance</th><th scope="col">Balance in today's dollars</th></tr></thead>
+        <tbody><tr><td>10</td><td>$22,000.00</td><td>$31,998.32</td><td>$23,809.76</td></tr></tbody>
+      </table>
+    </div>
+    <p class="muted">For education only, not financial advice.</p>
+    <p>"Money put in" is the plain total of your deposits, as paid. It is not adjusted for inflation.</p>
+
+    <h2>How inflation is applied</h2>
+    <p>Each year's balance is divided by how much prices would have grown by then:</p>
+    <p class="formula">today's dollars = balance ÷ (1 + inflation)<sup>years</sup></p>
+    <p>Inflation is a yearly rate, compounded once a year, just like a price rising by the same percentage every year.</p>
+    <p><strong>Worked example.</strong> $10,000 at an example rate of 5% compounded monthly, with nothing added, would grow to $16,470.09 in 10 years. With an example inflation rate of 3%:</p>
+    <ol>
+      <li><strong>Price growth over 10 years.</strong> 1.03<sup>10</sup> = 1.343916. Prices would be about 1.34 times what they are today.</li>
+      <li><strong>Divide.</strong> 16,470.09 ÷ 1.343916 = <strong>$12,255.30</strong>.</li>
+    </ol>
+    <p>So $16,470.09 in 10 years would buy about what $12,255.30 buys today.</p>
+    <p class="muted">For education only, not financial advice.</p>
+    <p>The method for the balance itself is on the <a href="/compound-interest-formula/">compound interest formula</a> page.</p>
+
+    <h2>The real rate after inflation</h2>
+    <p>The <strong>real rate</strong> (sometimes called the real rate of return) is how fast buying power grows once inflation is taken out. The exact formula is:</p>
+    <p class="formula">real rate = (1 + rate) ÷ (1 + inflation) − 1</p>
+    <p><strong>Worked example.</strong> An account growing at an example rate of 5% a year, with an example inflation rate of 3%:</p>
+    <p>1.05 ÷ 1.03 − 1 = 0.0194, which is an example real rate of <strong>1.94%</strong>.</p>
+    <p>A common shortcut is to subtract the example rates: 5% − 3% = 2%. That is close, but it is only an approximation. The gap gets bigger as the rates get bigger.</p>
+    <p><strong>Why the calculator shows 2.05% for the same example rates of 5% and 3%.</strong> It uses the yearly growth once compounding is counted, called the <a href="/apy-calculator/">APY</a>. An example rate of 5% compounded monthly has an APY of 5.12%, so the example real rate is 1.0511619 ÷ 1.03 − 1 = <strong>2.05%</strong>. That keeps the real rate in step with the today's-dollars figures.</p>
+    <p><strong>When the two rates are equal.</strong> $10,000 at an example rate of 5% compounded annually, with nothing added and an example inflation rate of 5%, shows <strong>$10,000.00</strong> in today's dollars every year. The example real rate is <strong>0.00%</strong>. The balance rises, but only as fast as prices.</p>
+    <p>At 0% inflation, today's dollars equal the balance, and the real rate equals the APY (5.12% for an example rate of 5% compounded monthly).</p>
+    <p class="muted">For education only, not financial advice.</p>
+
+    <h2>Worked example: the starting numbers</h2>
+    <p>Here are the calculator's starting numbers, all of them examples:</p>
+    <ul>
+      <li>$10,000 to start</li>
+      <li>$100 added at the end of each month</li>
+      <li>an example rate of 5% a year, compounded monthly</li>
+      <li>10 years</li>
+      <li>an example inflation rate of 3% a year</li>
+    </ul>
+    <ol>
+      <li><strong>The balance.</strong> The balance after 10 years would be <strong>$31,998.32</strong>. Of that, $22,000.00 is money put in. This is the same figure our <a href="https://{calc-domain}/">compound interest calculator</a> gives for the same numbers.</li>
+      <li><strong>Today's dollars.</strong> 31,998.32 ÷ 1.343916 = <strong>$23,809.76</strong>.</li>
+      <li><strong>The real rate.</strong> 1.0511619 ÷ 1.03 − 1 = an example real rate of <strong>2.05%</strong> a year.</li>
+    </ol>
+    <p>So the statement would show $31,998.32, and that balance would buy about what $23,809.76 buys today.</p>
+    <p class="muted">For education only, not financial advice.</p>
+
+    <h2>Choosing an inflation rate</h2>
+    <p>Future inflation is unknown. The 3% starting value is only an example, not a forecast.</p>
+    <p>Because no one knows the future rate, it helps to try more than one. For example, run the same savings at a low inflation rate and a higher one, and look at how far apart the today's-dollars results are. That range says more than any single answer.</p>
+    <p>Inflation also differs by what you buy. Rent, food and fuel prices can each change at their own pace.</p>
+
+    <h2 id="how-it-works">How this calculator works</h2>
+    <p><strong>The balance.</strong> The first six inputs go through the same calculation as our compound interest calculator, unchanged. So the balance, the money put in and the interest match it to the cent for the same inputs. For quarterly or annual compounding with monthly contributions, that calculation follows a common bank convention, described in <a href="/compound-interest-calculator/#how-it-works">how the compound interest calculator works</a>.</p>
+    <p><strong>Inflation.</strong> It is a yearly rate, compounded once a year. Each year-end balance is divided by (1 + inflation)<sup>years</sup>. Only year-end figures are shown, so no within-year inflation is assumed.</p>
+    <p><strong>The real rate.</strong> (1 + APY) ÷ (1 + inflation) − 1, where the APY is the yearly growth of your interest rate at the compounding you chose.</p>
+    <p><strong>Rounding.</strong> Money is shown to the cent. The real rate is rounded to 2 decimal places, with halves rounded up.</p>
+    <p><strong>What it leaves out.</strong> Your monthly contribution stays the same number of dollars every year. It does not rise with inflation. Taxes and fees are not included. If you know the APY a savings account advertises, the <a href="/savings-calculator/">savings calculator</a> takes it directly.</p>
+    <p>Everything runs in your browser, and nothing you type is sent to us.</p>
+    <p class="disclaimer">For education only, not financial advice. The starting rates (5% interest, 3% inflation) are examples, not forecasts; change them to your own assumptions. Actual returns and inflation vary and are not guaranteed. Taxes and fees are not included.</p>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/">Savings</a></li><li><a href="/apy-calculator/">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/" aria-current="page">With inflation</a></li><li><a href="/rule-of-72-calculator/">Rule of 72</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p>For education only, not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The calculator runs entirely in your browser.</p>
+    <p class="muted">Last updated: <time datetime="{last-updated}">{last-updated}</time></p>
+  </div>
+</footer>
+
+<script src="/calc.js"></script>
+<script src="/rates.js"></script>
+<script src="/compound-interest-calculator-with-inflation/inflation.js"></script>
+</body>
+</html>

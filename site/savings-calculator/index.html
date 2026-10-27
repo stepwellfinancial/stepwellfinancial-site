@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Savings calculator: growth and goals | {Brand}</title>
+<meta name="description" content="Free savings calculator. Enter your balance, monthly deposit and APY to see how much your savings could grow, or how long it takes to reach a goal.">
+<link rel="canonical" href="https://{main-domain}/savings-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Savings calculator">
+<meta property="og:description" content="Free savings calculator. Enter your balance, monthly deposit and APY to see how much your savings could grow, or how long it takes to reach a goal.">
+<meta property="og:url" content="https://{main-domain}/savings-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0f5132">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5132'/%3E%3Cpath d='M7 23l6-6 4 4 8-9' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Savings calculator",
+  "url": "https://{main-domain}/savings-calculator/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "See how a savings balance could grow with monthly deposits, how long it could take to reach a goal, or what monthly deposit would reach a goal by a set time."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://{main-domain}/" },
+    { "@type": "ListItem", "position": 2, "name": "Savings calculator", "item": "https://{main-domain}/savings-calculator/" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#calculator">Skip to the calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/">{Brand}</a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li aria-current="page">Savings calculator</li></ol>
+  </nav>
+
+  <section class="hero wrap">
+    <h1>Savings calculator</h1>
+    <p class="lede">See how a savings balance could grow with monthly deposits, how long it could take to reach a goal, or what monthly deposit would reach a goal by a set time. It takes the APY (annual percentage yield) that savings accounts advertise: the growth in one year once compounding is counted.</p>
+    <p class="lede">You can enter the advertised APY of any savings account, including high-yield accounts. Your bank's own figures may differ slightly.</p>
+  </section>
+
+  <section id="calculator" class="tool wrap" aria-labelledby="calc-title">
+    <h2 id="calc-title">Work out growth or a savings goal</h2>
+    <div class="calculator">
+      <form id="savings-form" class="panel inputs" novalidate>
+        <fieldset class="field">
+          <legend>What do you want to work out?</legend>
+          <div class="toggle">
+            <label><input type="radio" name="mode" value="growth" checked> Growth over time</label>
+            <label><input type="radio" name="mode" value="time"> Time to reach a goal</label>
+            <label><input type="radio" name="mode" value="monthly"> Monthly deposit for a goal</label>
+          </div>
+        </fieldset>
+        <div class="field" id="f-principal">
+          <label for="principal">Starting balance</label>
+          <div class="affix"><span aria-hidden="true">$</span>
+            <input id="principal" name="principal" inputmode="decimal" autocomplete="off" value="10,000" aria-describedby="principal-err">
+          </div>
+          <p class="err" id="principal-err" role="alert"></p>
+        </div>
+        <div class="field" id="f-monthly">
+          <label for="monthly">Monthly deposit</label>
+          <div class="affix"><span aria-hidden="true">$</span>
+            <input id="monthly" name="monthly" inputmode="decimal" autocomplete="off" value="100" aria-describedby="monthly-err">
+          </div>
+          <p class="err" id="monthly-err" role="alert"></p>
+        </div>
+        <div class="field" id="f-apyPct">
+          <label for="apyPct">APY (rates can change)</label>
+          <div class="affix suffix">
+            <input id="apyPct" name="apyPct" inputmode="decimal" autocomplete="off" value="5" aria-describedby="apyPct-err">
+            <span aria-hidden="true">%</span>
+          </div>
+          <p class="err" id="apyPct-err" role="alert"></p>
+        </div>
+        <div class="field" id="f-years">
+          <label for="years">Years</label>
+          <input id="years" name="years" type="number" inputmode="numeric" min="1" max="100" step="1" value="10" aria-describedby="years-err">
+          <p class="err" id="years-err" role="alert"></p>
+        </div>
+        <div class="field" id="f-goal" hidden>
+          <label for="goal">Savings goal</label>
+          <div class="affix"><span aria-hidden="true">$</span>
+            <input id="goal" name="goal" inputmode="decimal" autocomplete="off" value="50,000" aria-describedby="goal-err">
+          </div>
+          <p class="err" id="goal-err" role="alert"></p>
+        </div>
+        <fieldset class="field">
+          <legend>Deposit timing</legend>
+          <div class="toggle">
+            <label><input type="radio" name="timing" value="end" checked> End of each month</label>
+            <label><input type="radio" name="timing" value="start"> Start of each month</label>
+          </div>
+        </fieldset>
+      </form>
+
+      <div class="panel results" id="results">
+        <div id="res-growth">
+          <p class="label">Growth over time</p>
+          <dl class="split">
+            <div class="hi"><dt id="out-final-label">Balance after 10 years</dt><dd id="out-final" aria-live="polite">$31,725.26</dd></div>
+            <div><dt>Money put in</dt><dd id="out-put">$22,000.00</dd></div>
+            <div><dt>Interest earned</dt><dd id="out-interest">$9,725.26</dd></div>
+          </dl>
+        </div>
+        <div id="res-time" hidden>
+          <p class="label">Time to reach your goal</p>
+          <p class="result-text" id="out-time" aria-live="polite"></p>
+        </div>
+        <div id="res-monthly" hidden>
+          <p class="label">Monthly deposit that would reach your goal</p>
+          <p class="big" id="out-amount"></p>
+          <p class="result-text" id="out-monthly" aria-live="polite"></p>
+        </div>
+        <p class="muted" id="out-note" hidden></p>
+        <p class="disclaimer">For education only, not financial advice. The default APY of 5% is an example. Results assume the APY stays the same every month; real savings rates can change. Taxes, fees and inflation are not included.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap table-section" id="table-section">
+    <details id="table-details">
+      <summary>Year by year breakdown</summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Year</th><th scope="col">Money put in</th><th scope="col">Interest</th><th scope="col">Balance</th></tr></thead>
+          <tbody id="out-table"></tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <article class="guide wrap">
+    <h2>Your savings year by year</h2>
+    <p>The table shows, for each year, the money put in so far, the interest earned so far and the balance. With $10,000 to start, $100 added at the end of each month, an example APY of 5% with interest added monthly, and 10 years, the last row reads:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Year</th><th scope="col">Money put in</th><th scope="col">Interest</th><th scope="col">Balance</th></tr></thead>
+        <tbody><tr><td>10</td><td>$22,000.00</td><td>$9,725.26</td><td>$31,725.26</td></tr></tbody>
+      </table>
+    </div>
+    <p class="muted">For education only, not financial advice.</p>
+    <p>Money put in rises by the same amount each year: $1,200 of deposits. Interest rises a little faster each year, because each year's interest is earned on a bigger balance, including the interest already added.</p>
+
+    <h2>APY vs interest rate</h2>
+    <p>A savings account's <strong>APY</strong> is its growth over one year once compounding is counted. An <strong>interest rate</strong> on its own leaves compounding out. So an example APY of 5% and an example rate of 5% compounded monthly are not the same thing. An example rate of 5% compounded monthly works out to an APY of 5.12%.</p>
+    <p>That is why this page and our <a href="https://{calc-domain}/">compound interest calculator</a> give different answers for the same example "5%", on purpose. With $10,000 to start, $100 added at the end of each month and 10 years, an example APY of 5% gives <strong>$31,725.26</strong> here. With the same inputs, the compound interest calculator, at an example rate of 5% compounded monthly, gives <strong>$31,998.32</strong>.</p>
+    <p class="muted">For education only, not financial advice.</p>
+    <p>To turn an interest rate into an APY, or an APY back into a rate, use the <a href="/apy-calculator/">APY calculator</a>.</p>
+
+    <h2>How long it takes to save $5,000, $10,000 or $25,000</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>$0 start, $200 at the end of each month, 4.00% example APY, not a current rate</caption>
+        <thead><tr><th scope="col">Goal</th><th scope="col">Months</th><th scope="col">Years and months</th></tr></thead>
+        <tbody>
+          <tr><td>$5,000</td><td>25</td><td>2 years 1 month</td></tr>
+          <tr><td>$10,000</td><td>47</td><td>3 years 11 months</td></tr>
+          <tr><td>$25,000</td><td>105</td><td>8 years 9 months</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>At these example numbers, the balance would reach each amount at the end of the month shown, if the example APY stayed at 4.00% the whole time. To try your own numbers, choose "Time to reach a goal" in the calculator above.</p>
+    <p class="muted">For education only, not financial advice.</p>
+
+    <h2 id="how-it-works">How this calculator works</h2>
+    <p><strong>The monthly rate.</strong> Deposits are monthly, and interest is added monthly at a rate that gives exactly the APY over a full year:</p>
+    <p class="formula">monthly rate = (1 + APY)<sup>1/12</sup> − 1</p>
+    <p>For an example APY of 5% that is 1.05<sup>1/12</sup> − 1, about 0.4074% a month. Twelve months at that rate, compounded, come to exactly the example 5% for the year.</p>
+    <p><strong>A single deposit.</strong> $10,000 at an example APY of 5%, with interest added monthly and nothing else added, would grow by exactly 5% a year. After 10 years it would be <strong>$16,288.95</strong>. For education only, not financial advice.</p>
+    <p><strong>The growth calculation.</strong> Growth uses the same calculation as our compound interest calculator, at the monthly rate above, with interest added monthly. So no new growth math is involved.</p>
+    <p><strong>Your bank's figures can differ.</strong> A bank works interest out on its own schedule, so its figures can differ from these depending on how and when it credits interest. For example, with $10,000 to start, $100 added at the end of each month and 10 years, our compound interest calculator at an example rate of 5% compounded once a year gives <strong>$31,728.31</strong>, against <strong>$31,725.26</strong> here at an example APY of 5%. For education only, not financial advice. That calculator's method is in <a href="/compound-interest-calculator/#how-it-works">how the compound interest calculator works</a>.</p>
+    <p><strong>Time to reach a goal.</strong> The calculator counts whole months. A goal counts as reached at the end of the first month in which the balance is at or above it. If that is more than 1,200 months (100 years), it says so instead of showing a number.</p>
+    <p><strong>Monthly deposit for a goal.</strong> The amount is rounded up to the next cent, so that depositing the amount shown would reach the goal. Rounding to the nearest cent could leave the balance a little short. If the starting balance alone would reach the goal, the amount is $0.00.</p>
+    <p><strong>At 0% APY.</strong> The balance is exactly the money put in. With $10,000 to start, $100 added at the end of each month and 10 years, that is $22,000.00. For education only, not financial advice.</p>
+    <p><strong>What it leaves out.</strong> Taxes, fees and inflation. To see what a balance would buy at today's prices, <a href="/compound-interest-calculator-with-inflation/">see it in today's dollars with the compound interest calculator with inflation</a>.</p>
+    <p>Everything runs in your browser, and nothing you type is sent to us.</p>
+    <p class="disclaimer">For education only, not financial advice. The default APY of 5% is an example. Results assume the APY stays the same every month; real savings rates can change. Taxes, fees and inflation are not included.</p>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/" aria-current="page">Savings</a></li><li><a href="/apy-calculator/">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/">With inflation</a></li><li><a href="/rule-of-72-calculator/">Rule of 72</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p>For education only, not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The calculator runs entirely in your browser.</p>
+    <p class="muted">Last updated: <time datetime="{last-updated}">{last-updated}</time></p>
+  </div>
+</footer>
+
+<script src="/calc.js"></script>
+<script src="/rates.js"></script>
+<script src="/goals.js"></script>
+<script src="/savings-calculator/savings.js"></script>
+</body>
+</html>

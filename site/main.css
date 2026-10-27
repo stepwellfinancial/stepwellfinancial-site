@@ -1,0 +1,60 @@
+/* main.css: styles for the main site only, loaded after the shared /styles.css.
+ * Two-site spec, "Main-site styles": no selector here may match an element
+ * inside the calculator block on /compound-interest-calculator/ (from
+ * section#calculator to the end of the year table), so the calculator looks the
+ * same on both sites. Nothing here styles html, body or main. */
+
+/* Header nav and breadcrumb. */
+.site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 18px; }
+.site-nav a { display: inline-block; padding: 6px 0; color: var(--ink); font-weight: 600; font-size: .95rem; text-decoration: none; }
+.site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--brand); text-decoration: underline; }
+.breadcrumb ol { list-style: none; margin: 0; padding: 18px 0 0; display: flex; flex-wrap: wrap; gap: 4px; font-size: .9rem; color: var(--muted); }
+.breadcrumb li + li::before { content: "›"; content: "›" / ""; margin-right: 4px; }
+.guide code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1px 5px; overflow-wrap: anywhere; }
+
+/* Footer lists. */
+.footer-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px 24px; margin: 0 0 14px; }
+.footer-nav .footer-head { font-weight: 700; margin: 0 0 2px; }
+.footer-nav ul { list-style: none; margin: 0; padding: 0; }
+.footer-nav li a { display: inline-block; padding: 3px 0; }
+
+/* Intro paragraphs (the brand introduction on the hub and the calculator copy). */
+.hero .lede + .lede, .hub .lede + .lede { margin-top: 10px; }
+.hub .lede { margin-top: 6px; }
+.hub-list { padding-left: 20px; }
+.hub-list li { margin: 0 0 10px; }
+.hub-list a { font-weight: 600; }
+.hub-list span { display: block; color: var(--muted); }
+
+/* The formula page's "Try the formula with your numbers" box. */
+.try { display: grid; gap: 16px; margin: 12px 0 8px; }
+.try-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0 16px; }
+.steps { display: grid; gap: 8px; margin: 0; }
+.steps > div { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; background: var(--bg); border-radius: 10px; padding: 10px 12px; }
+.steps dt { color: var(--muted); min-width: 0; }
+.steps dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; min-width: 0; }
+.steps .hi { background: color-mix(in srgb, var(--interest) 14%, var(--bg)); }
+.steps .hi dt { color: var(--ink); font-weight: 600; }
+.try-out.stale .steps { opacity: .35; }
+.try-out .muted { margin: 10px 0 0; }
+
+/* The APY, inflation, savings and rule of 72 calculators: all scoped to .tool. */
+.tool { padding-top: 8px; }
+.tool > h2 { font-size: 1.45rem; margin: 24px 0 0; }
+.tool .calculator { padding-left: 0; padding-right: 0; }
+.tool .results .label { margin: 0 0 4px; }
+.tool .help { color: var(--muted); font-size: .875rem; margin: 6px 0 0; }
+.tool .results .muted { margin: 6px 0 0; overflow-wrap: anywhere; }
+.tool .results.stale .big, .tool .results.stale .split, .tool .results.stale .result-text,
+.tool .results.stale .chart, .tool .results.stale .legend { opacity: .35; }
+.tool .split dd .tile-note { display: block; font-size: .85rem; font-weight: 400; color: var(--muted); margin-top: 4px; }
+.tool .result-text { font-size: 1.1rem; margin: 4px 0 0; overflow-wrap: anywhere; }
+.tool .result-text strong { font-variant-numeric: tabular-nums; }
+.tool .result-list { margin: 10px 0 0; padding-left: 20px; font-variant-numeric: tabular-nums; }
+.tool .chart .ln-real { stroke: var(--simple); stroke-dasharray: 8 5; stroke-width: 3; }
+.tool .chart .ln-put { stroke: var(--contrib); stroke-width: 2.5; stroke-dasharray: 1 5; }
+.tool .chart .dot-real { fill: var(--simple); }
+.tool .key-real { background: repeating-linear-gradient(90deg, var(--simple) 0 6px, transparent 6px 9px); }
+.tool .key-put { background: repeating-linear-gradient(90deg, var(--contrib) 0 2px, transparent 2px 5px); }
+.guide .live-table { margin-top: 8px; }
+.guide table caption { text-align: left; color: var(--muted); font-size: .9rem; padding: 0 0 4px; caption-side: top; }

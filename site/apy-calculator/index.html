@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APY calculator: convert APR to APY | {Brand}</title>
+<meta name="description" content="Free APY calculator. Turn an interest rate into APY for daily, monthly or quarterly compounding, convert APY back to a rate, and see the formula.">
+<link rel="canonical" href="https://{main-domain}/apy-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="APY calculator">
+<meta property="og:description" content="Free APY calculator. Turn an interest rate into APY for daily, monthly or quarterly compounding, convert APY back to a rate, and see the formula.">
+<meta property="og:url" content="https://{main-domain}/apy-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0f5132">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5132'/%3E%3Cpath d='M7 23l6-6 4 4 8-9' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "APY calculator",
+  "url": "https://{main-domain}/apy-calculator/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Enter an interest rate and how often it compounds to see its APY, or switch direction to turn an APY back into an interest rate."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://{main-domain}/" },
+    { "@type": "ListItem", "position": 2, "name": "APY calculator", "item": "https://{main-domain}/apy-calculator/" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#calculator">Skip to the calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/">{Brand}</a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li aria-current="page">APY calculator</li></ol>
+  </nav>
+
+  <section class="hero wrap">
+    <h1>APY calculator</h1>
+    <p class="lede">APY (annual percentage yield) is how much a balance would grow in one year once compounding is counted. Enter an interest rate and how often it compounds to see its APY, or switch direction to turn an APY back into an interest rate.</p>
+  </section>
+
+  <section id="calculator" class="tool wrap" aria-labelledby="calc-title">
+    <h2 id="calc-title">Convert an interest rate to APY, or APY to a rate</h2>
+    <div class="calculator">
+      <form id="apy-form" class="panel inputs" novalidate>
+        <fieldset class="field">
+          <legend>Convert</legend>
+          <div class="toggle">
+            <label><input type="radio" name="direction" value="toApy" checked> Interest rate → APY</label>
+            <label><input type="radio" name="direction" value="toRate"> APY → interest rate</label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="value" id="value-label">Interest rate (nominal annual rate)</label>
+          <div class="affix suffix">
+            <input id="value" name="value" inputmode="decimal" autocomplete="off" value="5" aria-describedby="value-help value-err">
+            <span aria-hidden="true">%</span>
+          </div>
+          <p class="help" id="value-help">On loans and cards this rate is often called the APR. A loan's APR can include fees as well as interest. If it does, this conversion does not apply.</p>
+          <p class="err" id="value-err" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="frequency">Compounding</label>
+          <select id="frequency" name="frequency">
+            <option value="annually">Annually</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="monthly" selected>Monthly</option>
+            <option value="daily">Daily (365 days a year)</option>
+            <option value="continuous">Continuous</option>
+          </select>
+        </div>
+      </form>
+
+      <div class="panel results" id="results">
+        <p class="label" id="out-label">APY (effective annual rate)</p>
+        <p class="big" id="out-main" aria-live="polite">5.12%</p>
+        <p class="muted" id="out-precise">More precisely 5.1162%</p>
+        <p class="disclaimer">For education only, not financial advice. The 5% starting rate is an example. A bank's quoted APY can differ slightly from this result, because banks may use a different day count, crediting schedule or rounding. Check the APY in the account's own disclosures. Rates can change, and a loan's APR can include fees.</p>
+      </div>
+    </div>
+  </section>
+
+  <article class="guide wrap">
+    <h2 id="freq-title">The same rate at every compounding frequency</h2>
+    <div class="table-wrap">
+      <table class="live-table">
+        <caption id="freq-caption">An example rate of 5%, as APY at each compounding frequency</caption>
+        <thead><tr><th scope="col">Compounding</th><th scope="col" id="freq-kind">APY</th><th scope="col">More precisely</th></tr></thead>
+        <tbody id="freq-rows">
+          <tr><td>Annually</td><td>5.00%</td><td>5.0000%</td></tr>
+          <tr><td>Quarterly</td><td>5.09%</td><td>5.0945%</td></tr>
+          <tr><td>Monthly</td><td>5.12%</td><td>5.1162%</td></tr>
+          <tr><td>Daily</td><td>5.13%</td><td>5.1267%</td></tr>
+          <tr><td>Continuous</td><td>5.13%</td><td>5.1271%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">For education only, not financial advice.</p>
+    <p>The more often interest is added, the sooner it starts earning interest of its own. So the same example rate of 5% gives a slightly higher APY when it compounds daily than when it compounds once a year. Going the other way, a lower rate that compounds often can give the same APY as a higher rate that compounds once a year.</p>
+
+    <h2>The APY formula</h2>
+    <p>Here is how to calculate APY by hand. The formula is:</p>
+    <p class="formula">APY = (1 + r/n)<sup>n</sup> − 1</p>
+    <ul>
+      <li><strong>r</strong> is the interest rate as a decimal, so an example rate of 5% is 0.05.</li>
+      <li><strong>n</strong> is how many times a year interest is added: 1 for annually, 4 for quarterly, 12 for monthly, 365 for daily.</li>
+    </ul>
+    <p><strong>Worked example: an example rate of 5% compounded monthly, as APY</strong></p>
+    <ol>
+      <li><strong>Rate per month.</strong> 0.05 ÷ 12 = 0.004166667.</li>
+      <li><strong>One year of growth.</strong> Add 1 and raise it to the 12th power: (1 + 0.004166667)<sup>12</sup> = 1.051162.</li>
+      <li><strong>Take away 1.</strong> 1.051162 − 1 = 0.051162, which is an example APY of <strong>5.12%</strong> (more precisely 5.1162%).</li>
+    </ol>
+    <p>In money: $10,000 left for one year at an example rate of 5%, compounded monthly, with nothing added, would grow to <strong>$10,511.62</strong>. Our <a href="https://{calc-domain}/">compound interest calculator</a> gives the same figure for $10,000, $0 a month, an example rate of 5%, 1 year, compounded monthly.</p>
+    <p class="muted">For education only, not financial advice.</p>
+    <p><strong>Continuous compounding.</strong> Adding interest more and more often has a limit, called continuous compounding. Its APY is:</p>
+    <p class="formula">APY = e<sup>r</sup> − 1</p>
+    <p>Here e is a mathematical constant, about 2.71828. For an example rate of 5%: e<sup>0.05</sup> − 1 = 0.051271, which is <strong>5.13%</strong> (more precisely 5.1271%).</p>
+    <p><strong>Going backwards, from APY to a rate.</strong> The formula turns around:</p>
+    <p class="formula">r = n × ((1 + APY)<sup>1/n</sup> − 1)</p>
+    <p>For an example APY of 5% with monthly compounding: 1.05<sup>1/12</sup> − 1 = 0.004074 a month, and 12 × that monthly rate gives <strong>4.89%</strong> (more precisely 4.8889%). For continuous compounding, r = ln(1 + APY), where ln is the natural logarithm. For an example APY of 5% that gives <strong>4.88%</strong> (more precisely 4.8790%).</p>
+    <p class="muted">For education only, not financial advice.</p>
+    <p>The <a href="/compound-interest-formula/">compound interest formula</a> page shows how the same pieces work over many years.</p>
+
+    <h2>APY vs interest rate vs APR</h2>
+    <p>These three terms sound alike. They answer different questions.</p>
+    <ul>
+      <li><strong>Interest rate (nominal annual rate).</strong> The yearly rate before compounding is counted. "Nominal" means "as stated". An example rate of 5% compounded monthly means 5% ÷ 12 is added each month.</li>
+      <li><strong>APY (annual percentage yield).</strong> The growth in one year once compounding is counted, if the interest stays in the account. It is the term used for savings and other deposit accounts. An example rate of 5% compounded monthly has an APY of 5.12%.</li>
+      <li><strong>APR (annual percentage rate).</strong> The yearly rate quoted on loans and credit cards. <strong>A loan's APR can include fees as well as interest.</strong> So converting an APR to an APY is only correct when the APR is a plain nominal rate with no fees. If the APR includes fees, this calculator's answer does not apply to it.</li>
+    </ul>
+    <p>For a loan, the yearly figure with compounding counted is usually called the effective annual rate, not the APY. That is why the result here is labelled "APY (effective annual rate)".</p>
+
+    <h2>Why APY makes savings accounts easier to compare</h2>
+    <p>Two accounts can quote the same interest rate and still pay different amounts, because they add interest at different times. APY puts both on the same yearly footing. For example, an example rate of 5% compounded quarterly has an APY of 5.09%. The same example rate compounded daily has an APY of 5.13%.</p>
+    <p>APY assumes the rate stays the same for a year and the interest stays in the account. It does not show fees, balance requirements or rate changes.</p>
+    <p>So APY is a useful starting point for a comparison. It is not the whole picture.</p>
+    <p class="muted">For education only, not financial advice.</p>
+
+    <h2 id="how-it-works">How this calculator works</h2>
+    <p>From an interest rate, the calculator works out APY = (1 + r/n)<sup>n</sup> − 1, with n = 1, 4, 12 or 365. Daily compounding uses 365 days a year. For continuous compounding it uses e<sup>r</sup> − 1. From an APY, it uses the reverse formulas shown above.</p>
+    <p>The headline result is rounded to 2 decimal places, with halves rounded up. The line under it gives 4 decimal places, so you can see the detail behind the rounding.</p>
+    <p>For annual, quarterly, monthly and daily compounding, the APY here matches one year of growth on our <a href="https://{calc-domain}/">compound interest calculator</a>. Growing $10,000, with nothing added, by these APYs for 10 years gives the same balances that calculator shows for an example rate of 5%: $16,288.95 annually, $16,436.19 quarterly, $16,470.09 monthly and $16,486.65 daily. Its method is described in <a href="/compound-interest-calculator/#how-it-works">how that calculator works</a>.</p>
+    <p class="muted">For education only, not financial advice.</p>
+    <p>A bank's own APY can differ slightly from this result. Banks may count days differently, add interest on a different schedule, or round differently. This calculator does not include fees, balance requirements or rate changes.</p>
+    <p>Everything runs in your browser, and nothing you type is sent to us.</p>
+    <p class="disclaimer">For education only, not financial advice. The 5% starting rate is an example. A bank's quoted APY can differ slightly from this result, because banks may use a different day count, crediting schedule or rounding. Check the APY in the account's own disclosures. Rates can change, and a loan's APR can include fees.</p>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/">Savings</a></li><li><a href="/apy-calculator/" aria-current="page">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/">With inflation</a></li><li><a href="/rule-of-72-calculator/">Rule of 72</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p>For education only, not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The calculator runs entirely in your browser.</p>
+    <p class="muted">Last updated: <time datetime="{last-updated}">{last-updated}</time></p>
+  </div>
+</footer>
+
+<script src="/calc.js"></script>
+<script src="/rates.js"></script>
+<script src="/apy-calculator/apy.js"></script>
+</body>
+</html>

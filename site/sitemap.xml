@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://{main-domain}/</loc>
+    <lastmod>{last-updated}</lastmod>
+  </url>
+  <url>
+    <loc>https://{main-domain}/about/</loc>
+    <lastmod>{last-updated}</lastmod>
+  </url>
+  <url>
+    <loc>https://{main-domain}/privacy/</loc>
+    <lastmod>{last-updated}</lastmod>
+  </url>
+  <url>
+    <loc>https://{main-domain}/compound-interest-formula/</loc>
+    <lastmod>{last-updated}</lastmod>
+  </url>
+  <url>
+    <loc>https://{main-domain}/apy-calculator/</loc>
+    <lastmod>{last-updated}</lastmod>
+  </url>
+  <url>
+    <loc>https://{main-domain}/compound-interest-calculator-with-inflation/</loc>
+    <lastmod>{last-updated}</lastmod>
+  </url>
+  <url>
+    <loc>https://{main-domain}/savings-calculator/</loc>
+    <lastmod>{last-updated}</lastmod>
+  </url>
+  <url>
+    <loc>https://{main-domain}/rule-of-72-calculator/</loc>
+    <lastmod>{last-updated}</lastmod>
+  </url>
+</urlset>

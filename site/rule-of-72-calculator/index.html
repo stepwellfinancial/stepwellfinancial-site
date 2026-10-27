@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rule of 72 calculator: doubling time | {Brand}</title>
+<meta name="description" content="Estimate how many years money takes to double at a fixed rate with the rule of 72, then compare it with the exact answer. Free, fast, no sign-up.">
+<link rel="canonical" href="https://{main-domain}/rule-of-72-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rule of 72 calculator">
+<meta property="og:description" content="Estimate how many years money takes to double at a fixed rate with the rule of 72, then compare it with the exact answer. Free, fast, no sign-up.">
+<meta property="og:url" content="https://{main-domain}/rule-of-72-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0f5132">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5132'/%3E%3Cpath d='M7 23l6-6 4 4 8-9' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Rule of 72 calculator",
+  "url": "https://{main-domain}/rule-of-72-calculator/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "This calculator shows that estimate next to the exact answer, so you can see how close it is."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://{main-domain}/" },
+    { "@type": "ListItem", "position": 2, "name": "Rule of 72 calculator", "item": "https://{main-domain}/rule-of-72-calculator/" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#calculator">Skip to the calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/">{Brand}</a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li aria-current="page">Rule of 72 calculator</li></ol>
+  </nav>
+
+  <section class="hero wrap">
+    <h1>Rule of 72 calculator</h1>
+    <p class="lede">The rule of 72 is a quick way to estimate how long a fixed yearly rate takes to double an amount: divide 72 by the rate. This calculator shows that estimate next to the exact answer, so you can see how close it is.</p>
+  </section>
+
+  <section id="calculator" class="tool wrap" aria-labelledby="calc-title">
+    <h2 id="calc-title">Find the doubling time</h2>
+    <div class="calculator">
+      <form id="r72-form" class="panel inputs" novalidate>
+        <fieldset class="field">
+          <legend>Work out</legend>
+          <div class="toggle">
+            <label><input type="radio" name="mode" value="years" checked> Years to double</label>
+            <label><input type="radio" name="mode" value="rate"> Rate that doubles in a given number of years</label>
+          </div>
+        </fieldset>
+        <div class="field" id="f-ratePct">
+          <label for="ratePct">Annual rate</label>
+          <div class="affix suffix">
+            <input id="ratePct" name="ratePct" inputmode="decimal" autocomplete="off" value="6" aria-describedby="ratePct-err">
+            <span aria-hidden="true">%</span>
+          </div>
+          <p class="err" id="ratePct-err" role="alert"></p>
+        </div>
+        <div class="field" id="f-years" hidden>
+          <label for="years">Years</label>
+          <input id="years" name="years" inputmode="decimal" autocomplete="off" value="12" aria-describedby="years-err">
+          <p class="err" id="years-err" role="alert"></p>
+        </div>
+      </form>
+
+      <div class="panel results" id="results">
+        <div id="res-years">
+          <p class="label">Years to double</p>
+          <p class="result-text">Rule of 72: about <strong id="y-rule">12.00 years</strong></p>
+          <p class="result-text">Exact, compounded yearly: <strong id="y-exact">11.90 years</strong></p>
+          <p class="result-text" id="y-off" aria-live="polite">The rule of 72 is off by 0.10 years</p>
+          <p class="muted" id="y-minus" hidden>A minus sign means the rule gives fewer years than the exact answer.</p>
+          <ul class="result-list">
+            <li>Rule of 70: about <span id="y-70">11.67 years</span></li>
+            <li>Rule of 69.3: about <span id="y-693">11.55 years</span></li>
+          </ul>
+          <p class="muted">The rule of 69.3 matches continuous compounding, so next to a yearly exact answer it looks less accurate than it is.</p>
+        </div>
+        <div id="res-rate" hidden>
+          <p class="label">Rate that doubles in a given number of years</p>
+          <p class="result-text">Rule of 72: about <strong id="r-rule"></strong> a year</p>
+          <p class="result-text" aria-live="polite">Exact, compounded yearly: <strong id="r-exact"></strong></p>
+        </div>
+        <p class="result-text" id="res-zero" hidden>At 0% money never doubles.</p>
+        <p class="muted" id="res-fix" hidden>Fix the highlighted field to see results.</p>
+        <p class="disclaimer">For education only, not financial advice. The rule of 72 is an estimate. The 6% starting rate is an example, and both answers assume a fixed rate every year. Actual returns vary and are not guaranteed.</p>
+      </div>
+    </div>
+  </section>
+
+  <article class="guide wrap">
+    <h2>What the rule of 72 is</h2>
+    <p>Divide 72 by a yearly rate, and you get roughly how many years that rate takes to double an amount, if the rate stays fixed and the growth stays in.</p>
+    <p><strong>Example: 6%.</strong> At an example rate of 6% a year, 72 ÷ 6 = <strong>12.00 years</strong>. The exact answer is <strong>11.90 years</strong>, so the rule is off by 0.10 years.</p>
+    <p><strong>Example: 9%.</strong> At an example rate of 9% a year, 72 ÷ 9 = <strong>8.00 years</strong>. The exact answer is <strong>8.04 years</strong>.</p>
+    <p><strong>The exact answer.</strong> For a fixed rate added once a year, the exact doubling time is:</p>
+    <p class="formula">years = ln 2 ÷ ln(1 + r)</p>
+    <p>Here ln is the natural logarithm, a button on most scientific calculators. r is the rate as a decimal, so an example rate of 6% is 0.06. ln 2 is about 0.693147.</p>
+    <p>At an example rate of 6%: ln 1.06 = 0.058269, and 0.693147 ÷ 0.058269 = <strong>11.90 years</strong>.</p>
+    <p class="muted">For education only, not financial advice.</p>
+    <p>To see the full growth, year by year, use the <a href="https://{calc-domain}/">compound interest calculator</a>. The <a href="/compound-interest-formula/">compound interest formula</a> page explains the math behind it.</p>
+
+    <h2>How accurate it is</h2>
+    <p>The rule is an estimate. Here is how close it comes at every whole example rate from 1% to 20%, against the exact answer for a rate added once a year.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Example rate</th><th scope="col">Rule of 72 (years)</th><th scope="col">Exact (years)</th><th scope="col">Rule minus exact (years)</th><th scope="col">% off</th></tr></thead>
+        <tbody>
+          <tr><td>1%</td><td>72.00</td><td>69.66</td><td>2.34</td><td>+3.4</td></tr>
+          <tr><td>2%</td><td>36.00</td><td>35.00</td><td>1.00</td><td>+2.8</td></tr>
+          <tr><td>3%</td><td>24.00</td><td>23.45</td><td>0.55</td><td>+2.3</td></tr>
+          <tr><td>4%</td><td>18.00</td><td>17.67</td><td>0.33</td><td>+1.9</td></tr>
+          <tr><td>5%</td><td>14.40</td><td>14.21</td><td>0.19</td><td>+1.4</td></tr>
+          <tr><td>6%</td><td>12.00</td><td>11.90</td><td>0.10</td><td>+0.9</td></tr>
+          <tr><td>7%</td><td>10.29</td><td>10.24</td><td>0.05</td><td>+0.4</td></tr>
+          <tr><td>8%</td><td>9.00</td><td>9.01</td><td>−0.01</td><td>−0.1</td></tr>
+          <tr><td>9%</td><td>8.00</td><td>8.04</td><td>−0.04</td><td>−0.5</td></tr>
+          <tr><td>10%</td><td>7.20</td><td>7.27</td><td>−0.07</td><td>−1.0</td></tr>
+          <tr><td>11%</td><td>6.55</td><td>6.64</td><td>−0.09</td><td>−1.5</td></tr>
+          <tr><td>12%</td><td>6.00</td><td>6.12</td><td>−0.12</td><td>−1.9</td></tr>
+          <tr><td>13%</td><td>5.54</td><td>5.67</td><td>−0.13</td><td>−2.3</td></tr>
+          <tr><td>14%</td><td>5.14</td><td>5.29</td><td>−0.15</td><td>−2.8</td></tr>
+          <tr><td>15%</td><td>4.80</td><td>4.96</td><td>−0.16</td><td>−3.2</td></tr>
+          <tr><td>16%</td><td>4.50</td><td>4.67</td><td>−0.17</td><td>−3.6</td></tr>
+          <tr><td>17%</td><td>4.24</td><td>4.41</td><td>−0.17</td><td>−4.1</td></tr>
+          <tr><td>18%</td><td>4.00</td><td>4.19</td><td>−0.19</td><td>−4.5</td></tr>
+          <tr><td>19%</td><td>3.79</td><td>3.98</td><td>−0.19</td><td>−4.9</td></tr>
+          <tr><td>20%</td><td>3.60</td><td>3.80</td><td>−0.20</td><td>−5.3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">For education only, not financial advice.</p>
+    <p><strong>Reading the table.</strong></p>
+    <ul>
+      <li><strong>Rule minus exact</strong> is the rule's figure minus the exact figure, both as shown. A positive number means the rule gives more years than the exact answer. A negative number means fewer.</li>
+      <li><strong>% off</strong> is that gap as a share of the exact doubling time.</li>
+    </ul>
+    <p>As a share of the doubling time, the rule of 72 is within about 2% of the exact answer for every example rate from 4% to 12%, and is most accurate near 8%. In years, the gap is biggest at low rates.</p>
+
+    <h2>Rule of 72 vs 70 vs 69.3</h2>
+    <p>Some people divide by 70 or 69.3 instead of 72. All three give an estimate.</p>
+    <ul>
+      <li><strong>72</strong> is used because it divides evenly by many numbers: 1, 2, 3, 4, 6, 8, 9, 12, 18, 24 and 36. That makes the math easy to do in your head.</li>
+      <li><strong>70</strong> is close to 72 and divides evenly by 2, 5, 7 and 10.</li>
+      <li><strong>69.3</strong> comes from ln 2, which is about 0.693. It matches continuous compounding, where interest is added all the time rather than once a year. So next to a yearly exact answer it looks less accurate than it is.</li>
+    </ul>
+    <p><strong>Example at 6%:</strong> rule of 72, 12.00 years; rule of 70, 11.67 years; rule of 69.3, 11.55 years. The exact answer with yearly compounding is 11.90 years. With continuous compounding, the exact answer is ln 2 ÷ 0.06 = 11.55 years, the same as the rule of 69.3. For education only, not financial advice.</p>
+    <p>How often interest is added changes the exact answer. To turn a rate that compounds monthly or daily into its yearly equivalent, try the <a href="/apy-calculator/">APY calculator</a>.</p>
+
+    <h2>Using it backwards</h2>
+    <p>The rule also works the other way. Divide 72 by a number of years to estimate the yearly rate that doubles an amount in that time. This is arithmetic, not a rate you can expect to get.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Example: rates that double an amount in a set number of years</caption>
+        <thead><tr><th scope="col">Years</th><th scope="col">Rule of 72</th><th scope="col">Exact, compounded yearly</th></tr></thead>
+        <tbody>
+          <tr><td>12</td><td>6.00%</td><td>5.95%</td></tr>
+          <tr><td>10</td><td>7.20%</td><td>7.18%</td></tr>
+          <tr><td>1</td><td>72.00%</td><td>100.00%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The exact rate is 2<sup>1/years</sup> − 1. Over 1 year, an amount doubles only at 100% a year, so the rule's example rate of 72% is far off. The rule is meant for lower rates and longer times.</p>
+    <p class="muted">For education only, not financial advice.</p>
+
+    <h2 id="how-it-works">How this calculator works</h2>
+    <p><strong>The two formulas.</strong></p>
+    <ul>
+      <li>Years to double, exact: ln 2 ÷ ln(1 + r).</li>
+      <li>Rate that doubles in a given number of years, exact: 2<sup>1/years</sup> − 1.</li>
+      <li>The rules divide 72, 70 or 69.3 by the rate, or 72 by the years.</li>
+    </ul>
+    <p><strong>Yearly compounding.</strong> "Exact" means a fixed rate added once a year. The rule of 72 is usually stated for a yearly rate. For a rate that compounds more often, the <a href="/apy-calculator/">APY calculator</a> gives the yearly equivalent to enter here.</p>
+    <p><strong>Rounding.</strong> Years and rates are rounded to 2 decimal places, with halves rounded up.</p>
+    <p><strong>"Off by" and "Rule minus exact".</strong> Both are the difference of the two figures as shown, so the numbers on screen always add up. When the two figures shown are equal, the calculator says they agree to 2 decimal places instead.</p>
+    <p><strong>"% off".</strong> The gap as a share of the exact doubling time, worked out before rounding, then rounded to 1 decimal place.</p>
+    <p><strong>At 0%.</strong> An amount never doubles, so the calculator says so instead of showing a number.</p>
+    <p>Everything runs in your browser, and nothing you type is sent to us.</p>
+    <p class="disclaimer">For education only, not financial advice. The rule of 72 is an estimate. The 6% starting rate is an example, and both answers assume a fixed rate every year. Actual returns vary and are not guaranteed.</p>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/">Savings</a></li><li><a href="/apy-calculator/">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/">With inflation</a></li><li><a href="/rule-of-72-calculator/" aria-current="page">Rule of 72</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p>For education only, not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The calculator runs entirely in your browser.</p>
+    <p class="muted">Last updated: <time datetime="{last-updated}">{last-updated}</time></p>
+  </div>
+</footer>
+
+<script src="/calc.js"></script>
+<script src="/rates.js"></script>
+<script src="/rule-of-72-calculator/rule72.js"></script>
+</body>
+</html>
