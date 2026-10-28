@@ -1,6 +1,5 @@
 /* formula.js: the compound interest formula page's maths. Pure functions, no DOM,
  * so QA can test them alone. calc.js is not changed; this module only reads it.
- * See specs/compound-interest-formula.md, "How it calculates".
  *
  * Rates are in percent (5 means 5%), as in calc.js. Growth factors use
  * log1p/expm1, as calc.js does, so small rates keep full precision.
@@ -77,7 +76,7 @@
     return { i: i, N: N, growth: growth, principalPart: principalPart, contributionPart: contributionPart, total: total };
   }
 
-  /* What the box prints (spec: i to 9 decimal places, growth to 6, money to the
+  /* What the box prints (i to 9 decimal places, growth to 6, money to the
    * cent). Still pure: Intl only, no DOM. approximate is true when the total is
    * at or above CompoundCalc.EXACT_TO_CENTS_BELOW, where the page shows v1's
    * "Numbers this large are only approximate." instead of the cent note. */

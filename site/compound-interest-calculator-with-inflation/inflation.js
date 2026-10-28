@@ -1,8 +1,7 @@
 /* inflation.js: wires the inflation calculator to calc.js and rates.js, and draws
  * the results. All maths lives in calc.js (the balance, unchanged) and rates.js
  * (today's dollars and the real rate). The chart follows app.js's drawing; a
- * shared chart module is a separate refactor (spec, Out of scope).
- * See specs/compound-interest-calculator-with-inflation.md. */
+ * shared chart module would be a separate change. */
 (function () {
   "use strict";
   var C = window.CompoundCalc, R = window.Rates;

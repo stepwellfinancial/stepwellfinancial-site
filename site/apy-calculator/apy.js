@@ -1,5 +1,5 @@
 /* apy.js: wires the APY calculator to rates.js. All maths lives in rates.js;
- * this file only reads inputs and writes text. See specs/apy-calculator.md. */
+ * this file only reads inputs and writes text. */
 (function () {
   "use strict";
   var R = window.Rates;
@@ -13,7 +13,7 @@
     toRate: { min: 0, max: 50, label: "APY", decimals: 2, commas: false }
   };
   // The direction is named in the field label, the result label and the table,
-  // so a result can never be read as the other kind (criterion 13).
+  // so a result can never be read as the other kind.
   var FIELD_LABEL = { toApy: "Interest rate (nominal annual rate)", toRate: "APY (annual percentage yield)" };
   var HELP = { toApy: $("value-help").textContent, toRate: "The APY as quoted, for example on a savings account." };
   var COLUMN = { toApy: "APY", toRate: "Interest rate" };
@@ -53,7 +53,7 @@
     var res = R.checkField(input.value, LIMITS[dir]);
     $("value-err").textContent = res.error;
     input.setAttribute("aria-invalid", res.error ? "true" : "false");
-    var link = $("savings-link");   // held: absent until privacy F10 ships
+    var link = $("savings-link");   // held: absent until the Privacy page describes it
 
     if (res.error || !Object.prototype.hasOwnProperty.call(R.FREQUENCIES, freq)) {
       // Never leave an old answer on screen as if it still applied.

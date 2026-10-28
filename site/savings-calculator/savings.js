@@ -1,7 +1,7 @@
 /* savings.js: wires the savings calculator to goals.js. All maths lives in
  * goals.js (and calc.js, through it); this file only reads inputs and writes
- * text. Result wording is the spec's, word for word ("Results" section).
- * The page never writes to the address bar. See specs/savings-calculator.md. */
+ * text. Result wording is the approved wording: keep it word for word.
+ * The page never writes to the address bar. */
 (function () {
   "use strict";
   var G = window.SavingsGoals, R = window.Rates;

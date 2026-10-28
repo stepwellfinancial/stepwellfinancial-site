@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://{main-domain}/</loc>
-    <lastmod>{last-updated}</lastmod>
+    <loc>https://stepwellfinancial.com/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://{main-domain}/about/</loc>
-    <lastmod>{last-updated}</lastmod>
+    <loc>https://stepwellfinancial.com/about/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://{main-domain}/privacy/</loc>
-    <lastmod>{last-updated}</lastmod>
+    <loc>https://stepwellfinancial.com/privacy/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://{main-domain}/compound-interest-formula/</loc>
-    <lastmod>{last-updated}</lastmod>
+    <loc>https://stepwellfinancial.com/compound-interest-formula/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://{main-domain}/apy-calculator/</loc>
-    <lastmod>{last-updated}</lastmod>
+    <loc>https://stepwellfinancial.com/apy-calculator/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://{main-domain}/compound-interest-calculator-with-inflation/</loc>
-    <lastmod>{last-updated}</lastmod>
+    <loc>https://stepwellfinancial.com/compound-interest-calculator-with-inflation/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://{main-domain}/savings-calculator/</loc>
-    <lastmod>{last-updated}</lastmod>
+    <loc>https://stepwellfinancial.com/savings-calculator/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
   <url>
-    <loc>https://{main-domain}/rule-of-72-calculator/</loc>
-    <lastmod>{last-updated}</lastmod>
+    <loc>https://stepwellfinancial.com/rule-of-72-calculator/</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
 </urlset>

@@ -1,8 +1,8 @@
 /* main.css: styles for the main site only, loaded after the shared /styles.css.
- * Two-site spec, "Main-site styles": no selector here may match an element
- * inside the calculator block on /compound-interest-calculator/ (from
- * section#calculator to the end of the year table), so the calculator looks the
- * same on both sites. Nothing here styles html, body or main. */
+ * No selector here may match an element inside the calculator block on
+ * /compound-interest-calculator/ (from section#calculator to the end of the
+ * year table), so the calculator looks the same on both sites. Nothing here
+ * styles html, body or main. */
 
 /* Header nav and breadcrumb. */
 .site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 18px; }

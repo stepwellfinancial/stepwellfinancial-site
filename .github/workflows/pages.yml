@@ -1,15 +1,14 @@
-# The MAIN SITE's workflow ({main-domain}). It is not run from this repository:
-# it goes into the second public repository as .github/workflows/pages.yml
-# (LAUNCH.md, step 7). That repository holds only:
+# The MAIN SITE's workflow (stepwellfinancial.com). This repository holds only:
 #
-#   site/                          the contents of this repo's site-main/
-#   scripts/check-placeholders.sh  copied from this repo's scripts/
-#   scripts/check-shared.sh        copied from this repo's scripts/
+#   site/                          the main site's pages and files
+#   scripts/check-placeholders.sh  the deploy guard (placeholders, CNAME)
+#   scripts/check-shared.sh        the shared-file check
 #   .github/workflows/pages.yml    this file
-#   .github/dependabot.yml         copied from this repo's deploy/dependabot.yml
+#   .github/dependabot.yml         a weekly notice of new action releases
+#   .gitignore                     keeps .env files and keys out
 #
 # It publishes site/ (and only site/) to GitHub Pages at the root of
-# {main-domain}. Runs on every push to main, or by hand from the Actions tab.
+# stepwellfinancial.com. Runs on every push to main, or by hand from the Actions tab.
 name: Deploy main site to GitHub Pages
 
 on:
@@ -25,8 +24,8 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-# Actions are pinned to full commit SHAs (the same ones as this repository's
-# pages.yml, looked up with git ls-remote on 2026-10-26); the release tag is in
+# Actions are pinned to full commit SHAs (the same ones as the calculator's
+# workflow, looked up with git ls-remote on 2026-10-26); the release tag is in
 # the comment. To update, look up the new tag's commit the same way and change both.
 jobs:
   # Refuses to publish while any page under site/ still holds a placeholder, an

@@ -1,13 +1,10 @@
 /* rates.js: rate conversions for the APY, inflation and rule of 72 pages.
  * Pure functions, no DOM, so QA can test them alone. calc.js is not changed;
- * this module only reads it (for parseAmount). Main site only (two-site spec,
- * "Main-site-only scripts").
- * See specs/apy-calculator.md, specs/compound-interest-calculator-with-inflation.md
- * and specs/rule-of-72-calculator.md, "How it calculates".
+ * this module only reads it (for parseAmount). Used on the main site only.
  *
  * Units, so nothing is mixed up:
  *   apy, rateFromApy, realRate, toTodaysDollars: rates as DECIMALS (5% = 0.05).
- *   ruleYears, exactDoublingYears: the rate in PERCENT (6 means 6%), as the specs say.
+ *   ruleYears, exactDoublingYears: the rate in PERCENT (6 means 6%), as typed.
  *   ruleRate, exactDoublingRate: return PERCENT (6 means 6% a year), so the two
  *   can be compared directly.
  * Growth uses log1p/expm1, as calc.js does, so small rates keep full precision.
@@ -24,7 +21,7 @@
 
   function isFrequency(f) { return Object.prototype.hasOwnProperty.call(FREQUENCIES, f); }
 
-  /* ---------- APY (specs/apy-calculator.md) ---------- */
+  /* ---------- APY ---------- */
 
   /* APY = (1 + r/n)^n - 1; continuous: e^r - 1. r is a decimal. */
   function apy(r, freq) {
@@ -44,8 +41,8 @@
     return n * Math.expm1(Math.log1p(a) / n);
   }
 
-  /* The APY -> savings link (APY spec AC26; HELD on the page until privacy fact
-   * F10 is published). apyPct is the APY in percent: the one worked out from the
+  /* The APY -> savings link (held: not on the page until the Privacy page
+   * describes it). apyPct is the APY in percent: the one worked out from the
    * rate, or the one the user entered. The value goes only after "#", to 2
    * decimals. An APY the savings page would refuse (above its 50% limit, or not
    * a number) gives the plain link, so the page never sends a value it ignores.
@@ -57,7 +54,7 @@
     return SAVINGS_PATH + "#apy=" + v.toFixed(2);
   }
 
-  /* ---------- Inflation (specs/compound-interest-calculator-with-inflation.md) ---------- */
+  /* ---------- Inflation ---------- */
 
   /* Real annual rate = (1 + APY) / (1 + inflation) - 1, written as
    * (APY - inflation) / (1 + inflation), the same value, which is exactly 0 when
@@ -81,7 +78,7 @@
     return limitMessage(v, INFLATION_LIMITS);
   }
 
-  /* ---------- Rule of 72 (specs/rule-of-72-calculator.md) ---------- */
+  /* ---------- Rule of 72 ---------- */
 
   /* k / rate, for k = 72, 70 or 69.3. Null at 0%, never Infinity. */
   function ruleYears(k, ratePct) {

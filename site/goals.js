@@ -1,7 +1,6 @@
 /* goals.js: the savings calculator's maths. Pure functions, no DOM, so QA can
  * test them alone. calc.js is not changed; growth reuses CompoundCalc.calculate().
- * Main site only (two-site spec, "Main-site-only scripts").
- * See specs/savings-calculator.md, "How it calculates".
+ * Used on the main site only.
  *
  * Units: apyPct is in percent (5 means 5%), as typed. i is the monthly rate as a
  * decimal. Money is in dollars. timing is "end" or "start" of each month.
@@ -78,7 +77,7 @@
     return timing === "start" ? x / (1 + i) : x;
   }
 
-  /* The amount shown: rounded UP to the next cent, in three steps (spec rev 3):
+  /* The amount shown: rounded UP to the next cent, in three steps:
    *  1. ceil(x x 100 - 1e-6) / 100, a millionth-of-a-cent tolerance for float
    *     noise on an exact cent amount;
    *  2. if x > 0, at least $0.01;

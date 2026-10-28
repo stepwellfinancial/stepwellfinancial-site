@@ -1,6 +1,5 @@
 /* rule72.js: wires the rule of 72 calculator to rates.js. All maths lives in
- * rates.js; this file only reads inputs and writes text.
- * See specs/rule-of-72-calculator.md. */
+ * rates.js; this file only reads inputs and writes text. */
 (function () {
   "use strict";
   var R = window.Rates;
