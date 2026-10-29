@@ -5,9 +5,12 @@
  * styles html, body or main. */
 
 /* Header nav and breadcrumb. */
-.site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 18px; }
+.site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; }
 .site-nav a { display: inline-block; padding: 6px 0; color: var(--ink); font-weight: 600; font-size: .95rem; text-decoration: none; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--brand); text-decoration: underline; }
+/* "Open the app": the one filled link in the header, in the .btn colours. */
+.site-nav a.nav-app { padding: 8px 14px; border-radius: 10px; background: var(--brand); color: var(--brand-ink); }
+.site-nav a.nav-app:hover { color: var(--brand-ink); text-decoration: underline; }
 .breadcrumb ol { list-style: none; margin: 0; padding: 18px 0 0; display: flex; flex-wrap: wrap; gap: 4px; font-size: .9rem; color: var(--muted); }
 .breadcrumb li + li::before { content: "›"; content: "›" / ""; margin-right: 4px; }
 .guide code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1px 5px; overflow-wrap: anywhere; }
@@ -21,6 +24,10 @@
 /* Intro paragraphs (the brand introduction on the hub and the calculator copy). */
 .hero .lede + .lede, .hub .lede + .lede { margin-top: 10px; }
 .hub .lede { margin-top: 6px; }
+/* The home page hero: the tagline under the h1, and its "Open the app" button. */
+.hub .tagline { margin: 4px 0 0; font-size: 1.25rem; font-weight: 700; }
+.hero-ask { margin: 18px 0 8px; }
+.hero-ask a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .hub-list { padding-left: 20px; }
 .hub-list li { margin: 0 0 10px; }
 .hub-list a { font-weight: 600; }
