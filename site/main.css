@@ -9,7 +9,7 @@
 .site-nav a { display: inline-block; padding: 6px 0; color: var(--ink); font-weight: 600; font-size: .95rem; text-decoration: none; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--brand); text-decoration: underline; }
 /* "Open the app": the one filled link in the header, in the .btn colours. */
-.site-nav a.nav-app { padding: 8px 14px; border-radius: 10px; background: var(--brand); color: var(--brand-ink); }
+.site-nav a.nav-app { padding: 11px 16px; border-radius: 10px; background: var(--brand); color: var(--brand-ink); }
 .site-nav a.nav-app:hover { color: var(--brand-ink); text-decoration: underline; }
 .breadcrumb ol { list-style: none; margin: 0; padding: 18px 0 0; display: flex; flex-wrap: wrap; gap: 4px; font-size: .9rem; color: var(--muted); }
 .breadcrumb li + li::before { content: "›"; content: "›" / ""; margin-right: 4px; }
