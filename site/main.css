@@ -1,16 +1,48 @@
 /* main.css: styles for the main site only, loaded after the shared /styles.css.
  * No selector here may match an element inside the calculator block on
  * /compound-interest-calculator/ (from section#calculator to the end of the
- * year table), so the calculator looks the same on both sites. Nothing here
- * styles html, body or main. */
+ * year table). Nothing here styles html, body or main.
+ *
+ * Reskin, "Stepwell logo polish release" (2026-10-29): the main site is dark,
+ * on the app's dark tokens (identity.md Colour table, dark column). The :root
+ * block below overrides the shared colour tokens in styles.css for this site
+ * only, so the calculator block also shows the dark column here (On-Brand
+ * ruling, Vivian, 2026-10-29); the standalone calculator site is unchanged.
+ * Every value below is the identity.md dark value; the series colours are
+ * ledger/growth #3ccf8e, compare #fb923c and contrib #7f9a8c. Dark only: no
+ * light theme ships, so the light lockup is not used. */
+:root {
+  --bg: #0f1412;          /* paper */
+  --panel: #171e1b;       /* panel */
+  --ink: #e8eeea;
+  --muted: #9aa8a0;
+  --line: #2a3530;
+  --field-line: #66766e;
+  --simple: #fb923c;      /* compare */
+  --brand: #3ccf8e;       /* ledger */
+  --brand-ink: #06140d;   /* on-ledger */
+  --contrib: #7f9a8c;
+  --interest: #3ccf8e;    /* growth */
+  --err: #ff8a80;
+  --focus: #8ab4ff;
+  --glow-ledger: 0 0 0 1px rgba(60, 207, 142, .35), 0 0 24px rgba(60, 207, 142, .28);
+  --logo-w: 172px;                    /* L1 lockup width (minimum 160) */
+  --cs: calc(var(--logo-w) * .1222);  /* clear space: height of the capital S */
+  color-scheme: dark;
+}
+@media (max-width: 480px) { :root { --logo-w: 160px; } }
 
-/* Header nav and breadcrumb. */
-.site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; }
-.site-nav a { display: inline-block; padding: 6px 0; color: var(--ink); font-weight: 600; font-size: .95rem; text-decoration: none; }
+/* Header: the L1 lockup as the home link, the descriptor as live text beside it. */
+.site-header .wrap { padding: var(--cs) 22px; gap: 0 var(--cs); }
+.site-header .brand-block { align-items: center; column-gap: var(--cs); row-gap: 4px; }
+.site-header .brand { display: block; padding: 0; line-height: 0; border-radius: 6px; }
+.site-header .brand img { display: block; width: var(--logo-w); height: auto; }
+
+/* Header nav and breadcrumb. All nav items are plain text links, "Open the app" too. */
+.site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0; color: var(--ink); font-weight: 600; font-size: .95rem; text-decoration: none; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--brand); text-decoration: underline; }
-/* "Open the app": the one filled link in the header, in the .btn colours. */
-.site-nav a.nav-app { padding: 11px 16px; border-radius: 10px; background: var(--brand); color: var(--brand-ink); }
-.site-nav a.nav-app:hover { color: var(--brand-ink); text-decoration: underline; }
+@media (max-width: 480px) { .site-nav ul { gap: 0 14px; } }
 .breadcrumb ol { list-style: none; margin: 0; padding: 18px 0 0; display: flex; flex-wrap: wrap; gap: 4px; font-size: .9rem; color: var(--muted); }
 .breadcrumb li + li::before { content: "›"; content: "›" / ""; margin-right: 4px; }
 .guide code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1px 5px; overflow-wrap: anywhere; }
@@ -24,10 +56,21 @@
 /* Intro paragraphs (the brand introduction on the hub and the calculator copy). */
 .hero .lede + .lede, .hub .lede + .lede { margin-top: 10px; }
 .hub .lede { margin-top: 6px; }
-/* The home page hero: the tagline under the h1, and its "Open the app" button. */
-.hub .tagline { margin: 4px 0 0; font-size: 1.25rem; font-weight: 700; }
-.hero-ask { margin: 18px 0 8px; }
-.hero-ask a.btn { display: inline-flex; align-items: center; text-decoration: none; }
+/* The home page hero: the headline, one big centred "Launch platform" button,
+   and one static, faint stepped-rise line behind it. The line is decoration:
+   no animation, no text, nothing else behind the words. */
+.launch { position: relative; overflow: hidden; background: var(--bg); border-bottom: 1px solid var(--line); }
+.launch-art { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.launch-art path { fill: none; stroke: var(--brand); stroke-opacity: .16; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.launch-inner { position: relative; padding-top: 32px; padding-bottom: 40px; text-align: center; }
+.launch h1 { font-size: clamp(2.1rem, 7.2vw, 4.25rem); line-height: 1.08; letter-spacing: -.02em; font-weight: 750; max-width: 15ch; margin: 0 auto 16px; text-wrap: balance; }
+.launch .lede { margin: 0 auto; font-size: 1.15rem; }
+.launch-cta { margin: 28px 0 28px; }
+.launch-btn { display: inline-flex; align-items: center; justify-content: center; max-width: 100%; min-height: 64px; padding: 16px 44px; border-radius: 999px;
+  background: var(--brand); color: var(--brand-ink); font-size: 1.3rem; font-weight: 700; letter-spacing: -.005em; text-decoration: none; box-shadow: var(--glow-ledger); }
+.launch-btn:hover { text-decoration: underline; }
+.launch .launch-about { margin: 0 auto; text-align: left; }
+@media (min-width: 700px) { .launch-inner { padding-top: 72px; padding-bottom: 72px; } .launch-cta { margin: 36px 0 40px; } .launch-btn { min-height: 72px; padding: 20px 60px; font-size: 1.5rem; } }
 .hub-list { padding-left: 20px; }
 .hub-list li { margin: 0 0 10px; }
 .hub-list a { font-weight: 600; }
