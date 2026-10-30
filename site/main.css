@@ -34,7 +34,7 @@
 
 /* Header: the L1 lockup as the home link, the descriptor as live text beside it. */
 .site-header .wrap { padding: var(--cs) 22px; gap: 0 var(--cs); }
-.site-header .brand-block { align-items: center; column-gap: var(--cs); row-gap: 4px; }
+.site-header .brand-block { align-items: center; column-gap: var(--cs); row-gap: var(--cs); }
 .site-header .brand { display: block; padding: 0; line-height: 0; border-radius: 6px; }
 .site-header .brand img { display: block; width: var(--logo-w); height: auto; }
 
