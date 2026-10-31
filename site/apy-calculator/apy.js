@@ -77,8 +77,21 @@
     if (link) link.setAttribute("href", R.savingsLinkHref(dir === "toApy" ? out : res.value));
   }
 
-  form.addEventListener("input", update);
+  /* Typing a number (calc.js, "Typed numbers"): an unfinished number such as "5." or "" leaves the last result
+   * on screen; a real mistake shows its message at once. Leaving the field tidies it and runs the numbers. */
+  var C = window.CompoundCalc;
+  form.addEventListener("input", function (e) {
+    if (C && e.target === form.elements.value && C.classifyAmount(e.target.value, false) === "partial") return;
+    update();
+  });
   form.addEventListener("change", update);
+  form.addEventListener("focusout", function (e) {
+    var el = e.target, tidy;
+    if (!C || el !== form.elements.value) return;
+    tidy = C.formatAmount(el.value, false);
+    if (tidy !== null && tidy !== el.value) el.value = tidy;
+    update();
+  });
   form.addEventListener("submit", function (e) { e.preventDefault(); });
   // Copy link and restore a link (scenario.js): inputs only, checked like typing.
   if (window.ScenarioLink) window.ScenarioLink.attach({

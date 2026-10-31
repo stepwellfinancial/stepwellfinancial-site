@@ -53,8 +53,23 @@
     show("years");
   }
 
-  form.addEventListener("input", update);
+  /* Typing a number (calc.js, "Typed numbers"): an unfinished number such as "7." or "" leaves the last result
+   * on screen; a real mistake shows its message at once. Leaving a field tidies it and runs the numbers. */
+  var C = window.CompoundCalc;
+  function isNumberField(el) { return !!C && Object.prototype.hasOwnProperty.call(LIMITS, el.name); }
+  function commasIn(el) { return LIMITS[el.name].commas !== false; }
+  form.addEventListener("input", function (e) {
+    if (isNumberField(e.target) && C.classifyAmount(e.target.value, commasIn(e.target)) === "partial") return;
+    update();
+  });
   form.addEventListener("change", update);
+  form.addEventListener("focusout", function (e) {
+    var el = e.target, tidy;
+    if (!isNumberField(el)) return;
+    tidy = C.formatAmount(el.value, commasIn(el));
+    if (tidy !== null && tidy !== el.value) el.value = tidy;
+    update();
+  });
   form.addEventListener("submit", function (e) { e.preventDefault(); });
   // Copy link and restore a link (scenario.js): inputs only, checked like typing.
   if (window.ScenarioLink) window.ScenarioLink.attach({

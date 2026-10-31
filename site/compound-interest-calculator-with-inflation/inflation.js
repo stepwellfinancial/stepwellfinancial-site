@@ -137,8 +137,22 @@
     drawTable(rows);
   }
 
-  form.addEventListener("input", update);
+  /* Typing a number (calc.js, "Typed numbers"): an unfinished number such as "250," leaves the last result
+   * on screen; a real mistake shows its message at once. Leaving a field tidies it and runs the numbers. */
+  function commasIn(el) { return el.name !== "ratePct" && el.name !== "inflation"; }
+  function isNumberField(el) { return NUMERIC.indexOf(el.name) !== -1 || el.name === "inflation"; }
+  form.addEventListener("input", function (e) {
+    if (isNumberField(e.target) && C.classifyAmount(e.target.value, commasIn(e.target)) === "partial") return;
+    update();
+  });
   form.addEventListener("change", update);
+  form.addEventListener("focusout", function (e) {
+    var el = e.target, tidy;
+    if (!isNumberField(el)) return;
+    tidy = C.formatAmount(el.value, commasIn(el));
+    if (tidy !== null && tidy !== el.value) el.value = tidy;
+    update();
+  });
   form.addEventListener("submit", function (e) { e.preventDefault(); });
   // Copy link and restore a link (scenario.js): inputs only, checked like typing.
   if (window.ScenarioLink) window.ScenarioLink.attach({
