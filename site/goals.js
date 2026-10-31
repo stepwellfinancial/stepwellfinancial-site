@@ -117,25 +117,8 @@
     monthly: ["principal", "apyPct", "years", "goal"]
   };
 
-  /* The prefill from "#apy=<number>": the number if it is a valid APY (0 to 50,
-   * at most 2 decimals, no comma), otherwise null. Anything else in the fragment
-   * is ignored. hash is location.hash, with or without the leading "#". */
-  function apyFromHash(hash) {
-    var s = String(hash == null ? "" : hash).replace(/^#/, "");
-    var found = null;
-    s.split("&").forEach(function (pair) {
-      var eq = pair.indexOf("=");
-      if (eq === -1 || found !== null) return;
-      if (pair.slice(0, eq) !== "apy") return;
-      var text;
-      try { text = decodeURIComponent(pair.slice(eq + 1)); } catch (e) { return; }
-      if (!/^\d+(\.\d{1,2})?$/.test(text)) return;
-      var v = C.parseAmount(text, false);
-      var lim = LIMITS.apyPct;
-      if (isFinite(v) && v >= lim.min && v <= lim.max) found = v;
-    });
-    return found;
-  }
+  /* The "#apy=<number>" prefill (the APY calculator's link) is read by scenario.js now,
+   * as a legacy savings link, with the same limits as typing (LIMITS above). */
 
   var api = {
     MAX_MONTHS: MAX_MONTHS,
@@ -147,8 +130,7 @@
     monthsToTarget: monthsToTarget,
     monthlyNeededExact: monthlyNeededExact,
     monthlyNeeded: monthlyNeeded,
-    formatDuration: formatDuration,
-    apyFromHash: apyFromHash
+    formatDuration: formatDuration
   };
   if (typeof module === "object" && module.exports) module.exports = api;
   root.SavingsGoals = api;

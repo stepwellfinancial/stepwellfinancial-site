@@ -114,13 +114,18 @@
     setNote("");
   }
 
-  /* "#apy=<number>" from the APY calculator fills the APY field if it is a valid
-   * APY; anything else is ignored. Nothing is written back to the address bar. */
-  var prefill = G.apyFromHash(location.hash);
-  if (prefill !== null) form.elements.apyPct.value = plain.format(prefill);
-
   form.addEventListener("input", update);
   form.addEventListener("change", update);
   form.addEventListener("submit", function (e) { e.preventDefault(); });
+  // Copy link and restore a link (scenario.js). It also reads "#apy=<number>", the link the
+  // APY calculator offers, as a legacy link that fills the APY. Nothing is written back to
+  // the address bar.
+  if (window.ScenarioLink) window.ScenarioLink.attach({
+    model: "savings",
+    form: form,
+    fields: { mode: { radio: "mode" }, timing: { radio: "timing" }, principal: { id: "principal" }, monthly: { id: "monthly" },
+      apyPct: { id: "apyPct" }, years: { id: "years" }, goal: { id: "goal" } },
+    onChange: update
+  });
   update();
 })();

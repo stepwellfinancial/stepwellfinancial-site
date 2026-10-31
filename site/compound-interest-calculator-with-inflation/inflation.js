@@ -140,5 +140,13 @@
   form.addEventListener("input", update);
   form.addEventListener("change", update);
   form.addEventListener("submit", function (e) { e.preventDefault(); });
+  // Copy link and restore a link (scenario.js): inputs only, checked like typing.
+  if (window.ScenarioLink) window.ScenarioLink.attach({
+    model: "inflation",
+    form: form,
+    fields: { principal: { id: "principal" }, monthly: { id: "monthly" }, ratePct: { id: "ratePct" }, years: { id: "years" },
+      frequency: { id: "frequency" }, timing: { radio: "timing" }, inflation: { id: "inflation" } },
+    onChange: update
+  });
   update();
 })();

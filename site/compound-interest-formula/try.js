@@ -71,5 +71,13 @@
   form.addEventListener("input", update);
   form.addEventListener("change", update);
   form.addEventListener("submit", function (e) { e.preventDefault(); });
+  // Copy link and restore a link (scenario.js): inputs only, checked like typing.
+  if (window.ScenarioLink) window.ScenarioLink.attach({
+    model: "formula",
+    form: form,
+    fields: { principal: { id: "principal" }, monthly: { id: "monthly" }, ratePct: { id: "ratePct" }, years: { id: "years" },
+      timing: { radio: "timing" } },
+    onChange: update
+  });
   update();
 })();

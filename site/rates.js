@@ -72,6 +72,17 @@
 
   var INFLATION_LIMITS = { min: 0, max: 20, label: "Inflation rate", decimals: 2, commas: false };
 
+  /* The APY and rule of 72 pages' field limits, here so typing and scenario links
+   * (scenario.js) check the very same numbers. */
+  var APY_LIMITS = {
+    toApy: { min: 0, max: 50, label: "Interest rate", decimals: 2, commas: false },
+    toRate: { min: 0, max: 50, label: "APY", decimals: 2, commas: false }
+  };
+  var RULE72_LIMITS = {
+    ratePct: { min: 0, max: 50, label: "Annual rate", decimals: 2, commas: false },
+    years: { min: 1, max: 100, label: "Years", decimals: 2, commas: false }
+  };
+
   /* Takes the parsed number (CompoundCalc.parseAmount(text, false)). Returns ""
    * when valid, otherwise the message to show, in v1's pattern. */
   function validateInflation(v) {
@@ -211,6 +222,8 @@
     FREQUENCY_ORDER: FREQUENCY_ORDER,
     FREQUENCY_NAMES: FREQUENCY_NAMES,
     INFLATION_LIMITS: INFLATION_LIMITS,
+    APY_LIMITS: APY_LIMITS,
+    RULE72_LIMITS: RULE72_LIMITS,
     apy: apy,
     rateFromApy: rateFromApy,
     savingsLinkHref: savingsLinkHref,

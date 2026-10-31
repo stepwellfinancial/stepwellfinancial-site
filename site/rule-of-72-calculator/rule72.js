@@ -8,10 +8,7 @@
 
   function $(id) { return document.getElementById(id); }
 
-  var LIMITS = {
-    ratePct: { min: 0, max: 50, label: "Annual rate", decimals: 2, commas: false },
-    years: { min: 1, max: 100, label: "Years", decimals: 2, commas: false }
-  };
+  var LIMITS = R.RULE72_LIMITS;   // in rates.js, so scenario links check the same limits
   var FIELD = { years: "ratePct", rate: "years" };   // the one field each mode uses
 
   function mode() { return form.querySelector('input[name="mode"]:checked').value; }
@@ -59,5 +56,12 @@
   form.addEventListener("input", update);
   form.addEventListener("change", update);
   form.addEventListener("submit", function (e) { e.preventDefault(); });
+  // Copy link and restore a link (scenario.js): inputs only, checked like typing.
+  if (window.ScenarioLink) window.ScenarioLink.attach({
+    model: "rule72",
+    form: form,
+    fields: { mode: { radio: "mode" }, ratePct: { id: "ratePct" }, years: { id: "years" } },
+    onChange: update
+  });
   update();
 })();

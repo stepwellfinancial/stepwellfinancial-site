@@ -8,10 +8,7 @@
 
   function $(id) { return document.getElementById(id); }
 
-  var LIMITS = {
-    toApy: { min: 0, max: 50, label: "Interest rate", decimals: 2, commas: false },
-    toRate: { min: 0, max: 50, label: "APY", decimals: 2, commas: false }
-  };
+  var LIMITS = R.APY_LIMITS;   // in rates.js, so scenario links check the same limits
   // The direction is named in the field label, the result label and the table,
   // so a result can never be read as the other kind.
   var FIELD_LABEL = { toApy: "Interest rate (nominal annual rate)", toRate: "APY (annual percentage yield)" };
@@ -83,5 +80,12 @@
   form.addEventListener("input", update);
   form.addEventListener("change", update);
   form.addEventListener("submit", function (e) { e.preventDefault(); });
+  // Copy link and restore a link (scenario.js): inputs only, checked like typing.
+  if (window.ScenarioLink) window.ScenarioLink.attach({
+    model: "apy",
+    form: form,
+    fields: { direction: { radio: "direction" }, frequency: { id: "frequency" }, value: { id: "value" } },
+    onChange: update
+  });
   update();
 })();
