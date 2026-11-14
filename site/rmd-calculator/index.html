@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RMD calculator: required minimum distribution | Stepwell Financial</title>
+<meta name="description" content="Free RMD calculator. Enter your birth year and last year's year-end balance to see this year's required minimum distribution and a year-by-year table.">
+<link rel="canonical" href="https://stepwellfinancial.com/rmd-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RMD calculator: required minimum distribution | Stepwell Financial">
+<meta property="og:description" content="Free RMD calculator. Enter your birth year and last year's year-end balance to see this year's required minimum distribution and a year-by-year table.">
+<meta property="og:url" content="https://stepwellfinancial.com/rmd-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#171e1b">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="icon" href="/favicon-32.svg" type="image/svg+xml" sizes="32x32">
+<link rel="icon" href="/favicon-16.svg" type="image/svg+xml" sizes="16x16">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<link rel="stylesheet" href="/rmd-calculator/rmd.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "RMD calculator",
+  "url": "https://stepwellfinancial.com/rmd-calculator/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Enter a birth year and last year's 31 December balance to see this year's required minimum distribution and a year-by-year table, using the IRS Uniform Lifetime Table."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://stepwellfinancial.com/" },
+    { "@type": "ListItem", "position": 2, "name": "RMD calculator", "item": "https://stepwellfinancial.com/rmd-calculator/" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#calculator">Skip to the calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/"><img src="/logo/lockup.svg" alt="Stepwell Financial" width="172" height="44"></a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a class="nav-app" href="https://app.stepwellfinancial.com/">Open the app</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li aria-current="page">RMD calculator</li></ol>
+  </nav>
+
+  <section class="hero wrap">
+    <h1>RMD calculator</h1>
+    <p class="lede">A required minimum distribution (RMD) is the smallest amount the tax rules require to be taken out of a traditional IRA or similar account each year once the owner reaches the start age. Enter your birth year and your balance on 31 December of last year to see this year's figure and a rough run of future years.</p>
+  </section>
+
+  <section id="calculator" class="tool wrap" aria-labelledby="calc-title">
+    <h2 id="calc-title">Work out a required minimum distribution</h2>
+    <div class="calculator">
+      <form id="rmd-form" class="panel inputs rmd-inputs" novalidate>
+        <div class="field">
+          <label for="birthYear">Birth year</label>
+          <input id="birthYear" name="birthYear" inputmode="numeric" autocomplete="off" maxlength="4" value="1953" aria-describedby="birthYear-help birthYear-err">
+          <p class="help" id="birthYear-help">Four digits, for example 1953.</p>
+          <p class="err" id="birthYear-err" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="balance">Balance on 31 December of last year</label>
+          <div class="affix">
+            <input id="balance" name="balance" inputmode="decimal" autocomplete="off" value="100000" aria-describedby="balance-help balance-err">
+            <span aria-hidden="true">$</span>
+          </div>
+          <p class="help" id="balance-help">In dollars, cents allowed. The starting figure is an example. If you hold several accounts, see IRS Publication 590-B for how they are added up.</p>
+          <p class="err" id="balance-err" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="growth">Growth rate for the table (your assumption)</label>
+          <div class="affix suffix">
+            <input id="growth" name="growth" inputmode="decimal" autocomplete="off" value="0" aria-describedby="growth-help growth-err">
+            <span aria-hidden="true">%</span>
+          </div>
+          <p class="help" id="growth-help">Percent a year, 0 to 20, up to two decimals. It is an assumption you choose, not a forecast.</p>
+          <p class="err" id="growth-err" role="alert"></p>
+        </div>
+        <div id="spouse-block" hidden>
+          <div class="field toggle">
+            <label><input type="checkbox" name="spouse" id="spouse"> My spouse is my only beneficiary and is more than 10 years younger</label>
+          </div>
+          <div class="field" id="spouse-year-field" hidden>
+            <label for="spouseBirthYear">Spouse's birth year</label>
+            <input id="spouseBirthYear" name="spouseBirthYear" inputmode="numeric" autocomplete="off" maxlength="4" aria-describedby="spouseBirthYear-err">
+            <p class="err" id="spouseBirthYear-err" role="alert"></p>
+          </div>
+        </div>
+        <p class="rmd-note" id="table-scope-note"></p>
+      </form>
+
+      <div class="panel results" id="results">
+        <p class="label" id="out-label">Required minimum distribution this year</p>
+        <div aria-live="polite" aria-atomic="true">
+          <p class="big" id="out-main">...</p>
+          <p class="muted" id="out-detail"></p>
+        </div>
+        <p class="rmd-note" id="out-start"></p>
+        <p class="rmd-note" id="out-proposed"></p>
+        <p class="rmd-note" id="out-april"></p>
+        <p class="rmd-note" id="out-table"></p>
+        <p class="disclaimer">For education only, not financial advice. This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed below, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+      </div>
+    </div>
+
+    <p class="table-title" id="rmd-caption">Year by year</p>
+    <p class="scroll-hint">Scroll sideways for more columns.</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="rmd-caption">
+      <table class="live-table rmd-year-table">
+        <thead><tr><th scope="col">Year</th><th scope="col">Owner age</th><th scope="col">Balance on 31 December of the year before</th><th scope="col">Divisor (distribution period)</th><th scope="col">RMD</th></tr></thead>
+        <tbody id="rmd-rows"></tbody>
+      </table>
+    </div>
+    <p class="rmd-note">The table lists the RMD for each year on the 31 December basis. A first payment delayed to 1 April of the next year would mean two payments in that next year; the table does not model that. Before the first RMD year the table changes the balance only by the growth rate you chose.</p>
+    <p class="rmd-note">To see how a growth rate compounds, use the <a href="/compound-interest-calculator/">compound interest calculator</a> or read the <a href="/compound-interest-formula/">compound interest formula</a>.</p>
+  </section>
+
+  <article class="guide wrap">
+<!-- BEGIN sections.fragment.html (copied in unchanged; edit the fragment first, then re-copy) -->
+<section id="what-is-an-rmd">
+  <h2>What is an RMD?</h2>
+  <p>An RMD is a required minimum distribution. It is the smallest amount the tax rules require a person to take out of certain retirement accounts each year once they reach a set age.</p>
+
+  <h3>Which accounts have RMDs</h3>
+  <p>The rule covers traditional IRAs, SEP IRAs and SIMPLE IRAs. It also covers employer plans, such as a 401(k). Employer plans can have extra rules of their own, so the plan administrator is the place to confirm how a plan handles it.</p>
+  <p>Roth IRAs are different. The IRS says: "If you are the original owner of a Roth IRA, you don't have to take distributions regardless of your age."</p>
+  <p><small>Source: IRS Publication 590-B, 2025 edition, read 14 Nov 2026.</small></p>
+  <p>The IRS FAQ page covers Roth accounts in employer plans too: "The RMD rules do not apply to Roth IRAs or Designated Roth accounts while the owner is alive."</p>
+  <p>The lifetime exemption for Roth accounts in employer plans applies to taxable years beginning after December 31, 2023. The IRS bulletin says: "Section 325(b)(1) of the SECURE 2.0 Act provides that this amendment applies to taxable years beginning after December 31, 2023."</p>
+  <p><small>Source: IRS, Retirement plan and IRA required minimum distributions FAQs (question 2 updated Dec. 10, 2024; page last reviewed or updated 29 Jan 2026), and Internal Revenue Bulletin 2024-33 (12 Aug 2024), read 14 Nov 2026.</small></p>
+
+  <h3>When RMDs start</h3>
+  <p>IRS Publication 590-B gives the start age as "Age 73 for tax years 2023 and later."</p>
+  <p><small>Source: IRS Publication 590-B, 2025 edition, read 14 Nov 2026.</small></p>
+  <p>The start age also depends on the year of birth. This part is from the final regulations and a proposed rule, not stated on the Publication 590-B page.</p>
+  <ul>
+    <li>Born from 1951 to 1958: age 73.</li>
+    <li>Born in 1960 or later: age 75.</li>
+    <li>Born in 1959: the final regulations leave 1959 open. A proposed rule says age 73. We found no final rule for 1959 when we read the IRS pages on 14 Nov 2026.</li>
+  </ul>
+  <p><small>Source: IRS, Internal Revenue Bulletin 2024-33 (12 Aug 2024), final regulations T.D. 10001 and the related proposed rule, read 14 Nov 2026. From the final regulations and a proposed rule, not stated on the Publication 590-B page.</small></p>
+
+  <h3>How the amount is worked out: the Uniform Lifetime Table</h3>
+  <p>The IRS works it out by dividing the account balance at the close of business on 31 December of the year before by a number called the distribution period. The distribution period comes from an IRS life expectancy table. The most common one is the Uniform Lifetime Table.</p>
+  <p><small>Source: IRS Publication 590-B, 2025 edition, read 14 Nov 2026.</small></p>
+  <p>The calculator uses the IRS Uniform Lifetime Table; the Joint Life table, used when the only beneficiary is a spouse more than 10 years younger, is not included in this version.</p>
+  <p>Worked example: an account held $100,000 on 31 December. The owner is 75, and the table gives a distribution period of 24.6.</p>
+  <p>$100,000 divided by 24.6 is $4,065.04. The IRS rounds to whole dollars in its examples, so it shows $4,065.</p>
+  <p><small>Source: IRS Publication 590-B, 2025 edition, example for 2026 distributions, read 14 Nov 2026.</small></p>
+
+  <h3>The first-year option</h3>
+  <p>The first RMD can be delayed. The IRS says any amount taken in the year a person reaches the start age "will be credited toward the amount that must be distributed by April 1" of the next year. Later RMDs are due by 31 December.</p>
+  <p>That means a delayed first payment brings two payments into the same next year: the first RMD and that year's own RMD. The calculator's table lists each year's RMD on the 31 December basis and does not model two payments.</p>
+  <p><small>Source: IRS Publication 590-B, 2025 edition, and IRS RMD FAQs (page last reviewed or updated 29 Jan 2026), read 14 Nov 2026.</small></p>
+
+  <h3>What a missed RMD costs</h3>
+  <p>The IRS describes a 25% excise tax on the amount not taken. If the shortfall is corrected in time, the IRS describes a reduced additional tax rate of 10%.</p>
+  <p><small>Source: IRS Publication 590-B, 2025 edition, read 14 Nov 2026.</small></p>
+  <p>The IRS FAQ puts it this way: the 10% rate applies "if the RMD is timely corrected within two years." Publication 590-B gives the exact end of that window: the earliest of the date a notice of deficiency is mailed, the date the tax is assessed, or "the last day of the second taxable year that begins after the end of the taxable year in which the additional tax is imposed."</p>
+  <p><small>Source: IRS, Retirement plan and IRA required minimum distributions FAQs (question 8 updated Dec. 10, 2024; page last reviewed or updated 29 Jan 2026), and IRS Publication 590-B, 2025 edition, read 14 Nov 2026.</small></p>
+  <p>If the shortfall was due to reasonable error, the IRS may waive the tax. Publication 590-B describes how to ask: complete Form 5329 and attach a statement of explanation.</p>
+  <p><small>Source: IRS Publication 590-B, 2025 edition, read 14 Nov 2026.</small></p>
+
+  <p>For education only, not financial advice. This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed below, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+</section>
+
+<section id="roth-conversions-and-rmds">
+  <h2>Roth conversion and RMDs: what changes before and after RMD age</h2>
+  <p>A Roth conversion moves money from a traditional IRA into a Roth IRA. Most money in a traditional IRA has not been taxed yet. The Roth IRA has no RMDs for its original owner, as shown above.</p>
+
+  <h3>The tax on a conversion</h3>
+  <p>Apart from any part that was already taxed, the converted amount is normally included in income for the year of the conversion. IRS Publication 590-A says these amounts are "normally included in income on your return for the year that you converted them."</p>
+  <p><small>Source: IRS Publication 590-A, 2025 edition, read 14 Nov 2026.</small></p>
+
+  <h3>RMD years: the RMD cannot be converted</h3>
+  <p>IRS Publication 590-A says: "You can't convert amounts that must be distributed from your traditional IRA for a particular year." Publication 590-B says: "Amounts that must be distributed (required minimum distributions) during a particular year aren't eligible for rollover treatment."</p>
+  <p><small>Source: IRS Publications 590-A and 590-B, 2025 editions, read 14 Nov 2026.</small></p>
+
+  <h3>Why a smaller balance means a smaller RMD</h3>
+  <p>The RMD formula divides the balance by the distribution period. For the same age the divisor is the same, so a smaller balance gives a smaller result.</p>
+  <p>Example only, with made-up numbers. This is not a promise or a forecast. Take a divisor of 24.6.</p>
+  <ul>
+    <li>A $100,000 balance gives $100,000 divided by 24.6, which is $4,065 to the nearest dollar.</li>
+    <li>An $80,000 balance gives $80,000 divided by 24.6, which is $3,252 to the nearest dollar.</li>
+  </ul>
+  <p>This leaves out the tax paid on the conversion. Moving money out of the traditional IRA before RMD age can reduce the balance the formula works from. Whether that happens depends on the account, the markets and the rules in force in each year.</p>
+
+  <h3>The trade-offs</h3>
+  <ul>
+    <li><strong>Tax comes first.</strong> The converted amount is normally included in income for the year it is done, as described above.</li>
+    <li><strong>A higher income can change the tax bracket.</strong> A conversion adds to income for that year, and a larger income can move part of it into a higher bracket.</li>
+    <li><strong>A higher income can raise Medicare premiums.</strong> The extra charge is called IRMAA, short for income-related monthly adjustment amount. It is generally based on a tax return from two years earlier: the Social Security Administration says the information for 2026 premiums is generally from a tax return filed in 2025 for tax year 2024. The standard Part B premium for 2026 is $202.90 a month, or higher depending on income. The Social Security Administration publishes the income thresholds each year.</li>
+  </ul>
+  <p><small>Source: Social Security Administration, Medicare premiums page, and Medicare.gov, Medicare costs page, read 14 Nov 2026. Threshold and add-on amounts are not given here.</small></p>
+
+  <h3>Two different five-year rules</h3>
+  <p>People often mix these up. They are separate rules.</p>
+  <ol>
+    <li><strong>The conversion rule.</strong> If converted amounts are taken out "within the 5-year period starting with the first day of your tax year in which you convert," the 10% additional tax on early distributions may apply. There are exceptions, such as having reached age 59½; Publication 590-B lists them. Each conversion has its own five-year period.</li>
+    <li><strong>The Roth IRA rule for earnings.</strong> A Roth distribution is qualified only if it is made after "the 5-year period beginning with the first tax year for which a contribution was made" and also meets another condition, such as being made on or after the date you reach age 59½.</li>
+  </ol>
+  <p><small>Source: IRS Publication 590-B, 2025 edition, read 14 Nov 2026.</small></p>
+
+  <h3>A conversion can cost more than it saves</h3>
+  <p>The tax paid on a conversion can be larger than any later tax saved. Higher income in the conversion year can also carry costs, such as the bracket and Medicare effects above. This page does not say whether a conversion suits anyone.</p>
+
+  <p>For education only, not financial advice. This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed below, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+</section>
+<!-- END sections.fragment.html -->
+  </article>
+
+  <article class="guide wrap">
+    <h2 id="sources-title">Sources, tax year and review dates</h2>
+    <p id="review-line">Review date: 2026-11-14. Source: IRS Publication 590-B.</p>
+    <p>The start age by birth year (73 for 1951 to 1958, 75 for 1960 and later) comes from the final regulation (T.D. 10001) published in Internal Revenue Bulletin 2024-33 on irs.gov, dated 12 August 2024. The IRS plain-language pages, including Publication 590-B, state only age 73 for tax years 2023 and later. For people born in 1959 the IRS rule was still a proposed rule when we read it on 14 Nov 2026; this page uses the proposed age of 73 and says so when it applies.</p>
+    <p class="table-title" id="sources-caption">Every figure and rule used on this page</p>
+    <p class="scroll-hint">Scroll sideways for more columns.</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="sources-caption">
+      <table class="sources">
+        <thead><tr><th scope="col">Figure or rule</th><th scope="col">Value</th><th scope="col">Source</th><th scope="col">Tax year</th><th scope="col">Retrieved</th><th scope="col">Next review</th></tr></thead>
+        <tbody id="sources-rows"></tbody>
+      </table>
+    </div>
+    <p class="disclaimer">For education only, not financial advice. This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed in the table, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/">Savings</a></li><li><a href="/apy-calculator/">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/">With inflation</a></li><li><a href="/rule-of-72-calculator/">Rule of 72</a></li><li><a href="/rmd-calculator/" aria-current="page">RMD</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The calculator runs entirely in your browser.</p>
+    <p class="muted">Last updated: <time datetime="2026-11-14">2026-11-14</time></p>
+  </div>
+</footer>
+
+<script src="/rmd-calculator/rmd-tables.js"></script>
+<script src="/rmd-calculator/rmd.js"></script>
+</body>
+</html>

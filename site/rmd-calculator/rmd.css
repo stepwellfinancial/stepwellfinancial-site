@@ -1,0 +1,18 @@
+/* Page-only styles for the RMD calculator. Shared styles.css and main.css are not edited. */
+/* Both tables sit in the shared .table-wrap (overflow-x: auto). The wrapper is a focusable region so
+   keyboard users can scroll it, and a hint above it says so. Headers never break inside a word. */
+.table-wrap:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.scroll-hint { color: var(--muted); font-size: .875rem; margin: 8px 0 0; }
+.table-title { color: var(--muted); font-size: .95rem; margin: 16px 0 0; }
+.rmd-year-table { min-width: 34rem; }
+.rmd-year-table th, .rmd-year-table td { text-align: right; white-space: nowrap; overflow-wrap: normal; }
+.rmd-year-table th:first-child, .rmd-year-table td:first-child { text-align: left; }
+.sources { min-width: 52rem; }
+.sources thead th { white-space: nowrap; overflow-wrap: normal; text-align: left; vertical-align: top; }
+.sources tbody th { white-space: normal; overflow-wrap: break-word; text-align: left; vertical-align: top; min-width: 8rem; }
+.sources td { white-space: normal; overflow-wrap: anywhere; text-align: left; vertical-align: top; min-width: 8rem; }
+.rmd-note { color: var(--muted); font-size: .9rem; margin: 8px 0 0; overflow-wrap: anywhere; }
+.rmd-note:empty { display: none; }
+#out-main { overflow-wrap: anywhere; }
+.rmd-inputs input[type="checkbox"] { width: 20px; height: 20px; min-height: 0; accent-color: var(--brand); }
+.rmd-inputs .toggle { display: flex; }
