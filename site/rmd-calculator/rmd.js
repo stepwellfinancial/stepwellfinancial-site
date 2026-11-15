@@ -169,6 +169,133 @@
   $("spouse-block").hidden = !spouseOn;
   setText("table-scope-note", spouseOn ? "" : "This calculator covers the Uniform Lifetime Table only. If the only beneficiary is a spouse more than 10 years younger, the IRS uses a different table and the RMD can be lower.");
 
+  /* ---------- Chart: inline SVG built with DOM calls. Dollar labels come from BigInt cents;
+   * Number is used only for pixel positions. ---------- */
+  var NS = "http://www.w3.org/2000/svg";
+  var COLLAPSED_ROWS = 10;
+  var showAll = false, lastRes = null, lastWidth = 0;
+
+  function svgEl(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) { if (Object.prototype.hasOwnProperty.call(attrs, k)) e.setAttribute(k, String(attrs[k])); }
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function px(n) { return Math.round(n * 10) / 10; }
+
+  /* A tick step in whole dollars (BigInt) so that at most 4 steps reach the top of the axis. */
+  function tickStep(maxCents) {
+    var maxD = (maxCents + 99n) / 100n, p = 1n, i, st;
+    if (maxD < 1n) return 1n;
+    for (;;) {
+      var cs = [1n, 2n, 5n];
+      for (i = 0; i < 3; i++) { st = cs[i] * p; if ((maxD + st - 1n) / st <= 4n) return st; }
+      p *= 10n;
+    }
+  }
+  function trimmed(v, unit, suffix) {
+    var whole = v / unit, frac = ((v % unit) * 100n) / unit, f = frac.toString();
+    if (frac < 10n) f = "0" + f;
+    f = f.replace(/0+$/, "");
+    return "$" + whole.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (f ? "." + f : "") + suffix;
+  }
+  /* An axis label for a whole-dollar BigInt value. */
+  function axisLabel(v) {
+    if (v >= 1000000000n) return trimmed(v, 1000000000n, "B");
+    if (v >= 1000000n) return trimmed(v, 1000000n, "M");
+    if (v >= 10000n) return trimmed(v, 1000n, "K");
+    return "$" + v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function drawChart(res) {
+    var box = $("rmd-chart");
+    clear(box);
+    if (!res || !res.ok || !res.rows.length) {
+      var ph = document.createElement("p");
+      ph.className = "rmd-note"; ph.textContent = "Fix the highlighted field to see the chart.";
+      box.appendChild(ph);
+      box.setAttribute("aria-label", "No chart: fix the highlighted field.");
+      return;
+    }
+    var rows = res.rows, n = rows.length, i;
+    var W = Math.max(260, Math.round(box.clientWidth) || 640);
+    lastWidth = Math.round(box.clientWidth);
+    var narrow = W < 460;
+    var ml = narrow ? 46 : 54, mr = 8, plotW = W - ml - mr;
+    var hA = narrow ? 100 : 120, hB = narrow ? 92 : 110, gap = 42;
+    var topA = 30, botA = topA + hA, topB = botA + gap, botB = topB + hB, H = botB + 28;
+    var svg = svgEl("svg", { "class": "rmd-svg", viewBox: "0 0 " + W + " " + H, "aria-hidden": "true", focusable: "false" });
+
+    var maxBal = 0n, maxRmd = 0n;
+    for (i = 0; i < n; i++) {
+      if (rows[i].balanceCents > maxBal) maxBal = rows[i].balanceCents;
+      if (rows[i].rmdCents > maxRmd) maxRmd = rows[i].rmdCents;
+    }
+    var stepA = tickStep(maxBal), stepB = tickStep(maxRmd);
+    var topAcents = ((maxBal + 99n) / 100n + stepA - 1n) / stepA * stepA * 100n;
+    var topBcents = ((maxRmd + 99n) / 100n + stepB - 1n) / stepB * stepB * 100n;
+    if (topAcents === 0n) topAcents = 100n;
+    if (topBcents === 0n) topBcents = 100n;
+    var fa = Number(topAcents), fb = Number(topBcents);
+
+    function grid(top, bot, stepD, topCents, label) {
+      var h = bot - top, v, tc = topCents / 100n;
+      svgEl("text", { "class": "plabel", x: 0, y: top - 16 }, svg).textContent = label;
+      for (v = 0n; v <= tc; v += stepD) {
+        var y = bot - (Number(v * 100n) / Number(topCents)) * h;
+        svgEl("line", { "class": v === 0n ? "base" : "grid", x1: ml, x2: W - mr, y1: px(y), y2: px(y) }, svg);
+        svgEl("text", { "class": "axis", x: ml - 6, y: px(y), dy: ".32em", "text-anchor": "end" }, svg).textContent = axisLabel(v);
+      }
+    }
+    grid(topA, botA, stepA, topAcents, "Balance");
+    grid(topB, botB, stepB, topBcents, "RMD");
+
+    var slot = plotW / n;
+    function cx(k) { return ml + slot * (k + 0.5); }
+
+    /* Balance: area and line. */
+    var pts = [], d = "";
+    for (i = 0; i < n; i++) {
+      var yb = botA - (Number(rows[i].balanceCents) / fa) * hA;
+      pts.push(px(cx(i)) + " " + px(yb));
+    }
+    d = "M" + pts.join(" L");
+    svgEl("path", { "class": "area-bal", d: d + " L" + px(cx(n - 1)) + " " + botA + " L" + px(cx(0)) + " " + botA + " Z" }, svg);
+    svgEl("path", { "class": "ln-bal", d: d }, svg);
+
+    /* RMD: bars, with a title (hover text) on each. */
+    var bw = Math.max(2, Math.min(28, slot * 0.7));
+    for (i = 0; i < n; i++) {
+      var bh = (Number(rows[i].rmdCents) / fb) * hB;
+      var bar = svgEl("rect", { "class": i === 0 && res.thisYear ? "bar bar-now" : "bar", x: px(cx(i) - bw / 2), y: px(botB - bh), width: px(bw), height: px(Math.max(bh, rows[i].rmdCents > 0n ? 1 : 0)), rx: bw > 6 ? 2 : 0 }, svg);
+      svgEl("title", {}, bar).textContent = rows[i].year + ", age " + rows[i].age + ": RMD " + formatMoney(rows[i].rmdCents);
+    }
+
+    /* Year labels, thinned so they never touch. */
+    var every = Math.max(1, Math.ceil(44 / slot));
+    for (i = 0; i < n; i += every) {
+      svgEl("text", { "class": "axis", x: px(cx(i)), y: botB + 18, "text-anchor": "middle" }, svg).textContent = String(rows[i].year);
+    }
+    box.appendChild(svg);
+
+    var f = rows[0], l = rows[n - 1];
+    box.setAttribute("aria-label", "Bar chart of the RMD for each year from " + f.year + " to " + l.year + ", with a line for the balance under your growth assumption. In this illustration the RMD is " + formatMoney(f.rmdCents) + " in " + f.year + " and " + formatMoney(l.rmdCents) + " in " + l.year + ". The table below has every figure.");
+  }
+
+  function renderRows() {
+    var rows = $("rmd-rows").children, n = rows.length, i, btn = $("rmd-toggle");
+    for (i = 0; i < n; i++) rows[i].hidden = !showAll && i >= COLLAPSED_ROWS;
+    btn.hidden = n <= COLLAPSED_ROWS;
+    btn.setAttribute("aria-expanded", showAll ? "true" : "false");
+    btn.textContent = showAll ? "Show the first " + COLLAPSED_ROWS + " years" : "Show all " + n + " years";
+    fitHint();
+  }
+  /* The sideways-scroll hint shows only when the table is wider than its box. */
+  function fitHint() {
+    var w = $("rmd-rows").parentNode.parentNode, hint = $("rmd-scroll-hint");
+    if (hint) hint.hidden = !(w.scrollWidth > w.clientWidth + 1);
+  }
+
   function showErrors(errors) {
     ["birthYear", "balance", "growth", "spouseBirthYear"].forEach(function (f) {
       var inp = $(f), err = $(f + "-err");
@@ -191,8 +318,15 @@
     if (!res.ok) {
       setText("out-main", "...");
       setText("out-detail", "Fix the highlighted field to see results.");
+      $("table-scope-note").hidden = false;
       setText("out-start", ""); setText("out-april", ""); setText("out-table", ""); setText("out-proposed", "");
       setText("rmd-caption", "Fix the highlighted field to see the table.");
+      ["stat-age", "stat-div", "stat-first"].forEach(function (id) { setText(id, "..."); });
+      setText("stat-first-sub", "");
+      setText("rmd-chart-note", "");
+      lastRes = null;
+      drawChart(null);
+      renderRows();
       return;
     }
     if (res.noRmdThisYear) {
@@ -203,10 +337,25 @@
       setText("out-main", formatMoney(t.rmdCents));
       setText("out-detail", "RMD for " + t.year + ": " + formatMoney(t.balanceCents) + " divided by " + t.divisor.toFixed(1) + " (Table " + res.table + "), at age " + t.age + ".");
     }
+    var g = form.elements.growth.value || "0";
+    if (res.noRmdThisYear) {
+      setText("stat-age", String(res.currentYear - res.birthYear));
+      setText("stat-div", "Not yet");
+    } else {
+      setText("stat-age", String(res.thisYear.age));
+      setText("stat-div", res.thisYear.divisor.toFixed(1));
+    }
+    setText("stat-age-label", "Age in " + res.currentYear);
+    setText("stat-div-label", "Divisor used (Table " + res.table + ")");
+    setText("stat-first", res.older ? "Already started" : String(res.startYear));
+    setText("stat-first-sub", res.older ? "" : "At age " + res.startAge);
+    setText("rmd-chart-note", "Illustration of the table below, not a forecast. Growth of " + g + " percent a year is your assumption.");
     setText("out-start", res.startLine);
     setText("out-april", res.aprilNote);
     setText("out-proposed", res.proposedNote);
     setText("out-table", res.tableNote + (res.error ? " " + res.error : ""));
+    /* The scope note and the table note are the same sentence when Table II is off: show it once. */
+    $("table-scope-note").hidden = !!$("table-scope-note").textContent && res.tableNote === $("table-scope-note").textContent;
     setText("rmd-caption", "Year by year from " + res.firstRmdYear + ", each year on the 31 December basis. Growth of " + (form.elements.growth.value || "0") + " percent a year is your assumption, not a forecast." + (res.coverageNote ? " " + res.coverageNote : ""));
     res.rows.forEach(function (r) {
       var tr = document.createElement("tr");
@@ -217,6 +366,10 @@
       tr.appendChild(cell("td", formatMoney(r.rmdCents)));
       rows.appendChild(tr);
     });
+    if (rows.firstChild && res.thisYear) rows.firstChild.className = "now";
+    renderRows();
+    lastRes = res;
+    drawChart(res);
   }
 
   /* Sources table, drawn from rmd-tables.js. */
@@ -235,6 +388,12 @@
   var rd = $("review-line");
   if (rd) rd.textContent = "Review date: " + T.REVIEW_DATE + ". Next review: " + T.NEXT_REVIEW + ". Source: " + T.SOURCE_LINE + ". Tax year: " + T.TAX_YEAR + ".";
 
+  $("rmd-toggle").addEventListener("click", function () { showAll = !showAll; renderRows(); });
+  window.addEventListener("resize", function () {
+    var w = Math.round($("rmd-chart").clientWidth);
+    if (lastRes && w && w !== lastWidth) drawChart(lastRes);
+    fitHint();
+  });
   form.addEventListener("input", update);
   form.addEventListener("change", update);
   form.addEventListener("submit", function (e) { e.preventDefault(); });
