@@ -1,109 +1,393 @@
-/* Page-only styles for the RMD calculator. Shared styles.css and main.css are not edited. */
+/* Page-only styles for the RMD calculator. Shared styles.css and main.css are not edited.
+   The page is drawn in the Stepwell app's visual language (On-Brand direction, 14 Nov 2026):
+   a void canvas with the ledger aurora, glass cards with a 1px line and a soft black shadow,
+   panel-2 wells, pill controls, one hero chart, a big ink figure and quiet captions.
+   Colour meanings: ledger is growth, links, selected states and slider tracks; draw is money
+   taken out (the RMD bars), and it always carries a text label as well. */
+
+/* BEGIN app tokens. The same names and dark values as the app's css/tokens.css, scoped to this
+   page's <main>, plus --draw (On-Brand's new token for money taken out). This block is the only
+   place in this file where a colour literal may appear; the two fallbacks for Increase contrast and
+   Reduce transparency sit inside it for that reason. --line is the identity's solid Dark line. */
+.rmd-page {
+  --ink: #e8eeea;
+  --muted: #9aa8a0;
+  --paper: #0f1412;
+  --panel: #171e1b;
+  --ledger: #3ccf8e;
+  --on-ledger: #06140d;
+  --void: #0a0f0d;
+  --glass: rgba(17, 25, 22, .80);
+  --glass-edge: rgba(232, 238, 234, .08);
+  --glass-hi: rgba(232, 238, 234, .05);
+  --panel-2: #17211d;
+  --line: #2a3631;
+  --grid: rgba(232, 238, 234, .06);
+  --ledger-tint: rgba(60, 207, 142, .12);
+  --focus: #3ccf8e;
+  --blur: 18px;
+  --glow-ledger: 0 0 0 1px rgba(60,207,142,.35), 0 0 24px rgba(60,207,142,.28);
+  --aurora: radial-gradient(60% 50% at 18% 0%, rgba(60,207,142,.14), transparent 70%),
+            radial-gradient(45% 40% at 92% 8%, rgba(60,207,142,.08), transparent 70%);
+  --shadow: 0 1px 0 var(--glass-hi) inset, 0 12px 40px rgba(0,0,0,.45);
+  --t-xs: 13px; --t-s: 14px; --t-m: 16px; --t-l: 20px; --t-xl: 28px;
+  --r-s: 10px; --r-m: 16px;
+  --draw: #f0b36a;
+}
+@media (prefers-contrast: more) { .rmd-page { --glass: var(--panel); --ledger-tint: #163126; --line: var(--muted); --aurora: none; } }
+@media (prefers-reduced-transparency: reduce) { .rmd-page { --glass: var(--panel); --ledger-tint: #163126; --blur: 0px; } }
+/* END app tokens */
+
+/* ---- Canvas, cards, spacing (8px grid; 24px between cards; 16px gutters, 24px from 1024px) ---- */
+/* The aurora is the app's own (14% at most). A short fade from the canvas colour calms it where it meets the header. */
+.rmd-page { background-color: var(--void); background-image: linear-gradient(to bottom, var(--void), transparent 160px), var(--aurora); background-repeat: no-repeat; background-size: 100% 960px; color: var(--ink); padding: 24px 0 48px; }
+.rmd-page .wrap { padding-left: 16px; padding-right: 16px; }
+@media (min-width: 1024px) { .rmd-page .wrap { padding-left: 24px; padding-right: 24px; } }
+.rmd-page :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.rmd-page a { color: var(--ledger); text-underline-offset: 3px; }
+.rmd-card { background: var(--glass); border: 1px solid var(--glass-edge); border-radius: var(--r-m); padding: 20px; box-shadow: var(--shadow); min-width: 0;
+  backdrop-filter: blur(var(--blur)) saturate(1.2); -webkit-backdrop-filter: blur(var(--blur)) saturate(1.2); }
+.rmd-page .tool { padding-top: 0; }
+.rmd-stack, .rmd-col { display: grid; gap: 24px; align-content: start; min-width: 0; }
+/* Type (Brand Lead, 14 Nov): a paragraph of two or more sentences is body copy, 16px at 1.6. Every other
+   text is at least 13px at line height 1.2 or more. Chart axis labels are the one exception. */
+.rmd-fine { color: var(--muted); font-size: var(--t-m); line-height: 1.6; margin: 0; }
+.rmd-note { color: var(--muted); font-size: var(--t-m); line-height: 1.6; margin: 0; overflow-wrap: anywhere; }
+.rmd-note:empty { display: none; }
+
+/* Pills and the segmented control. Quiet, never filled; each has a 44px tap area. */
+.rmd-pill { display: inline-flex; align-items: center; gap: 8px; font: inherit; font-size: var(--t-xs); font-weight: 600; line-height: 1.2; min-height: 44px; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--muted); background: var(--panel-2); color: var(--ink); text-decoration: none; white-space: nowrap; transition: border-color 150ms ease, background-color 150ms ease; }
+.rmd-page a.rmd-pill { color: var(--ink); }
+.rmd-pill:hover { border-color: var(--ink); background: var(--panel); }
+.rmd-pill svg, .rmd-step svg, .rmd-how summary svg, .rmd-page .err svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.rmd-seg { display: inline-flex; background: var(--panel-2); border: 1px solid var(--muted); border-radius: 999px; padding: 3px; gap: 2px; margin: 0; }
+.rmd-seg button { position: relative; font: inherit; font-size: var(--t-xs); font-weight: 600; line-height: 1.2; border: 0; background: transparent; color: var(--muted); padding: 8px 14px; min-height: 36px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+  transition: background-color 150ms ease, color 150ms ease; }
+.rmd-seg button::before { content: ""; position: absolute; left: 0; right: 0; top: -4px; bottom: -4px; }
+.rmd-seg button:hover { color: var(--ink); }
+.rmd-seg button[aria-pressed="true"] { background: var(--ledger-tint); color: var(--ink); box-shadow: 0 0 0 1px var(--ledger); }
+/* A control already edged in ledger takes an ink ring, so the ring is never green on green. */
+.rmd-page .rmd-seg button[aria-pressed="true"]:focus-visible { outline-color: var(--ink); border-radius: 999px; }
+.rmd-page .rmd-seg button:focus-visible, .rmd-page .rmd-pill:focus-visible, .rmd-page .rmd-step:focus-visible { border-radius: 999px; }
+
+/* ---- Inputs: one compact glass panel on top, with panel-2 wells ---- */
+.rmd-head { position: relative; margin: 0 0 16px; }
+.rmd-head .breadcrumb, .rmd-head h1 { margin-right: 260px; }
+#rmd-reset { position: absolute; top: 0; right: 0; }
+.rmd-head .breadcrumb ol { padding: 0; font-size: var(--t-xs); line-height: 1.4; }
+.rmd-head .breadcrumb a { padding: 14px 0; }
+.rmd-head h1 { font-size: var(--t-xl); line-height: 1.2; letter-spacing: -.01em; margin: 2px 0 0; }
+.rmd-head h2 { font-size: var(--t-s); font-weight: 400; line-height: 1.4; color: var(--muted); margin: 2px 0 0; }
+.rmd-wells { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr) minmax(0, 7fr); gap: 16px; }
+.rmd-page .rmd-field { display: grid; align-content: start; gap: 8px; margin: 0; padding: 12px 16px; background: var(--panel-2); border: 1px solid var(--glass-edge); border-radius: var(--r-s); }
+.rmd-page .rmd-field > label { margin: 0; font-size: var(--t-s); font-weight: 600; line-height: 1.35; }
+.rmd-ctl { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.rmd-page .rmd-field input:not([type="range"]) { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); background: var(--paper); border: 1px solid var(--muted); border-radius: var(--r-s); min-height: 44px;
+  transition: border-color 150ms ease, box-shadow 150ms ease; }
+.rmd-page .rmd-val { flex: none; }
+.rmd-page .rmd-val input { width: 8.75rem; }
+.rmd-page .rmd-val.suffix input { width: 5.5rem; }
+.rmd-page .rmd-field .rmd-stepper input:not([type="range"]) { width: 4.75rem; text-align: center; padding-left: 4px; padding-right: 4px; }
+.rmd-stepper { gap: 8px; }
+.rmd-page .rmd-field input:not([type="range"]):hover { border-color: var(--ink); }
+.rmd-page .rmd-field input:not([type="range"]):focus-visible { outline: none; border-color: var(--ledger); box-shadow: var(--glow-ledger); }
+.rmd-page .rmd-field input[aria-invalid="true"] { border-color: var(--err); border-width: 2px; }
+.rmd-step { display: inline-grid; place-items: center; flex: none; width: 44px; height: 44px; padding: 0; border-radius: 50%; border: 1px solid var(--muted); background: var(--paper); color: var(--ink); cursor: pointer; transition: border-color 150ms ease, background-color 150ms ease; }
+.rmd-step:hover { border-color: var(--ink); background: var(--panel); }
+/* The two sliders are drawn here for each engine, so the track has a real boundary: a 1px muted edge on
+   every side over a paper fill, and a ledger thumb with an ink edge. Firefox also fills the part below
+   the value in ledger. Chromium and Safari cannot fill it without an inline style, so the track stays
+   unfilled there and the bold figure in the field beside it carries the amount. The input keeps its
+   44px height as the touch target, and the keyboard focus ring (2px, 2px gap) goes round it. */
+.rmd-page .rmd-range { -webkit-appearance: none; appearance: none; flex: 1 1 auto; width: auto; min-width: 0; height: 44px; min-height: 0; margin: 0; padding: 0; border: 0; border-radius: 999px; background: transparent; accent-color: var(--ledger); cursor: pointer; }
+.rmd-page .rmd-range:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 999px; }
+.rmd-page .rmd-range::-webkit-slider-runnable-track { box-sizing: border-box; height: 8px; border: 1px solid var(--muted); border-radius: 999px; background: var(--paper); }
+.rmd-page .rmd-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; box-sizing: border-box; width: 22px; height: 22px; margin-top: -8px; border: 2px solid var(--ink); border-radius: 50%; background: var(--ledger); }
+.rmd-page .rmd-range::-moz-range-track { box-sizing: border-box; height: 8px; border: 1px solid var(--muted); border-radius: 999px; background: var(--paper); }
+.rmd-page .rmd-range::-moz-range-progress { box-sizing: border-box; height: 8px; border: 1px solid var(--muted); border-radius: 999px; background: var(--ledger); }
+.rmd-page .rmd-range::-moz-range-thumb { box-sizing: border-box; width: 22px; height: 22px; border: 2px solid var(--ink); border-radius: 50%; background: var(--ledger); }
+.rmd-page .rmd-field .help { margin: 0; color: var(--muted); font-size: var(--t-xs); line-height: 1.45; }
+/* Lines that follow one another with no label, control or figure between them count together as one
+   paragraph (Brand Lead, 14 Nov): two help lines, or a help line and a message, are body copy. */
+.rmd-page .rmd-field .help.rmd-pair, .rmd-page .rmd-field.bad .help, .rmd-page .rmd-field.bad .err { font-size: var(--t-m); line-height: 1.6; }
+.rmd-page .rmd-field .help + .help, .rmd-page .rmd-field .help + .err:not(:empty) { margin-top: -8px; }
+/* --err is the site's colour for input validation only: the field edge and its message, which always
+   has words and a line icon in front of them. */
+.rmd-page .rmd-field .err { margin: 0; font-size: var(--t-xs); font-weight: 600; line-height: 1.45; }
+.rmd-page .err:not(:empty) { display: flex; align-items: flex-start; gap: 6px; }
+.rmd-page .err svg { margin-top: 1px; }
+.rmd-page .rmd-field.bad .err svg { margin-top: 5px; }
+.rmd-inputs input[type="checkbox"] { width: 20px; height: 20px; min-height: 0; accent-color: var(--ledger); }
+.rmd-inputs .toggle { display: flex; }
+#spouse-block { margin-top: 16px; }
+
+/* ---- The hero chart: one glass card, one frame ---- */
+.rmd-chart-card { margin: 0; }
+.rmd-card-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin: 0 0 8px; }
+.rmd-page .rmd-card .rmd-title { margin: 0; color: var(--ink); font-size: var(--t-l); font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
+.rmd-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.rmd-plot { position: relative; border-radius: var(--r-s); }
+.rmd-plot:focus-within { outline: 2px solid var(--focus); outline-offset: 4px; }
+.rmd-chip { position: absolute; top: 0; right: 0; font-size: var(--t-xs); line-height: 1.2; padding: 4px 10px; border-radius: 999px; border: 1px dashed var(--muted); color: var(--ink); background: var(--panel-2); white-space: nowrap; }
+.rmd-chart { min-height: 268px; touch-action: pan-y; cursor: crosshair; }
+.rmd-page .rmd-scrub { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 44px; min-height: 0; margin: 0; padding: 0; border: 0; opacity: 0; pointer-events: none; }
+.rmd-chart-empty { margin: 0; min-height: inherit; display: grid; place-items: center; text-align: center; color: var(--muted); font-size: var(--t-s); }
+.rmd-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.rmd-svg text { font-variant-numeric: tabular-nums; }
+.rmd-svg .axis { fill: var(--muted); font-size: 12px; }
+.rmd-svg .plabel { font-size: 13px; font-weight: 700; }
+.rmd-svg .plabel-bal { fill: var(--ink); }
+.rmd-svg .plabel-rmd { fill: var(--draw); }
+.rmd-svg .grid { stroke: var(--line); stroke-width: 1; }
+.rmd-svg .base { stroke: var(--muted); stroke-opacity: .6; stroke-width: 1; }
+.rmd-svg .zone { fill: var(--grid); }
+.rmd-svg .band { fill: var(--ink); fill-opacity: .08; transition: x 150ms ease; }
+.rmd-svg .g-bal-0 { stop-color: var(--ledger); stop-opacity: .34; }
+.rmd-svg .g-bal-1 { stop-color: var(--ledger); stop-opacity: .02; }
+.rmd-svg .g-bar-0 { stop-color: var(--draw); stop-opacity: 1; }
+.rmd-svg .g-bar-1 { stop-color: var(--draw); stop-opacity: .8; }
+.rmd-svg .ln-bal { fill: none; stroke: var(--ledger); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ledger) 55%, transparent)); }
+.rmd-svg .ln-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: rmd-draw 600ms ease forwards; }
+@keyframes rmd-draw { to { stroke-dashoffset: 0; } }
+.rmd-svg .end-halo { fill: var(--ledger); opacity: .22; }
+.rmd-svg .end-dot { fill: var(--ledger); filter: drop-shadow(0 0 8px var(--ledger)); }
+.rmd-svg .act-dot { fill: var(--panel); stroke: var(--ledger); stroke-width: 2; transition: cx 150ms ease, cy 150ms ease; }
+/* At rest a bar is 85% opaque, fading to 80% of that at its foot: 4.7:1 against the band at its faintest point. */
+.rmd-svg .bar { opacity: .85; transition: opacity 150ms ease; }
+.rmd-svg .bar-now, .rmd-svg .bar-sel { opacity: 1; }
+/* This year's bar: full strength and a thin ink edge. No glow on a bar. */
+.rmd-svg .bar-now { stroke: var(--ink); stroke-width: 1; }
+
+/* The readout: the year under the pointer; the legend keys carry the two figures. The balance key is
+   a line and the RMD key is a bar, and each has its name, so colour is never the only difference. */
+.rmd-readout { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px 16px; margin: 8px 0 0; padding: 10px 16px; background: var(--panel-2); border: 1px solid var(--glass-edge); border-radius: var(--r-s); }
+.rmd-readout .ro-when { align-self: stretch; display: flex; align-items: center; margin: 0; padding-right: 16px; border-right: 1px solid var(--line); font-size: var(--t-m); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rmd-page .rmd-legend { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--t-xs); line-height: 1.35; color: var(--muted); }
+.rmd-page .rmd-legend li { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.rmd-legend .ro-name { flex: 1 1 auto; min-width: 0; }
+.rmd-legend .ro-val { color: var(--ink); font-size: var(--t-s); font-weight: 700; font-variant-numeric: tabular-nums; }
+.rmd-page .key { flex: none; }
+.rmd-page .key-rmd { width: 8px; height: 14px; border-radius: 3px; background: var(--draw); }
+.rmd-page .key-bal { width: 18px; height: 3px; border-radius: 2px; background: var(--ledger); box-shadow: 0 0 8px color-mix(in srgb, var(--ledger) 60%, transparent); }
+.rmd-chart-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin: 12px 0 0; }
+.rmd-chart-foot .rmd-fine { flex: 1 1 100%; }
+.results.stale .rmd-seg, .results.stale .rmd-stats { opacity: .35; }
+.results.stale .rmd-notes, .results.stale .rmd-readout, .results.stale .rmd-plot .rmd-chip { display: none; }
+
+/* ---- Result card: label, the figure in ink, one sentence, three tiles, the accordion row, the footer ---- */
+.rmd-hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px 32px; align-items: center; }
+.rmd-page .rmd-hero .label { margin: 0; color: var(--muted); font-size: var(--t-s); font-weight: 400; line-height: 1.3; }
+.rmd-page .rmd-hero .big { font-size: 56px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; margin: 4px 0 8px; color: var(--ink); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rmd-page .rmd-hero .big.is-text { font-size: 36px; margin: 8px 0; }
+.rmd-sentence { margin: 0; font-size: var(--t-m); line-height: 1.6; color: var(--ink); max-width: 62ch; overflow-wrap: anywhere; }
+.rmd-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; }
+.rmd-stats > div { background: var(--panel-2); border: 1px solid var(--glass-edge); border-radius: var(--r-s); padding: 12px 16px; min-width: 0; }
+/* Side by side, every tile keeps two lines for its label and one line under its value, so the three
+   values sit on one baseline whatever wraps. */
+.rmd-stats > div { display: flex; flex-direction: column; }
+.rmd-stats dt { flex: 1 0 auto; min-height: 2.6em; color: var(--muted); font-size: var(--t-xs); line-height: 1.3; }
+.rmd-stats dd { margin: 4px 0 0; font-size: var(--t-l); font-weight: 700; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rmd-stats dd.stat-sub { margin: 2px 0 0; min-height: 1.3em; font-size: var(--t-xs); font-weight: 400; line-height: 1.3; color: var(--muted); }
+.rmd-stats > div:not(:last-child)::after { content: ""; display: block; height: calc(1.3 * var(--t-xs) + 2px); }
+.rmd-page .rmd-hero .big.f2 { font-size: 48px; }
+.rmd-page .rmd-hero .big.f3 { font-size: 42px; }
+.rmd-page .rmd-hero .big.f4 { font-size: 34px; }
+.rmd-page .rmd-hero .big.f5 { font-size: 28px; }
+/* "Notes on this figure": the multi-sentence notes as body copy, in their own row under the chart and result cards. */
+.rmd-notes-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px 32px; margin: 8px 0 0; }
+.rmd-notes-grid .rmd-note { max-width: 70ch; }
+/* "When is the first RMD due?": its own glass card under the notes. The field is the calculator's birth-year
+   well and stepper; the answer sits beside it in a panel-2 well in ink, with its source and the scope note
+   under it as muted body copy. The card's last line is the education footer every card uses. */
+.results > .rmd-due { grid-column: 1 / -1; }
+.rmd-due-grid { display: grid; grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); gap: 16px 32px; align-items: start; margin: 12px 0 0; }
+.rmd-due .rmd-field .rmd-note { grid-column: 1 / -1; }
+.rmd-due-text { min-width: 0; max-width: 76ch; }
+.rmd-due-text > .rmd-note + .rmd-note { margin-top: 12px; }
+.rmd-due-answer { margin: 0 0 12px; padding: 12px 16px; background: var(--panel-2); border: 1px solid var(--glass-edge); border-radius: var(--r-s); color: var(--ink); font-size: var(--t-m); line-height: 1.6; overflow-wrap: anywhere; }
+.rmd-due-answer:empty { display: none; }
+.rmd-chart-empty.rmd-chart-past { padding: 0 16px; font-size: var(--t-m); line-height: 1.6; }
+.rmd-chart-card.no-years .rmd-chip { display: none; }
+.rmd-page .rmd-how { margin: 16px 0 0; padding: 0; background: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+.rmd-how > summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; margin: 8px 0 0; padding: 0 12px; list-style: none; cursor: pointer; border-radius: var(--r-s); font-size: var(--t-s); font-weight: 600; transition: background-color 150ms ease; }
+.rmd-how > summary::-webkit-details-marker { display: none; }
+.rmd-how > summary:hover, .rmd-how[open] > summary { background: var(--ledger-tint); }
+.rmd-how summary svg { color: var(--muted); transition: transform 150ms ease; }
+.rmd-how[open] summary svg { transform: rotate(180deg); color: var(--ledger); }
+.rmd-how .rmd-note { margin: 8px 12px 0; font-size: var(--t-m); line-height: 1.6; color: var(--ink); }
+/* The education-only line: a quiet footer on solid panel-2, with no glass or glow behind it. */
+.rmd-page .rmd-card > .disclaimer, .rmd-edu > section > .disclaimer { margin: 16px -20px -20px; padding: 12px 20px; border: 0; border-top: 1px solid var(--line); border-radius: 0 0 15px 15px; background: var(--panel-2); color: var(--muted); font-size: var(--t-xs); line-height: 1.5; max-width: none; }
+/* The result card's footer holds two lines: the required sentence alone (13px), then three sentences of body copy (16px at 1.6). */
+.rmd-page .disclaimer > p { margin: 0; max-width: none; }
+.rmd-page .disclaimer > .rmd-note { margin-top: 4px; }
+.rmd-page .rmd-about .lede { margin: 0; max-width: 90ch; color: var(--muted); font-size: var(--t-m); line-height: 1.6; }
+
+/* ---- Year table: a glass card, a solid well, right-aligned tabular figures ---- */
 /* Both tables sit in the shared .table-wrap (overflow-x: auto). The wrapper is a focusable region so
    keyboard users can scroll it, and a hint above it says so. Headers never break inside a word. */
-.table-wrap:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-.scroll-hint { color: var(--muted); font-size: .875rem; margin: 8px 0 0; }
-.table-title { color: var(--muted); font-size: .95rem; margin: 16px 0 0; }
-.rmd-year-table { min-width: 34rem; }
-.rmd-year-table th, .rmd-year-table td { text-align: right; white-space: nowrap; overflow-wrap: normal; }
+.rmd-table-card { margin-top: 24px; }
+.rmd-page .table-title { color: var(--muted); font-size: var(--t-s); line-height: 1.5; margin: 0; }
+.rmd-table-card .table-title { color: var(--ink); max-width: 90ch; font-size: var(--t-m); line-height: 1.6; }
+.scroll-hint { color: var(--muted); font-size: var(--t-m); line-height: 1.6; margin: 0; }
+.rmd-table-box { margin-top: 12px; scroll-margin-top: 16px; }
+.rmd-page .table-wrap { background: var(--panel); border: 1px solid var(--glass-edge); border-radius: var(--r-s); }
+.rmd-table-box .table-wrap { max-height: 30rem; overflow: auto; }
+.rmd-page .table-wrap:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.rmd-page table { margin-top: 0; }
+.rmd-page th, .rmd-page td { border-bottom: 1px solid var(--line); }
+.rmd-year-table { min-width: 34rem; font-size: var(--t-s); line-height: 1.35; table-layout: fixed; }
+.rmd-year-table th:first-child { width: 16%; }
+.rmd-year-table th:nth-child(2) { width: 12%; }
+.rmd-year-table th, .rmd-year-table td { text-align: right; white-space: nowrap; overflow-wrap: normal; padding: 10px 16px; color: var(--muted); }
 .rmd-year-table th:first-child, .rmd-year-table td:first-child { text-align: left; }
-.sources { min-width: 52rem; }
-.sources thead th { white-space: nowrap; overflow-wrap: normal; text-align: left; vertical-align: top; }
-.sources tbody th { white-space: normal; overflow-wrap: break-word; text-align: left; vertical-align: top; min-width: 8rem; }
-.sources td { white-space: normal; overflow-wrap: anywhere; text-align: left; vertical-align: top; min-width: 8rem; }
-.rmd-note { color: var(--muted); font-size: .9rem; margin: 8px 0 0; overflow-wrap: anywhere; }
-.rmd-note:empty { display: none; }
-#out-main { overflow-wrap: anywhere; }
-.rmd-inputs input[type="checkbox"] { width: 20px; height: 20px; min-height: 0; accent-color: var(--brand); }
-.rmd-inputs .toggle { display: flex; }
-
-/* ---- Presentation: layout, hero, chart, details, table. Colour tokens only. ---- */
-.rmd-layout { align-items: start; }
-.rmd-results { display: contents; }
-@media (min-width: 821px) {
-  .rmd-layout { grid-template-areas: "inputs chart" "hero hero"; }
-  .rmd-inputs { grid-area: inputs; }
-  .rmd-chart-card { grid-area: chart; }
-  .rmd-hero { grid-area: hero; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); column-gap: 28px; align-items: center; }
-  .rmd-hero > .label, .rmd-hero > div { grid-column: 1; }
-  .rmd-hero > .rmd-stats { grid-column: 2; grid-row: 1 / span 6; margin: 0; align-self: center; }
-  .rmd-hero > .rmd-note { grid-column: 1; }
-  .rmd-hero > .disclaimer { grid-column: 1 / -1; }
-}
-.rmd-inputs .field:last-of-type { margin-bottom: 0; }
-.rmd-chart-card { margin: 0; min-width: 0; }
-.rmd-chart-card .label { margin: 0 0 8px; }
-.rmd-chart { min-height: 19rem; }
-.rmd-chart .rmd-note { margin: 24px 0; }
-.rmd-svg { display: block; width: 100%; height: auto; overflow: visible; }
-.rmd-svg .axis { fill: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-.rmd-svg .plabel { fill: var(--ink); font-size: 12px; font-weight: 600; }
-.rmd-svg .grid { stroke: var(--line); stroke-width: 1; }
-.rmd-svg .base { stroke: var(--field-line); stroke-width: 1; }
-.rmd-svg .area-bal { fill: var(--contrib); opacity: .28; }
-.rmd-svg .ln-bal { fill: none; stroke: var(--contrib); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
-.rmd-svg .bar { fill: var(--brand); opacity: .62; }
-.rmd-svg .bar-now { opacity: 1; }
-.rmd-svg .bar:hover { opacity: 1; }
-.key-rmd { background: var(--brand); }
-.key-bal { background: var(--contrib); }
-.rmd-legend { margin-top: 6px; }
-.rmd-chart-note { margin: 6px 0 0; }
-.rmd-chart-card .rmd-note a { font-weight: 600; }
-.results.stale .rmd-chart { min-height: 0; }
-.tool .results.stale .rmd-svg, .tool .results.stale .rmd-stats, .tool .results.stale .rmd-legend { opacity: .35; }
-
-.rmd-hero { margin-top: 0; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb, var(--interest) 10%, var(--bg)); }
-.rmd-hero .big { font-size: clamp(2.4rem, 9vw, 3.4rem); font-weight: 750; color: var(--brand); margin: 2px 0 4px; }
-.rmd-hero .muted { margin: 0; }
-.rmd-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 16px 0 4px; }
-.rmd-stats > div { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; min-width: 0; }
-.rmd-stats dt { color: var(--muted); font-size: .8rem; line-height: 1.3; }
-.rmd-stats dd { margin: 4px 0 0; font-size: 1.25rem; font-weight: 700; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.rmd-stats dd.stat-sub { margin: 2px 0 0; font-size: .8rem; font-weight: 400; color: var(--muted); }
-.rmd-stats dd.stat-sub:empty { display: none; }
-.rmd-hero .disclaimer { margin-top: 16px; }
-.rmd-hero .rmd-note { font-size: .85rem; margin-top: 10px; }
-@media (max-width: 420px) {
-  .rmd-hero { padding: 14px; }
-  .rmd-stats { gap: 6px; }
-  .rmd-stats > div { padding: 8px; }
-  .rmd-stats dd { font-size: 1.05rem; }
-}
-
-.rmd-how { margin-top: 16px; }
-.rmd-how .rmd-note { font-size: .95rem; margin: 10px 0 0; }
-
-.rmd-table-box { margin-top: 8px; }
-.rmd-table-box .table-wrap { max-height: 30rem; overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
-.rmd-table-box table { margin-top: 0; }
-.rmd-year-table thead th { position: sticky; top: 0; z-index: 1; background: var(--panel); box-shadow: inset 0 -1px 0 var(--line); }
-.rmd-year-table tbody th { color: var(--ink); font-size: 1rem; }
-.rmd-year-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--ink) 5%, var(--panel)); }
-.rmd-year-table tbody tr:hover { background: color-mix(in srgb, var(--interest) 16%, var(--panel)); }
-.rmd-year-table tbody tr.now { font-weight: 600; }
-.rmd-year-table tbody tr.now th { box-shadow: inset 3px 0 0 var(--brand); }
-.rmd-more { margin: 12px 0 0; }
+.rmd-year-table thead th { position: sticky; top: 0; z-index: 1; background: var(--panel-2); font-size: var(--t-xs); font-weight: 600; box-shadow: inset 0 -1px 0 var(--line); border-bottom: 0; white-space: normal; vertical-align: bottom; }
+.rmd-year-table tbody th { color: var(--ink); font-size: var(--t-s); font-weight: 600; }
+.rmd-year-table tbody td:nth-child(3) { color: var(--ink); }
+.rmd-year-table tbody td:last-child { color: var(--ink); font-weight: 700; }
+.rmd-year-table tbody tr { transition: background-color 150ms ease; }
+.rmd-year-table tbody tr:hover, .rmd-year-table tbody tr.sel { background: var(--ledger-tint); }
+/* "This year" is a fact about the calendar, not a selected state: an ink bar and a quiet text tag. */
+.rmd-year-table tbody tr.now th { box-shadow: inset 3px 0 0 var(--ink); }
+.rmd-year-table .now-tag { display: inline-block; margin-left: 10px; padding: 1px 8px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--muted); color: var(--ink); font-size: var(--t-xs); font-weight: 600; line-height: 1.3; vertical-align: 1px; }
+.rmd-year-table tbody tr:last-child th, .rmd-year-table tbody tr:last-child td { border-bottom: 0; }
+.rmd-more { margin: 16px 0 0; }
+.rmd-table-card .rmd-fine { margin: 16px 0 0; max-width: 90ch; }
 @media (max-width: 40rem) {
   .rmd-year-table { min-width: 0; }
-  .rmd-year-table th, .rmd-year-table td { padding: 8px 3px; font-size: .8rem; }
-  .rmd-year-table thead th { white-space: normal; overflow-wrap: break-word; vertical-align: bottom; line-height: 1.25; font-size: .7rem; }
-  .rmd-year-table tbody th { font-size: .8rem; }
-  .rmd-table-box .table-wrap { border-radius: 10px; }
+  .rmd-year-table, .rmd-year-table th:first-child, .rmd-year-table th:nth-child(2) { table-layout: auto; width: auto; }
+  .rmd-year-table { width: 100%; }
+  .rmd-table-box { margin-left: -16px; margin-right: -16px; }
+  .rmd-table-box .table-wrap { border-radius: 0; border-left: 0; border-right: 0; }
+  .rmd-year-table th, .rmd-year-table td { padding: 10px 1px; font-size: var(--t-xs); }
+  .rmd-year-table thead th { overflow-wrap: break-word; line-height: 1.25; font-size: var(--t-xs); padding: 8px 1px; }
+  .rmd-year-table tbody th { font-size: var(--t-xs); }
+  /* The first column stays in view if the table has to scroll sideways. */
+  .rmd-year-table thead th:first-child, .rmd-year-table tbody th { position: sticky; left: 0; padding-left: 6px; }
+  .rmd-year-table thead th:first-child { z-index: 2; }
+  .rmd-year-table tbody th { background-color: var(--panel); }
+  .rmd-year-table tbody tr:hover th, .rmd-year-table tbody tr.sel th { background-image: linear-gradient(var(--ledger-tint), var(--ledger-tint)); }
+  .rmd-year-table thead th:last-child, .rmd-year-table tbody td:last-child { padding-right: 6px; }
+  .rmd-year-table tbody td:last-child { font-weight: 600; }
+  /* The divisor's heading is wider than its figures, so the figures can step in from the RMD column at no cost in width. */
+  .rmd-year-table tbody td:nth-child(4) { padding-right: 8px; }
+  /* The label sits under the year and may run under the next cell, so it never widens the column. */
+  .rmd-year-table tbody tr.now > * { padding-bottom: 28px; vertical-align: top; }
+  .rmd-year-table .now-tag { position: absolute; left: 6px; bottom: 8px; margin: 0; padding: 0; background: none; border: 0; color: var(--ink); white-space: nowrap; }
 }
-@media (prefers-reduced-motion: no-preference) { .rmd-svg .bar { transition: opacity .15s; } }
 
-/* ---- Education section: question rows (native details) ---- */
-.guide details.faq { background: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 0; }
-.guide details.faq:last-of-type { border-bottom: 1px solid var(--line); }
-.guide details.faq > summary { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 4px; cursor: pointer; list-style: none; font-weight: 600; }
+/* ---- Education section: two glass cards of accordion rows (native details) ---- */
+.rmd-page .guide { max-width: 1040px; padding-top: 0; padding-bottom: 0; margin-top: 24px; }
+.rmd-edu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.rmd-edu > section { background: var(--glass); border: 1px solid var(--glass-edge); border-radius: var(--r-m); padding: 20px; box-shadow: var(--shadow); min-width: 0; scroll-margin-top: 16px;
+  backdrop-filter: blur(var(--blur)) saturate(1.2); -webkit-backdrop-filter: blur(var(--blur)) saturate(1.2); }
+.rmd-page .guide h2 { font-size: var(--t-l); line-height: 1.25; letter-spacing: -.01em; margin: 0 0 12px; }
+.guide details.faq { background: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 4px 0; }
+.guide details.faq > summary { display: flex; align-items: center; gap: 16px; min-height: 48px; padding: 8px 12px; cursor: pointer; list-style: none; font-weight: 600; border-radius: var(--r-s); transition: background-color 150ms ease; }
 .guide details.faq > summary::-webkit-details-marker { display: none; }
-.guide details.faq > summary::before { content: ""; flex: none; width: 8px; height: 8px; border-right: 2px solid var(--brand); border-bottom: 2px solid var(--brand); transform: rotate(-45deg); margin: 0 4px 0 2px; }
-.guide details.faq[open] > summary::before { transform: rotate(45deg); }
-.guide details.faq > summary h3 { margin: 0; font-size: 1.05rem; line-height: 1.35; }
-.guide details.faq > summary:hover h3 { color: var(--brand); }
-.guide details.faq > summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
-.guide details.faq > :not(summary) { margin-left: 30px; margin-right: 4px; }
-.guide details.faq > p:last-child, .guide details.faq > ul:last-child, .guide details.faq > ol:last-child { margin-bottom: 16px; }
-.guide details.faq small { color: var(--muted); font-size: .85rem; line-height: 1.5; display: block; }
-.guide section > p { margin-top: 14px; }
+/* The chevron is a line glyph drawn here as an SVG mask, so its colour comes from a token. */
+.guide details.faq > summary::after { content: ""; flex: none; width: 16px; height: 16px; margin-left: auto; background-color: var(--muted); transition: transform 150ms ease, background-color 150ms ease;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+.guide details.faq[open] > summary::after { transform: rotate(180deg); background-color: var(--ledger); }
+.guide details.faq > summary:hover, .guide details.faq[open] > summary { background: var(--ledger-tint); }
+.guide details.faq > summary h3 { margin: 0; font-size: var(--t-m); line-height: 1.35; }
+.guide details.faq > summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.guide details.faq > :not(summary) { margin: 12px 12px 0; font-size: var(--t-m); line-height: 1.6; }
+.guide details.faq > ul, .guide details.faq > ol { padding-left: 20px; }
+.guide details.faq li { margin: 0 0 8px; }
+.guide details.faq > :last-child { margin-bottom: 12px; }
+.guide details.faq small { color: var(--muted); font-size: var(--t-xs); line-height: 1.5; display: block; }
+/* The two source lines that run to two sentences are body copy (a test pins these two to the fragment). */
+#what-is-an-rmd details.faq:nth-of-type(3) small, #roth-conversions-and-rmds details.faq:nth-of-type(5) small { font-size: var(--t-m); line-height: 1.6; }
+.guide section > p { margin: 0; padding: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: var(--t-xs); line-height: 1.5; }
+
+/* ---- Sources card ---- */
+.rmd-sources p { font-size: var(--t-m); line-height: 1.6; margin: 0 0 12px; max-width: 90ch; }
+.rmd-sources #review-line { color: var(--muted); }
+.sources { min-width: 52rem; font-size: var(--t-xs); line-height: 1.45; }
+.sources th, .sources td { padding: 10px 12px; }
+.sources thead th { white-space: nowrap; overflow-wrap: normal; text-align: left; vertical-align: top; background: var(--panel-2); font-size: var(--t-xs); }
+.sources tbody th { white-space: normal; overflow-wrap: break-word; text-align: left; vertical-align: top; min-width: 8rem; color: var(--ink); font-size: var(--t-xs); }
+.sources td { white-space: normal; overflow-wrap: anywhere; text-align: left; vertical-align: top; min-width: 8rem; color: var(--muted); }
+.sources tbody tr:last-child th, .sources tbody tr:last-child td { border-bottom: 0; }
+
+/* The sources accordion: the same row as "How this is worked out"; its summary is a full sentence. */
+.rmd-page .rmd-src { margin: 0; border-top: 0; }
+.rmd-src > summary { margin: 0 0 4px; padding: 10px 12px; font-weight: 400; line-height: 1.5; background: var(--panel-2); }
+.rmd-src[open] > summary { margin-bottom: 16px; }
+
+/* ---- Wide screens: the chart (about three fifths) and the result card side by side under the
+   inputs, the chart first in the DOM; the short introduction sits under the chart. ---- */
+@media (min-width: 1100px) {
+  .rmd-col.results { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: stretch; }
+  .results > .rmd-chart-card { grid-column: 1; grid-row: 1; }
+  .results > .rmd-hero { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; }
+  .rmd-page .rmd-hero > .disclaimer { margin-top: auto; }
+  .results > .rmd-notes, .results > .rmd-about { grid-column: 1 / -1; }
+  .rmd-notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rmd-page .rmd-card .rmd-title { font-size: 18px; }
+  .rmd-hero-top { grid-template-columns: minmax(0, 1fr); }
+  .rmd-stats { grid-template-columns: minmax(0, 1fr); }
+  .rmd-stats > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 10px 16px; }
+  .rmd-stats > div:not(:last-child)::after { content: none; }
+  .rmd-stats dt { min-height: 0; grid-row: 1 / span 2; }
+  .rmd-stats dd { margin: 0; grid-column: 2; text-align: right; }
+  .rmd-stats dd.stat-sub { margin: 0; min-height: 0; }
+  .rmd-stats dd.stat-sub:empty { display: none; }
+}
+
+/* ---- Narrower screens ---- */
+@media (max-width: 900px) {
+  /* Birth year as one row across the top, then balance and growth side by side. */
+  .rmd-wells { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+  .rmd-page .rmd-field:first-child { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .rmd-page .rmd-field:first-child .help, .rmd-page .rmd-field:first-child .err { grid-column: 1 / -1; }
+  .rmd-hero-top { grid-template-columns: minmax(0, 1fr); }
+  .rmd-due-grid { grid-template-columns: minmax(0, 1fr); }
+  .rmd-due-text { max-width: none; }
+  .rmd-edu { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 639px) {
+  .rmd-page { padding-top: 16px; }
+  .rmd-card, .rmd-edu > section { padding: 16px; }
+  .rmd-page .rmd-card > .disclaimer, .rmd-edu > section > .disclaimer { margin: 16px -16px -16px; padding: 12px 16px; }
+  .rmd-stack, .rmd-col, .rmd-edu { gap: 16px; }
+  .rmd-table-card, .rmd-page .guide { margin-top: 16px; }
+  .rmd-head { margin-bottom: 12px; }
+  .rmd-head .breadcrumb, .rmd-head h1, .rmd-head h2 { margin-right: 56px; }
+  .rmd-head h1 { font-size: 24px; }
+  .rmd-page .rmd-field > label { font-size: var(--t-xs); }
+  /* The reset pill becomes a round glyph button; its words stay as its name for screen readers. */
+  #rmd-reset { width: 44px; padding: 0; justify-content: center; }
+  #rmd-reset span { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .rmd-wells { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .rmd-page .rmd-field { padding: 8px 12px; gap: 4px; }
+  .rmd-page .rmd-field:first-child { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .rmd-page .rmd-field:first-child .help, .rmd-page .rmd-field:first-child .err { grid-column: 1 / -1; }
+  /* Format hints show while their field is in use; the notes about examples and assumptions always show. */
+  .rmd-field .rmd-hint { display: none; }
+  .rmd-field:focus-within .rmd-hint, .rmd-field.bad .rmd-hint { display: block; }
+  /* With the hint hidden one help line shows, and a single line is a caption. */
+  .rmd-page .rmd-field:not(:focus-within):not(.bad) .help.rmd-pair { font-size: var(--t-xs); line-height: 1.45; }
+  .rmd-page .rmd-field .help + .help, .rmd-page .rmd-field .help + .err:not(:empty) { margin-top: -4px; }
+  .rmd-page .rmd-val input { width: 8.25rem; }
+  .rmd-page .rmd-card .rmd-title { font-size: var(--t-m); }
+  .rmd-chart { min-height: 254px; }
+  /* The chart note is body copy now, so the card gives the height back in its gaps (it must fit a 667px screen). */
+  .rmd-chart-card .rmd-card-h { margin-bottom: 4px; }
+  .rmd-chart-foot { gap: 8px 16px; margin-top: 8px; }
+  .rmd-page .rmd-hero .big.f2 { font-size: 44px; }
+  .rmd-page .rmd-hero .big.f3 { font-size: 40px; }
+  .rmd-readout { grid-template-columns: minmax(0, 1fr); padding: 8px 12px; gap: 8px; }
+  .rmd-readout .ro-when { padding: 0 0 8px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .rmd-page .rmd-legend { gap: 6px; }
+  .rmd-page .rmd-hero .big { font-size: 44px; }
+  .rmd-page .rmd-hero .big.is-text { font-size: 30px; }
+  .rmd-stats > div { padding: 8px 12px; }
+  .rmd-stats dd { font-size: 18px; }
+}
+/* On small phones the breadcrumb is hidden to keep the inputs panel short; the header logo links home (On-Brand, 14 Nov). */
+@media (max-width: 479px) { .rmd-head .breadcrumb { display: none; } }
+/* Calm motion only, and none at all when the reader asks for less. */
+@media (prefers-reduced-motion: reduce) { .rmd-page *, .rmd-page *::before, .rmd-page *::after { transition: none !important; animation: none !important; } .rmd-svg .ln-draw { stroke-dashoffset: 0; } }

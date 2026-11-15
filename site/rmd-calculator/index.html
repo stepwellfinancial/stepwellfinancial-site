@@ -60,43 +60,57 @@
   </div>
 </header>
 
-<main id="main">
-  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
-    <ol><li><a href="/">Home</a></li><li aria-current="page">RMD calculator</li></ol>
-  </nav>
-
-  <section class="hero wrap">
-    <h1>RMD calculator</h1>
-    <p class="lede">A required minimum distribution (RMD) is the smallest amount the tax rules require to be taken out of a traditional IRA or similar account each year once the owner reaches the start age. Enter your birth year and your balance on 31 December of last year to see this year's figure and a rough run of future years.</p>
-  </section>
-
+<main id="main" class="rmd-page">
   <section id="calculator" class="tool wrap" aria-labelledby="calc-title">
-    <h2 id="calc-title">Work out a required minimum distribution</h2>
-    <div class="calculator rmd-layout">
-      <form id="rmd-form" class="panel inputs rmd-inputs" novalidate>
-        <div class="field">
-          <label for="birthYear">Birth year</label>
-          <input id="birthYear" name="birthYear" inputmode="numeric" autocomplete="off" maxlength="4" value="1953" aria-describedby="birthYear-help birthYear-err">
-          <p class="help" id="birthYear-help">Four digits, for example 1953.</p>
-          <p class="err" id="birthYear-err" role="alert"></p>
-        </div>
-        <div class="field">
-          <label for="balance">Balance on 31 December of last year</label>
-          <div class="affix">
-            <input id="balance" name="balance" inputmode="decimal" autocomplete="off" value="100000" aria-describedby="balance-help balance-err">
-            <span aria-hidden="true">$</span>
+    <div class="rmd-stack">
+      <form id="rmd-form" class="rmd-card rmd-inputs" novalidate>
+        <div class="rmd-head">
+          <div class="rmd-head-text">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <ol><li><a href="/">Home</a></li><li aria-current="page">RMD calculator</li></ol>
+            </nav>
+            <h1>RMD calculator</h1>
+            <h2 id="calc-title">The smallest yearly withdrawal the tax rules require from certain retirement accounts, once the start age is reached</h2>
           </div>
-          <p class="help" id="balance-help">In dollars, cents allowed. The starting figure is an example.</p>
-          <p class="err" id="balance-err" role="alert"></p>
+          <button type="button" class="rmd-pill" id="rmd-reset" title="Back to the example inputs"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5M3 2.2v2.6h2.6"/></svg><span>Back to the example inputs</span></button>
         </div>
-        <div class="field">
-          <label for="growth">Growth rate for the table (your assumption)</label>
-          <div class="affix suffix">
-            <input id="growth" name="growth" inputmode="decimal" autocomplete="off" value="0" aria-describedby="growth-help growth-err">
-            <span aria-hidden="true">%</span>
+        <div class="rmd-wells">
+          <div class="field rmd-field">
+            <label for="birthYear" id="birthYear-label">Birth year</label>
+            <div class="rmd-ctl rmd-stepper">
+              <button type="button" class="rmd-step" id="birthYear-down" aria-label="One year earlier"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10"/></svg></button>
+              <input id="birthYear" name="birthYear" inputmode="numeric" autocomplete="off" maxlength="4" value="1953" aria-describedby="birthYear-help birthYear-err">
+              <button type="button" class="rmd-step" id="birthYear-up" aria-label="One year later"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10M8 3v10"/></svg></button>
+            </div>
+            <p class="help rmd-hint" id="birthYear-help">Four digits, for example 1953.</p>
+            <p class="err" id="birthYear-err" role="alert"></p>
           </div>
-          <p class="help" id="growth-help">Percent a year, 0 to 20, up to two decimals. It is an assumption you choose, not a forecast.</p>
-          <p class="err" id="growth-err" role="alert"></p>
+          <div class="field rmd-field">
+            <label for="balance" id="balance-label">Balance on 31 December of last year</label>
+            <div class="rmd-ctl">
+              <input type="range" class="rmd-range" id="balance-range" data-for="balance" min="0" max="200" step="1" value="20" aria-label="Balance on 31 December of last year, slider" aria-valuetext="$100,000.00">
+              <div class="affix rmd-val">
+                <input id="balance" name="balance" inputmode="decimal" autocomplete="off" value="100,000" aria-describedby="balance-help balance-note balance-err">
+                <span aria-hidden="true">$</span>
+              </div>
+            </div>
+            <p class="help rmd-hint rmd-pair" id="balance-help">In dollars, cents allowed.</p>
+            <p class="help rmd-pair" id="balance-note">The starting figure is an example.</p>
+            <p class="err" id="balance-err" role="alert"></p>
+          </div>
+          <div class="field rmd-field">
+            <label for="growth" id="growth-label">Growth rate for the table (your assumption)</label>
+            <div class="rmd-ctl">
+              <input type="range" class="rmd-range" id="growth-range" data-for="growth" min="0" max="80" step="1" value="0" aria-label="Growth rate for the table, slider" aria-valuetext="0 percent a year">
+              <div class="affix suffix rmd-val">
+                <input id="growth" name="growth" inputmode="decimal" autocomplete="off" value="0" aria-describedby="growth-help growth-note growth-err">
+                <span aria-hidden="true">%</span>
+              </div>
+            </div>
+            <p class="help rmd-hint rmd-pair" id="growth-help">Percent a year, 0 to 20, up to two decimals.</p>
+            <p class="help rmd-pair" id="growth-note">It is an assumption you choose, not a forecast.</p>
+            <p class="err" id="growth-err" role="alert"></p>
+          </div>
         </div>
         <div id="spouse-block" hidden>
           <div class="field toggle">
@@ -110,45 +124,99 @@
         </div>
       </form>
 
-      <div class="results rmd-results" id="results">
-        <figure class="panel rmd-chart-card" id="rmd-chart-card">
-          <p class="label" id="rmd-chart-title">RMD each year and the balance, an illustration</p>
-          <div class="rmd-chart" id="rmd-chart" role="img" aria-describedby="rmd-chart-note" aria-label="Chart of the RMD for each year"></div>
-          <ul class="legend rmd-legend">
-            <li><span class="key key-rmd" aria-hidden="true"></span>RMD for the year</li>
-            <li><span class="key key-bal" aria-hidden="true"></span>Balance with your growth assumption</li>
-          </ul>
-          <figcaption class="rmd-note rmd-chart-note" id="rmd-chart-note"></figcaption>
-          <p class="rmd-note"><a href="#rmd-table-region">See the same figures in the table</a></p>
+      <div class="rmd-col results" id="results">
+        <figure class="rmd-card rmd-chart-card" id="rmd-chart-card">
+          <div class="rmd-card-h">
+            <p class="label rmd-title" id="rmd-chart-title">RMD each year and the balance, an illustration</p>
+          </div>
+          <div class="rmd-plot">
+            <span class="rmd-chip">Illustration</span>
+            <div class="rmd-chart" id="rmd-chart" role="img" aria-describedby="rmd-chart-note" aria-label="Chart of the RMD for each year"></div>
+            <input type="range" class="rmd-scrub" id="rmd-scrub" min="0" max="0" step="1" value="0" aria-label="Year shown under the chart" aria-describedby="rmd-chart-note">
+          </div>
+          <div class="rmd-readout" id="rmd-readout">
+            <p class="ro-when" id="ro-when"></p>
+            <ul class="legend rmd-legend">
+              <li><span class="key key-bal" aria-hidden="true"></span><span class="ro-name">Balance with your growth assumption</span><strong class="ro-val" id="ro-bal"></strong></li>
+              <li><span class="key key-rmd" aria-hidden="true"></span><span class="ro-name">RMD for the year</span><strong class="ro-val" id="ro-rmd"></strong></li>
+            </ul>
+          </div>
+          <figcaption class="rmd-chart-foot">
+            <span class="rmd-fine" id="rmd-chart-note"></span>
+            <div class="rmd-seg" id="rmd-range" role="group" aria-label="Years shown in the chart" hidden>
+              <button type="button" data-range="10" aria-pressed="false">First 10 years</button>
+              <button type="button" data-range="all" aria-pressed="true">All years to age 100</button>
+            </div>
+            <a class="rmd-pill rmd-tablelink" href="#rmd-table-region"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2 3.5h12v9H2zM2 6.5h12M2 9.5h12M6 3.5v9"/></svg>See the same figures in the table</a>
+          </figcaption>
         </figure>
 
-        <div class="rmd-hero">
-          <p class="label" id="out-label">Required minimum distribution this year</p>
-          <div aria-live="polite" aria-atomic="true">
-            <p class="big" id="out-main">...</p>
-            <p class="muted" id="out-detail"></p>
+        <div class="rmd-card rmd-hero">
+          <div class="rmd-hero-top">
+            <div class="rmd-hero-fig">
+              <p class="label" id="out-label">Required minimum distribution this year</p>
+              <div aria-live="polite" aria-atomic="true">
+                <p class="big" id="out-main">...</p>
+                <p class="rmd-sentence" id="out-detail"></p>
+              </div>
+            </div>
+            <dl class="rmd-stats" id="rmd-stats">
+              <div><dt id="stat-age-label">Age this year</dt><dd id="stat-age">...</dd></div>
+              <div><dt id="stat-div-label">Divisor used</dt><dd id="stat-div">...</dd></div>
+              <div><dt>First RMD year</dt><dd id="stat-first">...</dd><dd class="stat-sub" id="stat-first-sub"></dd></div>
+            </dl>
           </div>
-          <dl class="rmd-stats" id="rmd-stats">
-            <div><dt id="stat-age-label">Age this year</dt><dd id="stat-age">...</dd></div>
-            <div><dt id="stat-div-label">Divisor used</dt><dd id="stat-div">...</dd></div>
-            <div><dt>First RMD year</dt><dd id="stat-first">...</dd><dd class="stat-sub" id="stat-first-sub"></dd></div>
-          </dl>
-          <p class="rmd-note" id="out-proposed"></p>
-          <p class="rmd-note" id="out-april"></p>
-          <p class="rmd-note" id="out-start"></p>
-          <p class="rmd-note" id="out-table"></p>
-          <p class="disclaimer">For education only, not financial advice. This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed below, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+          <details class="rmd-how" id="rmd-how">
+            <summary>How this is worked out<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg></summary>
+            <p class="rmd-note" id="table-scope-note"></p>
+            <p class="rmd-note" id="balance-help-more">If you hold several accounts, see IRS Publication 590-B for how they are added up.</p>
+            <p class="rmd-note">To see how a growth rate compounds, use the <a href="/compound-interest-calculator/">compound interest calculator</a> or read the <a href="/compound-interest-formula/">compound interest formula</a>.</p>
+          </details>
+          <div class="disclaimer">
+            <p>For education only, not financial advice.</p>
+            <p class="rmd-note">This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed below, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+          </div>
+        </div>
+
+        <div class="rmd-card rmd-notes" id="rmd-notes" role="group" aria-labelledby="rmd-notes-title">
+          <h2 class="rmd-title" id="rmd-notes-title">Notes on this figure</h2>
+          <div class="rmd-notes-grid">
+            <p class="rmd-note" id="out-proposed"></p>
+            <p class="rmd-note" id="out-april"></p>
+            <p class="rmd-note" id="out-start"></p>
+            <p class="rmd-note" id="out-table"></p>
+          </div>
+        </div>
+
+        <div class="rmd-card rmd-due" id="rmd-due" role="group" aria-labelledby="rmd-due-title">
+          <h2 class="rmd-title" id="rmd-due-title">When is the first RMD due?</h2>
+          <div class="rmd-due-grid">
+            <div class="field rmd-field">
+              <label for="dueYear" id="dueYear-label">Birth year</label>
+              <div class="rmd-ctl rmd-stepper">
+                <button type="button" class="rmd-step" id="dueYear-down" aria-label="One year earlier"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10"/></svg></button>
+                <input id="dueYear" inputmode="numeric" autocomplete="off" maxlength="4" value="1953" aria-describedby="dueYear-help dueYear-err">
+                <button type="button" class="rmd-step" id="dueYear-up" aria-label="One year later"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10M8 3v10"/></svg></button>
+              </div>
+              <p class="rmd-note" id="dueYear-help">Four digits, for example 1953. It is worked out in your browser and not sent to us.</p>
+              <p class="err" id="dueYear-err" role="alert"></p>
+            </div>
+            <div class="rmd-due-text">
+              <div class="rmd-due-live" id="due-out" aria-live="polite" aria-atomic="true"><p class="rmd-due-answer" id="due-answer"></p></div>
+              <p class="rmd-note" id="due-source"></p>
+              <p class="rmd-note" id="due-scope">This is for an owner's own traditional IRA or similar account, not an inherited account; Roth IRAs have no RMDs for their original owner, and employer plans can have extra rules of their own, so the plan administrator can confirm how a plan handles it.</p>
+            </div>
+          </div>
+          <p class="disclaimer">For education only, not financial advice.</p>
+        </div>
+
+        <div class="rmd-card rmd-about">
+          <p class="lede">A required minimum distribution (RMD) is the smallest amount the tax rules require to be taken out of a traditional IRA or similar account each year once the owner reaches the start age. Enter your birth year and your balance on 31 December of last year to see this year's figure and a rough run of future years.</p>
         </div>
       </div>
     </div>
 
-    <details class="rmd-how" id="rmd-how">
-      <summary>How this is worked out</summary>
-      <p class="rmd-note" id="table-scope-note"></p>
-      <p class="rmd-note" id="balance-help-more">If you hold several accounts, see IRS Publication 590-B for how they are added up.</p>
-      <p class="rmd-note">To see how a growth rate compounds, use the <a href="/compound-interest-calculator/">compound interest calculator</a> or read the <a href="/compound-interest-formula/">compound interest formula</a>.</p>
-    </details>
-
+    <div class="rmd-card rmd-table-card">
     <p class="table-title" id="rmd-caption">Year by year</p>
     <p class="scroll-hint" id="rmd-scroll-hint" hidden>Scroll sideways for more columns.</p>
     <div class="rmd-table-box" id="rmd-table-region">
@@ -159,16 +227,18 @@
       </table>
     </div>
     </div>
-    <p class="rmd-more"><button type="button" class="btn ghost" id="rmd-toggle" aria-controls="rmd-rows" aria-expanded="false" hidden>Show all years</button></p>
-    <p class="rmd-note">The table lists the RMD for each year on the 31 December basis. A first payment delayed to 1 April of the next year would mean two payments in that next year; the table does not model that. Before the first RMD year the table changes the balance only by the growth rate you chose.</p>
+    <p class="rmd-more"><button type="button" class="rmd-pill" id="rmd-toggle" aria-controls="rmd-rows" aria-expanded="false" hidden>Show all years</button></p>
+    <p class="rmd-fine">The table lists the RMD for each year on the 31 December basis. A first payment delayed to 1 April of the next year would mean two payments in that next year; the table does not model that. Before the first RMD year the table changes the balance only by the growth rate you chose.</p>
+    <p class="disclaimer">For education only, not financial advice.</p>
+    </div>
   </section>
 
-  <article class="guide wrap">
+  <article class="guide wrap rmd-edu">
 <!-- BEGIN sections.fragment.html (copied in unchanged; edit the fragment first, then re-copy) -->
 <section id="what-is-an-rmd">
   <h2>RMD rules and start age</h2>
 
-  <details class="faq" open>
+  <details class="faq">
     <summary><h3>What is an RMD?</h3></summary>
     <p>An RMD is a required minimum distribution. It is the smallest amount the tax rules require to be taken out of certain retirement accounts each year once the owner reaches the start age. The start age is the age when RMDs begin.</p>
   </details>
@@ -218,7 +288,10 @@
     <p><small>Source: IRS Publication 590-B, 2025 edition; IRS, Retirement plan and IRA required minimum distributions FAQs (question 8 updated Dec. 10, 2024; page last reviewed or updated 29 Jan 2026), read 14 Nov 2026.</small></p>
   </details>
 
-  <p>For education only, not financial advice. This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed below, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+  <div class="disclaimer">
+    <p>For education only, not financial advice.</p>
+    <p class="rmd-note">This is not tax or legal advice either.</p>
+  </div>
 </section>
 
 <section id="roth-conversions-and-rmds">
@@ -277,13 +350,19 @@
     <p>The tax paid on a conversion can be larger than any later tax saved. Higher income in the conversion year can also carry costs, such as the bracket and Medicare effects above. This page does not say whether a conversion suits anyone.</p>
   </details>
 
-  <p>For education only, not financial advice. This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed below, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+  <div class="disclaimer">
+    <p>For education only, not financial advice.</p>
+    <p class="rmd-note">This is not tax or legal advice either.</p>
+  </div>
 </section>
 <!-- END sections.fragment.html -->
   </article>
 
-  <article class="guide wrap">
+  <article class="guide wrap rmd-sources">
+    <div class="rmd-card">
     <h2 id="sources-title">Sources, tax year and review dates</h2>
+    <details class="rmd-how rmd-src" id="rmd-sources-acc">
+    <summary><span id="sources-summary">Sources: IRS (Publications 590-A and 590-B, T.D. 10001, RMD FAQs) and Social Security; used for 2026; read 14 Nov 2026; next review 15 Jan 2027</span><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 6l4.5 4.5L12.5 6"/></svg></summary>
     <p id="review-line">Review date: 2026-11-14. Source: IRS Publication 590-B.</p>
     <p>The start age by birth year (73 for 1951 to 1958, 75 for 1960 and later) comes from the final regulation (T.D. 10001) published in Internal Revenue Bulletin 2024-33 on irs.gov, dated 12 August 2024. The IRS plain-language pages, including Publication 590-B, state only age 73 for tax years 2023 and later. For people born in 1959 the IRS rule was still a proposed rule when we read it on 14 Nov 2026; this page uses the proposed age of 73 and says so when it applies.</p>
     <p class="table-title" id="sources-caption">Every figure and rule used on this page</p>
@@ -294,7 +373,9 @@
         <tbody id="sources-rows"></tbody>
       </table>
     </div>
-    <p class="disclaimer">For education only, not financial advice. This is not tax or legal advice either. Figures are from the IRS and Social Security sources listed in the table, for the tax year shown. Your own situation can differ; a tax professional or the plan administrator can confirm your number.</p>
+    </details>
+    <p class="disclaimer">For education only, not financial advice.</p>
+    </div>
   </article>
 </main>
 
