@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retirement analysis: 500 simulated runs | Stepwell Financial</title>
+<meta name="description" content="Free educational retirement simulation. Type your own figures; see 500 runs built from historical returns. Nothing you type leaves your device.">
+<link rel="canonical" href="https://stepwellfinancial.com/retirement-analysis/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Retirement analysis: 500 simulated runs | Stepwell Financial">
+<meta property="og:description" content="Free educational retirement simulation. Type your own figures; see 500 runs built from historical returns. Nothing you type leaves your device.">
+<meta property="og:url" content="https://stepwellfinancial.com/retirement-analysis/">
+<meta name="theme-color" content="#171e1b">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="icon" href="/favicon-32.svg" type="image/svg+xml" sizes="32x32">
+<link rel="icon" href="/favicon-16.svg" type="image/svg+xml" sizes="16x16">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<link rel="stylesheet" href="/retirement-analysis/ra.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Retirement analysis",
+  "url": "https://stepwellfinancial.com/retirement-analysis/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "A free educational retirement illustration: type your own figures and see 500 simulated runs built from historical returns, in today's dollars. Not advice and not a prediction."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://stepwellfinancial.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Retirement analysis", "item": "https://stepwellfinancial.com/retirement-analysis/" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#analysis">Skip to the analysis</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/"><img src="/logo/lockup.svg" alt="Stepwell Financial" width="172" height="44"></a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a class="nav-app" href="https://app.stepwellfinancial.com/">Open the app</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="ra">
+  <div class="ra-wrap">
+    <header class="ra-card ra-head">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol><li><a class="ra-crumb" href="/">Home</a></li><li aria-current="page">Retirement analysis</li></ol>
+      </nav>
+      <div class="ra-top">
+        <div>
+          <h1 id="ra-h1">Retirement analysis</h1>
+          <p class="ra-lede">A simulation of 500 historical-return runs, in today's dollars. Hypothetical, not a prediction.</p>
+        </div>
+        <p class="ra-body ra-top-side"><span class="ra-chip ra-chip-sample" id="ra-example-chip">Example inputs</span> <span>Your inputs stay on this device.<span class="ra-privacy-more"> Nothing is sent or saved.</span></span></p>
+      </div>
+      <noscript><p class="ra-body">This page needs JavaScript to run the simulation in your browser. Nothing is sent anywhere.</p></noscript>
+      <div class="ra-bar">
+        <div class="ra-tabs" role="tablist" aria-label="Screen" id="ra-screens">
+          <button type="button" role="tab" id="ra-screen-analysis" aria-selected="true" aria-controls="analysis" data-screen="analysis">Analysis</button>
+          <button type="button" role="tab" id="ra-screen-profile" aria-selected="false" aria-controls="profile" data-screen="profile" tabindex="-1">Planning profile</button>
+        </div>
+        <div class="ra-scen" id="ra-scenbar">
+          <div class="ra-seg" role="group" aria-label="Scenario shown">
+            <button type="button" id="ra-tab-a" aria-pressed="true">Scenario A</button>
+            <button type="button" id="ra-tab-b" aria-pressed="false" hidden>Scenario B</button>
+            <button type="button" id="ra-tab-ab" aria-pressed="false" hidden>Side by side</button>
+          </div>
+          <button type="button" class="ra-btn ra-btn-primary ra-add" id="ra-add-b" title="Model another scenario"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 3v10M3 8h10"/></svg><span class="ra-add-full">Model another scenario</span><span class="ra-add-short">Add scenario B</span></button>
+          <button type="button" class="ra-link" id="ra-remove-b" hidden>Remove scenario B</button>
+        </div>
+      </div>
+      <p class="ra-body ra-scen-note" id="ra-scen-note" hidden></p>
+    </header>
+  </div>
+
+  <div class="ra-wrap ra-screen" id="analysis" role="tabpanel" aria-labelledby="ra-screen-analysis">
+    <section class="ra-card ra-empty" id="ra-empty" aria-labelledby="ra-empty-h" hidden>
+      <h2 class="ra-h2" id="ra-empty-h">The analysis needs a few more details</h2>
+      <p class="ra-note">Fill in the planning profile and the illustration appears here. These are still missing or out of range:</p>
+      <ul class="ra-list" id="ra-empty-list"></ul>
+      <p class="ra-empty-act"><button type="button" class="ra-link" id="ra-empty-mix" aria-haspopup="dialog">Choose an asset mix</button></p>
+    </section>
+
+    <div class="ra-live" id="ra-single">
+      <div class="ra-results" id="ra-results">
+      <section class="ra-card ra-chart-card" aria-labelledby="ra-view-h">
+        <div class="ra-chart-top">
+          <div class="ra-select-block">
+            <label class="ra-label" for="ra-view">Select charts and tables</label>
+            <span class="ra-select"><select id="ra-view">
+              <option value="projection">Asset projection</option>
+              <option value="monthly">Monthly cash flow in retirement</option>
+              <option value="yearly">Yearly cash flow in retirement</option>
+            </select></span>
+          </div>
+          <span class="ra-chip ra-chip-sample">Illustration, not a prediction</span>
+          <div class="ra-tabs" role="tablist" aria-label="Show as" id="ra-viewtabs">
+            <button type="button" role="tab" id="ra-tab-chart" aria-selected="true" data-tab="chart">Chart</button>
+            <button type="button" role="tab" id="ra-tab-table" aria-selected="false" data-tab="table" tabindex="-1">Table</button>
+          </div>
+        </div>
+        <p class="ra-showing" id="ra-showing">Showing one run with <span id="ra-cond-art">an</span> <button type="button" class="ra-word" id="ra-pick-cond" aria-haspopup="dialog"><span id="ra-pick-cond-text">average</span></button> outcome<span class="ra-gloss-inline"> <span id="ra-cond-gloss">(the middle run of the 500, ranked by how the plan ended)</span></span>, in today's dollars, using <button type="button" class="ra-word" id="ra-pick-mix" aria-haspopup="dialog"><span id="ra-pick-mix-text">choose an asset mix</span></button><span id="ra-mix-tail"></span>.</p>
+        <h2 class="ra-sr" id="ra-view-h">Asset projection</h2>
+
+        <div class="ra-view-body" id="ra-view-projection" data-title="Asset projection">
+          <div class="ra-pane" data-pane="chart">
+            <div class="ra-chart" id="ra-chart-projection"></div>
+          </div>
+          <div class="ra-pane" data-pane="table" hidden>
+            <div class="ra-table-wrap" tabindex="0" role="region" aria-label="Asset projection by year"><table id="ra-table-projection"></table></div>
+            <p class="ra-table-foot"><span data-count="projection"></span> <button type="button" class="ra-link" data-more="projection"></button></p>
+          </div>
+        </div>
+
+        <div class="ra-view-body" id="ra-view-monthly" data-title="Monthly cash flow in retirement" hidden>
+          <div class="ra-pane" data-pane="chart">
+            <div class="ra-chart" id="ra-chart-monthly"></div>
+          </div>
+          <div class="ra-pane" data-pane="table" hidden>
+            <div class="ra-table-wrap" tabindex="0" role="region" aria-label="Monthly cash flow in retirement"><table id="ra-table-monthly"></table></div>
+          </div>
+          <p class="ra-sentence" id="ra-monthly-sentence"></p>
+        </div>
+
+        <div class="ra-view-body" id="ra-view-yearly" data-title="Yearly cash flow in retirement" hidden>
+          <div class="ra-pane" data-pane="chart">
+            <div class="ra-chart" id="ra-chart-yearly"></div>
+          </div>
+          <div class="ra-pane" data-pane="table" hidden>
+            <div class="ra-switches" role="group" aria-label="Add columns">
+              <label class="ra-switch"><span>Expenses</span><input type="checkbox" role="switch" data-cols="expenses"></label>
+              <label class="ra-switch"><span>Income</span><input type="checkbox" role="switch" data-cols="income"></label>
+              <label class="ra-switch"><span>Withdrawals</span><input type="checkbox" role="switch" data-cols="withdrawals"></label>
+            </div>
+            <div class="ra-table-wrap" tabindex="0" role="region" aria-label="Yearly cash flow in retirement"><table id="ra-table-yearly"></table></div>
+            <p class="ra-table-foot"><span data-count="yearly"></span> <button type="button" class="ra-link" data-more="yearly"></button></p>
+          </div>
+        </div>
+
+        <p class="ra-body ra-gloss-below" id="ra-cond-below"></p>
+        <p class="ra-body" id="ra-view-sub"></p>
+        <div class="ra-figs-block" id="ra-figs-block">
+          <h3 class="ra-h3" id="ra-figs-h">Key figures</h3>
+          <dl class="ra-figs" id="ra-figs"></dl>
+          <p class="ra-body" id="ra-figs-note"></p>
+        </div>
+        <p class="ra-small ra-edu-line">For education only, not financial advice.</p>
+      </section>
+
+      <dl class="ra-tiles" id="ra-tiles"></dl>
+      </div>
+
+      <div class="ra-lower" id="ra-lower">
+      <section class="ra-card" aria-labelledby="ra-details-h">
+        <h3 class="ra-h3" id="ra-details-h">Category details</h3>
+        <div class="ra-detail" data-detail="projection">
+          <ul class="ra-legend ra-legend-col">
+            <li><span class="ra-sw ra-c-invest" aria-hidden="true"></span><span><strong>Tax-deferred.</strong> Such as a traditional 401(k) or IRA. Withdrawals are taxed at the rate you typed.</span></li>
+            <li><span class="ra-sw ra-c-cash" aria-hidden="true"></span><span><strong>Taxable.</strong> Such as a brokerage or savings account.</span></li>
+            <li><span class="ra-sw ra-c-other" aria-hidden="true"></span><span><strong>Tax-exempt.</strong> Such as a Roth account. Withdrawals are not taxed here.</span></li>
+            <li><span class="ra-sw ra-sw-vline" aria-hidden="true"></span><span><strong>Retirement.</strong> The vertical line marks the year you reach your retirement age.</span></li>
+          </ul>
+          <label class="ra-switch"><input type="checkbox" id="ra-band" role="switch"><span>Show the range across all 500 runs, 10th to 90th percentile</span></label>
+          <p class="ra-hint" id="ra-band-note" hidden>With the range on, the ink line is the total in the one run drawn, and the shaded band holds the middle 80% of all 500 runs at each age. The axis grows to include the top of the range.</p>
+        </div>
+        <div class="ra-detail" data-detail="monthly" hidden>
+          <ul class="ra-legend ra-legend-col">
+            <li><span class="ra-sw ra-c-have" aria-hidden="true"></span><span><strong>Expenses covered by income and withdrawals.</strong> The part of the expenses below that income plus withdrawals from savings paid for in this run, as a monthly average. It is never more than the expenses.</span></li>
+            <li><span class="ra-sw ra-c-need" aria-hidden="true"></span><span><strong>Expenses you typed, plus tax.</strong> Essential and non-essential expenses, plus tax at your rate on the withdrawals that pay for them.</span></li>
+            <li><span class="ra-sw ra-sw-hatch" aria-hidden="true"></span><span><strong>Gap.</strong> The part of those expenses that income and savings did not cover in this run.</span></li>
+          </ul>
+        </div>
+        <div class="ra-detail ra-cats" data-detail="yearly" hidden>
+          <div><p class="ra-cat-h">Income</p><ul class="ra-legend ra-legend-col">
+            <li><span class="ra-sw ra-c-income" aria-hidden="true"></span><span>Social Security, pension, annuity, other and one-time income</span></li>
+            <li><span class="ra-sw ra-sw-dots" aria-hidden="true"></span><span>Withdrawals from savings, dotted</span></li>
+            <li><span class="ra-sw ra-sw-hatch" aria-hidden="true"></span><span>Income gap, hatched: expenses that income and savings did not cover</span></li></ul></div>
+          <div><p class="ra-cat-h">Expenses</p><ul class="ra-legend ra-legend-col">
+            <li><span class="ra-sw ra-sw-line ra-c-ink" aria-hidden="true"></span><span>Essential expenses, solid line</span></li>
+            <li><span class="ra-sw ra-sw-dot ra-c-ink" aria-hidden="true"></span><span>Total expenses, dotted line: essential, non-essential and tax</span></li></ul></div>
+          <div><p class="ra-cat-h">Events</p><ul class="ra-legend ra-legend-col">
+            <li><span class="ra-sw ra-sw-vline" aria-hidden="true"></span><span id="ra-plan-event">Plan-to age</span></li></ul></div>
+        </div>
+      </section>
+
+      <section class="ra-card" aria-labelledby="ra-inputs-h">
+        <div class="ra-card-head">
+          <h3 class="ra-h3" id="ra-inputs-h">Inputs behind this illustration</h3>
+          <button type="button" class="ra-link" data-screen-go="profile">Open the planning profile</button>
+        </div>
+        <div class="ra-cards" id="ra-cards"></div>
+        <p class="ra-small ra-edu-line">For education only, not financial advice.</p>
+      </section>
+      </div>
+    </div>
+
+    <div class="ra-live" id="ra-compare" hidden>
+      <section class="ra-card" aria-labelledby="ra-ab-h">
+        <div class="ra-tabline">
+          <h2 class="ra-h2" id="ra-ab-h">Scenario A and Scenario B, side by side</h2>
+          <span class="ra-chip ra-chip-sample">Illustration, not a prediction</span>
+        </div>
+        <p class="ra-showing">Showing one run each with <span id="ra-cond-ab-art">an</span> <button type="button" class="ra-word" id="ra-pick-cond-ab" aria-haspopup="dialog"><span id="ra-pick-cond-ab-text">average</span></button> outcome <span id="ra-cond-ab-gloss">(the middle run of the 500, ranked by how the plan ended)</span>, in today's dollars. Both draw from the same 500 simulated markets.</p>
+        <div class="ra-chart" id="ra-chart-compare"></div>
+        <p class="ra-body" id="ra-ab-chart-sub"></p>
+        <h3 class="ra-h3">Differences</h3>
+        <div class="ra-table-wrap" tabindex="0" role="region" aria-label="Differences between Scenario A and Scenario B"><table id="ra-table-compare"></table></div>
+        <p class="ra-small">For education only, not financial advice.</p>
+        <p class="ra-body">The difference column is B minus A, as a number. This page does not rank the two scenarios. Which suits a person depends on things it cannot see.</p>
+        <p class="ra-body">Runs where the money lasted counts all 500 runs. Each count is approximate; see the range in each scenario's card below. Savings at retirement is the middle of all 500 runs' savings at that age, so it does not change with the outcome chosen. The other rows come from the one run each scenario shows for the chosen outcome, and the two scenarios can show different runs.</p>
+      </section>
+      <div class="ra-ab" id="ra-ab">
+        <section class="ra-card ra-ab-col" id="ra-ab-a" aria-label="Scenario A"></section>
+        <section class="ra-card ra-ab-col" id="ra-ab-b" aria-label="Scenario B"></section>
+      </div>
+    </div>
+
+    <div class="ra-card ra-disclaimer" id="ra-disclaimer">
+      <p class="ra-edu">For education only, not financial advice.</p>
+      <p class="ra-disclaimer-body">Not investment, tax or retirement advice. Results come from 500 simulated runs of historical returns, <span id="ra-disclaimer-years">the years listed under Historical data used</span>, and the assumptions shown. These results are not predictions; real results will differ and can be worse. Past returns do not predict future returns. International stock returns before 1975 are Stepwell's own estimate; every series is listed under Historical data used.</p>
+    </div>
+
+    <details class="ra-card ra-assume" id="ra-assume">
+      <summary><span><span class="ra-h3">Assumptions and what is not modelled</span><span class="ra-body ra-sum-line">500 runs, one year at a time, in today's dollars. One person, one tax rate that you type, no fees.</span></span><span class="ra-caret" aria-hidden="true"></span></summary>
+      <div class="ra-assume-body">
+        <div class="ra-assume-grid">
+          <div class="ra-assume-block">
+            <h3 class="ra-h3">How the simulation works</h3>
+            <ul class="ra-list">
+              <li>500 runs. Each run builds a possible future one year at a time by drawing past years at random from the history window below; every asset class uses the same drawn year.</li>
+              <li>All figures are in today's dollars: each drawn year's return is reduced by that year's inflation.</li>
+              <li>The mix is rebalanced to its fixed split every year. No fees or fund costs are taken off.</li>
+              <li>Contributions are added at the end of each year until the year before retirement.</li>
+              <li>Recurring income counts from its own start age. If it starts before retirement, it is saved until retirement.</li>
+              <li>Social Security, pension and annuity amounts stay the same in today's dollars every year, as if they rose with inflation. Many pensions and annuities do not, so their real value would fall over time.</li>
+              <li>Total lifetime income adds up Social Security, pensions and annuities over the retirement years. Other recurring income and one-time income count in total income, not in lifetime income.</li>
+              <li>In retirement, withdrawals come out at the start of the year in this order: any required minimum distribution from tax-deferred savings, then taxable, then more tax-deferred, then tax-exempt. This order is a fixed rule of the simulation, not a suggestion about the order to use.</li>
+              <li>Tax is one rate that you type, applied to withdrawals from tax-deferred savings. It is an assumption, not tax advice. Tax on a required minimum distribution that is not needed for spending and is put back into savings is shown on its own and is not counted in expenses.</li>
+              <li>Required minimum distributions use the IRS Uniform Lifetime Table and begin at the start age for your birth year, even while still working. The still-working exception for workplace plans is not applied, so the page may show distributions earlier than a workplace plan would require. The option to take the first one by 1 April of the next year is not modelled. <span id="ra-rmd-note"></span></li>
+              <li>The money lasted means savings and income covered every year's expenses and tax to the plan-to age.</li>
+              <li>The three outcomes are chosen by how each run's plan ended, ranked from worst to best. They rank plan results, not markets.</li>
+              <li>The random draws use a fixed seed, so the same inputs always give the same 500 runs. That makes results repeatable; it does not make them more accurate.</li>
+              <li>With 500 runs, a count near the middle can move by about 22 runs either way from one set of runs to another.</li>
+            </ul>
+          </div>
+          <div class="ra-assume-block">
+            <h3 class="ra-h3">What is not modelled</h3>
+            <ul class="ra-list">
+              <li>A partner or spouse, and the joint life table for required minimum distributions</li>
+              <li>Future, inflated dollars</li>
+              <li>Health-care costs rising faster than other prices</li>
+              <li>Federal brackets, state and local taxes, and filing status</li>
+              <li>An estimate of Social Security: you type the amount</li>
+              <li>Buying or pricing an annuity</li>
+              <li>Pensions and annuities that do not keep up with inflation</li>
+              <li>Tax on Social Security, pension, annuity and other income: none is taken off in this illustration</li>
+              <li>Fees, fund costs and taxes on growth in taxable accounts</li>
+              <li>Linked accounts and saved plans</li>
+              <li>The still-working exception for workplace plans</li>
+            </ul>
+            <p class="ra-note">This illustration sees only what is typed here. Other assets, income and investments are part of the full picture and are worth weighing alongside it.</p>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="ra-card ra-assume" id="ra-assume-mixes">
+      <summary><span><span class="ra-h3">The ten asset mixes</span><span class="ra-body ra-sum-line">Fixed stock and bond mixes from 100% cash to 100% stocks, rebalanced every year.</span></span><span class="ra-caret" aria-hidden="true"></span></summary>
+      <div class="ra-assume-body">
+        <p class="ra-body" id="ra-mix-note">Average yearly return and its spread are after inflation, measured over the history window. They describe the past, not what comes next.</p>
+        <p class="ra-body">Bonds here means the US 10-year Treasury bond only, not a mix of bonds. Cash means 3-month US Treasury bills. US large, mid-size and small company stocks are size groups of the whole listed US market, not any published index of large, mid-size or small companies.</p>
+        <p class="ra-body">Each mix ranks its own 500 runs, so changing the mix can change which run is shown. In the below-average outcomes a mix with more stocks can end lower than one with fewer, mostly in plans that already run short; in other runs the reverse happens. The page does not use this to suggest a mix.</p>
+        <div class="ra-table-wrap" tabindex="0" role="region" aria-label="The ten asset mixes"><table id="ra-table-mixes"></table></div>
+        <p class="ra-small">For education only, not financial advice.</p>
+      </div>
+    </details>
+
+    <details class="ra-card ra-assume" id="ra-assume-data">
+      <summary><span><span class="ra-h3">Historical data used</span><span class="ra-body ra-sum-line" id="ra-data-line"></span></span><span class="ra-caret" aria-hidden="true"></span></summary>
+      <div class="ra-assume-body">
+        <p class="ra-body" id="ra-data-note"></p>
+        <div class="ra-table-wrap" tabindex="0" role="region" aria-label="Historical data used"><table id="ra-table-sources"></table></div>
+        <div class="ra-source-notes">
+          <h3 class="ra-h3">What each source states about reuse</h3>
+          <div class="ra-source-list" id="ra-source-notes"></div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="ra-wrap ra-screen" id="profile" role="tabpanel" aria-labelledby="ra-screen-profile" hidden>
+    <div class="ra-profile">
+      <div class="ra-profile-side">
+        <nav class="ra-card ra-sections" aria-label="Planning profile sections"><ol id="ra-parts"></ol></nav>
+        <div class="ra-card ra-side-card">
+          <p class="ra-h3" id="ra-profile-kicker">Scenario A</p>
+          <p class="ra-body">The analysis updates as you type. Nothing is sent or saved.</p>
+          <button type="button" class="ra-btn" data-screen-go="analysis">View the analysis</button>
+          <button type="button" class="ra-link" id="ra-clear">Clear the example</button>
+          <button type="button" class="ra-link" id="ra-restore" hidden>Back to the example inputs</button>
+        </div>
+      </div>
+      <div class="ra-profile-main" id="ra-forms"></div>
+    </div>
+  </div>
+
+  <dialog class="ra-dialog" id="ra-dialog-cond" aria-labelledby="ra-dialog-cond-h">
+    <form method="dialog" class="ra-dialog-in">
+      <h2 class="ra-h2" id="ra-dialog-cond-h">Which outcome to show</h2>
+      <p class="ra-note">These are what-if settings, not forecasts. Outcomes worse than any of them are possible. Each shows one simulated run, <span id="ra-cond-window">drawn from the history listed under the assumptions</span>. The 500 runs are ranked by how the plan ended. Runs that ran short rank below runs that lasted. Among runs that ran short, the one whose first shortfall came earliest ranks worst, then the one with the larger total shortfall. Among runs that lasted, less money left at the end ranks lower. This ranks plan results, not markets: a run can have ordinary markets and still end badly if weak years come early. When runs end the same, they tie, so the counts below say at least and at most.</p>
+      <fieldset class="ra-radios" id="ra-cond-options">
+        <legend class="ra-sr">Outcome to show</legend>
+        <label class="ra-radio"><input type="radio" name="ra-cond" value="average"><span><strong>Average outcome</strong><span>The middle run: at least 250 of 500 runs ended as well as this one or better.</span></span></label>
+        <label class="ra-radio"><input type="radio" name="ra-cond" value="below"><span><strong>Below-average outcome</strong><span>At least 375 of 500 runs ended as well as this one or better. At most 125 ended worse.</span></span></label>
+        <label class="ra-radio"><input type="radio" name="ra-cond" value="sigBelow"><span><strong>Significantly below-average outcome</strong><span>At least 450 of 500 runs ended as well as this one or better. At most 50 ended worse.</span></span></label>
+      </fieldset>
+      <p class="ra-note">Each mix ranks its own 500 runs, so changing the mix can change which run is shown. In the below-average outcomes a mix with more stocks can end lower than one with fewer, mostly in plans that already run short; in other runs the reverse happens. The page does not use this to suggest a mix.</p>
+      <div class="ra-dialog-foot">
+        <button type="button" class="ra-btn" data-close>Cancel</button>
+        <button type="button" class="ra-btn ra-btn-primary" id="ra-cond-update">Update</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="ra-dialog ra-dialog-wide" id="ra-dialog-mix" aria-labelledby="ra-dialog-mix-h">
+    <form method="dialog" class="ra-dialog-in">
+      <h2 class="ra-h2" id="ra-dialog-mix-h">Asset mix</h2>
+      <p class="ra-note">An illustrative mix. The numbers are labels only. Ten fixed stock and bond mixes, rebalanced to the same split every year. No mix is matched to you, and this page does not suggest one. Bonds here means the US 10-year Treasury bond only, not a mix of bonds. Cash means 3-month US Treasury bills.</p>
+      <fieldset class="ra-stops" id="ra-stops"><legend class="ra-sr">Asset mix, TAM 1 to 10</legend></fieldset>
+      <div class="ra-ends"><span id="ra-end-low">TAM 1: all cash.</span><span id="ra-end-high">TAM 10: all stocks.</span></div>
+      <div class="ra-donuts">
+        <div class="ra-donut-card"><h3 class="ra-h3">Mix in the analysis now</h3><p class="ra-small" id="ra-mix-now-text"></p><div class="ra-donut-row"><div id="ra-donut-now"></div><ul class="ra-mix-legend" id="ra-mix-legend-now"></ul></div></div>
+        <div class="ra-donut-card" id="ra-donut-card-new" hidden><h3 class="ra-h3">Mix selected here</h3><p class="ra-small" id="ra-mix-new-text"></p><div class="ra-donut-row"><div id="ra-donut-new"></div><ul class="ra-mix-legend" id="ra-mix-legend-new"></ul></div></div>
+      </div>
+      <div class="ra-dialog-foot">
+        <button type="button" class="ra-btn" data-close>Cancel</button>
+        <button type="button" class="ra-btn ra-btn-primary" id="ra-mix-update">Update analysis</button>
+      </div>
+    </form>
+  </dialog>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/">Savings</a></li><li><a href="/apy-calculator/">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/">With inflation</a></li><li><a href="/rule-of-72-calculator/">Rule of 72</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p>For education only, not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The analysis runs entirely in your browser.</p>
+  </div>
+</footer>
+
+<script src="/rmd-calculator/rmd-tables.js"></script>
+<script src="/retirement-analysis/ra-data.js"></script>
+<script src="/retirement-analysis/ra-engine.js"></script>
+<script src="/retirement-analysis/ra-chart.js"></script>
+<script src="/retirement-analysis/ra-ui.js"></script>
+</body>
+</html>

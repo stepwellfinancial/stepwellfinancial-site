@@ -1,0 +1,582 @@
+/* ra.css: the retirement analysis page.
+ *
+ * Look: the Stepwell platform app and the RMD calculator page: a void canvas with the ledger
+ * aurora, glass cards with a 1px line and a soft black shadow, panel-2 wells, pill controls, big
+ * ink figures and quiet captions. The structure is the one the owner approved: a select for the
+ * view, a sentence with clickable words, Chart and Table tabs, hero figures, modal pickers, and a
+ * planning profile with a section list.
+ *
+ * Colour meanings: ledger is growth, links, the primary action, selected states, focus and slider
+ * handles. draw is the app's money-out amber, kept as a token and not used on this page. withdraw
+ * is withdrawals on the yearly cash flow chart: royal blue, always dotted, always named in text,
+ * never a text colour. income is the income bar on that chart: gold (owner's choice, 15 Nov). compare
+ * is Scenario B only, dashed, on the one chart that has no draw mark. alert is input validation
+ * only, with words and a line icon. The cat- colours mark the three account types and the mix.
+ *
+ * Text never sits on the canvas: every piece of text is inside a glass card, a panel or a well.
+ * The page's CSP allows no style attribute, so state is always a class or an attribute.
+ */
+
+/* BEGIN app tokens. The same names and Dark values as the app's css/tokens.css and the identity's
+   App table, scoped to this page's <main>. This block is the only place in this file where a
+   colour literal may appear. --line is the identity's solid Dark line. --iris-light and
+   --iris-deep are two more shades of the investments colour for the three US stock sizes in the
+   mix donut (graphic only, each named in text). --glass-edge is the app's quieter edge, used for
+   the wells inside the inputs card. */
+.ra {
+  --ink: #e8eeea; --muted: #9aa8a0; --paper: #0f1412; --panel: #171e1b;
+  --ledger: #3ccf8e; --on-ledger: #06140d; --compare: #fb923c;
+  --void: #0a0f0d; --glass: rgba(17, 25, 22, .80); --glass-hi: rgba(232, 238, 234, .05); --glass-edge: rgba(232, 238, 234, .08);
+  --panel-2: #17211d; --line: #2a3631; --ledger-tint: rgba(60, 207, 142, .12); --focus: #3ccf8e;
+  --blur: 18px;
+  --cat-cash: #5cc8c2; --cat-invest: #a993ff; --cat-property: #d4bf8e; --cat-other: #93a7b8;
+  --iris-light: #cdbfff; --iris-deep: #7f68e6;
+  --draw: #f0b36a; --withdraw: #4f79f5; --income: #f2c230; --alert: #ff8a80;
+  --aurora: radial-gradient(60% 50% at 18% 0%, rgba(60,207,142,.14), transparent 70%),
+            radial-gradient(45% 40% at 92% 8%, rgba(60,207,142,.08), transparent 70%);
+  --shadow: 0 1px 0 var(--glass-hi) inset, 0 12px 40px rgba(0,0,0,.45);
+  --glow-ledger: 0 0 0 1px rgba(60,207,142,.35), 0 0 24px rgba(60,207,142,.28);
+}
+@media (prefers-contrast: more) { .ra { --glass: var(--panel); --ledger-tint: #163126; --line: var(--muted); --glass-edge: var(--muted); --aurora: none; } }
+@media (prefers-reduced-transparency: reduce) { .ra { --glass: var(--panel); --ledger-tint: #163126; --blur: 0px; } }
+/* END app tokens */
+
+.ra {
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --t-xs: 13px; --t-s: 14px; --t-m: 16px; --t-l: 20px; --t-xl: 28px;
+  --r-s: 10px; --r-m: 16px;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+  --ease: cubic-bezier(.2,.7,.2,1); --dur: 150ms;
+}
+@media (prefers-reduced-motion: reduce) { .ra { --dur: 0ms; } }
+
+/* ---------- Canvas and cards ---------- */
+.ra { color-scheme: dark; background-color: var(--void); background-image: linear-gradient(to bottom, var(--void), transparent 160px), var(--aurora); background-repeat: no-repeat; background-size: 100% 960px;
+  color: var(--ink); font: 16px/1.6 var(--font); padding: var(--s5) 0 var(--s7); }
+.ra-wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--s4); }
+@media (min-width: 1024px) { .ra-wrap { padding: 0 var(--s5); } }
+.ra a { color: var(--ledger); text-underline-offset: 3px; }
+.ra :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.ra h1, .ra h2, .ra h3 { line-height: 1.25; margin: 0; letter-spacing: -.01em; color: var(--ink); }
+.ra p { margin: 0; }
+.ra h1 { font-size: var(--t-xl); font-weight: 700; line-height: 1.2; }
+.ra-h2 { font-size: var(--t-l); font-weight: 700; }
+.ra-h3 { font-size: var(--t-m); font-weight: 700; }
+/* Type rule for a tool page: a paragraph of two or more sentences, or one-sentence lines that
+   follow one another, is body copy: 16 px at 1.6 (.ra-body, .ra-note, .ra-hint, the lists). Every
+   other text is at least 13 px at 1.2 or more (.ra-small). Chart axis labels are exempt. */
+.ra-small { font-size: var(--t-xs); line-height: 1.5; color: var(--muted); }
+.ra-body { font-size: var(--t-m); line-height: 1.6; color: var(--muted); }
+.ra-note { font-size: var(--t-m); line-height: 1.6; color: var(--muted); max-width: 76ch; }
+.ra-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.ra-numeral { font-variant-numeric: tabular-nums; }
+
+.ra-card { background: var(--glass); border: 1px solid var(--line); border-radius: var(--r-m); padding: 20px; box-shadow: var(--shadow); min-width: 0;
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(1.2); backdrop-filter: blur(var(--blur)) saturate(1.2); }
+.ra-card > * + * { margin-top: var(--s4); }
+.ra-live { display: grid; gap: var(--s5); min-width: 0; }
+.ra-live[hidden], .ra-screen[hidden], .ra-empty[hidden] { display: none; }
+.ra-screen { display: grid; gap: var(--s5); margin-top: var(--s5); }
+
+/* ---------- The head card: breadcrumb, title, privacy line, screen tabs and the scenario row ---------- */
+.ra-head > * + * { margin-top: 0; }
+.ra-head .breadcrumb ol { padding: 0; font-size: var(--t-xs); line-height: 1.4; color: var(--muted); }
+.ra-head .ra-crumb { padding: 14px 0; }
+.ra-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s2) var(--s5); margin-top: 2px; }
+.ra-lede { color: var(--muted); font-size: var(--t-m); line-height: 1.6; max-width: 68ch; margin-top: 2px; }
+.ra-top-side { display: flex; flex-wrap: wrap; align-items: center; gap: 4px var(--s2); }
+/* Wide screens: the example chip and the privacy line sit at the top right of the head card, level with the breadcrumb. */
+@media (min-width: 1100px) { .ra-head { position: relative; } .ra-top-side { position: absolute; top: 14px; right: 20px; } }
+.ra-chip { display: inline-flex; align-items: center; font-size: var(--t-xs); line-height: 1.2; padding: 5px 10px; border-radius: 999px; white-space: nowrap; color: var(--ink); }
+.ra-chip.ra-chip-sample { border: 1px dashed var(--muted); background: var(--panel-2); }
+.ra-chip[hidden] { display: none; }
+.ra-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s3) var(--s5); margin-top: var(--s3); padding-top: var(--s3); border-top: 1px solid var(--line); }
+.ra-scen { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); }
+.ra-scen-note { margin-top: var(--s3); }
+.ra-scen-note[hidden] { display: none; }
+
+/* ---------- Buttons, pills and segmented controls ---------- */
+.ra-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: 600 var(--t-s)/1.2 var(--font); border-radius: 999px; padding: 8px 18px; min-height: 44px; border: 1px solid var(--muted); background: var(--panel-2); color: var(--ink); cursor: pointer; white-space: nowrap;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+.ra-btn:hover { background: var(--panel); border-color: var(--ink); }
+.ra-btn.ra-btn-primary { background: var(--ledger); border-color: var(--ledger); color: var(--on-ledger); }
+.ra-btn.ra-btn-primary:hover { background: var(--ledger); border-color: var(--ink); box-shadow: var(--glow-ledger); }
+.ra .ra-btn:focus-visible { border-radius: 999px; }
+.ra .ra-btn.ra-btn-primary:focus-visible { outline-color: var(--ink); }
+.ra-btn svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.ra-link { all: unset; box-sizing: border-box; font: 600 15px/1.3 var(--font); color: var(--ledger); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center; }
+.ra-link:hover { text-decoration-thickness: 2px; }
+.ra-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.ra-link[hidden], .ra-btn[hidden] { display: none; }
+/* "Model another scenario" stays in the head card at every width. Phones show the compact wording;
+   the button's accessible name is the full wording at every width. */
+.ra-add-short { display: none; }
+@media (max-width: 639px) {
+  .ra-add-full { display: none; }
+  .ra-add-short { display: inline; }
+}
+/* Tabs and the scenario switch share one drawing: a panel-2 well with a 1px muted edge; the
+   selected item is ledger-tint with a 1px ledger ring. */
+.ra-tabs, .ra-seg { display: inline-flex; background: var(--panel-2); border: 1px solid var(--muted); border-radius: 999px; padding: 3px; gap: 2px; max-width: 100%; }
+.ra-tabs [role=tab], .ra-seg button { all: unset; box-sizing: border-box; position: relative; font: 600 var(--t-s)/1.2 var(--font); color: var(--muted); padding: 8px 16px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 999px; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+.ra-tabs [role=tab]:hover, .ra-seg button:hover { color: var(--ink); }
+.ra-seg button[hidden] { display: none; }
+.ra-tabs [role=tab][aria-selected="true"], .ra-seg button[aria-pressed="true"] { background: var(--ledger-tint); color: var(--ink); box-shadow: 0 0 0 1px var(--ledger); }
+.ra-tabs [role=tab]:focus-visible, .ra-seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 999px; }
+/* A control already edged in ledger takes an ink ring, so the ring is never green on green. */
+.ra-tabs [role=tab][aria-selected="true"]:focus-visible, .ra-seg button[aria-pressed="true"]:focus-visible { outline-color: var(--ink); }
+
+/* ---------- Results: the chart card with the three hero figures beside it ---------- */
+.ra-results { display: grid; gap: var(--s5); min-width: 0; }
+/* Each column keeps its own height: the chart card ends where its content ends. */
+@media (min-width: 1100px) { .ra-results { grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); align-items: start; } }
+.ra-chart-card > * + * { margin-top: var(--s3); }
+.ra-chart-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s3) var(--s4); }
+.ra-select-block { display: grid; gap: 4px; justify-items: start; min-width: 0; }
+.ra-label { font-size: var(--t-xs); font-weight: 600; line-height: 1.3; color: var(--muted); }
+.ra-select { position: relative; display: inline-block; max-width: 100%; }
+.ra-select::after { content: ""; position: absolute; right: 18px; top: 50%; width: 8px; height: 8px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.ra .ra-select select { appearance: none; -webkit-appearance: none; font: 600 var(--t-m)/1.3 var(--font); color: var(--ink); background: var(--paper); border: 1px solid var(--muted); border-radius: var(--r-s); padding: 9px 44px 9px 14px; min-height: 44px; width: auto; max-width: 100%; margin: 0; cursor: pointer;
+  transition: border-color var(--dur) var(--ease); }
+.ra .ra-select select:hover { border-color: var(--ink); }
+.ra-showing { font-size: var(--t-m); line-height: 1.7; color: var(--ink); max-width: 86ch; }
+.ra-chart-top .ra-chip { margin-left: auto; align-self: center; }
+.ra-chart-top .ra-tabs { align-self: center; }
+/* The clickable words: each is a 44px target (padding, taken back by the margin so lines keep their spacing). */
+.ra-word { all: unset; display: inline-block; color: var(--ledger); font-weight: 600; line-height: 22px; cursor: pointer; padding: 11px 0; margin: -11px 0; text-decoration-line: underline; text-decoration-style: dashed; text-decoration-color: var(--ledger); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.ra-word:hover { text-decoration-style: solid; }
+.ra-word:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.ra-tabline { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s2) var(--s3); }
+.ra-view-body, .ra-pane { display: grid; gap: var(--s3); min-width: 0; }
+.ra-view-body[hidden], .ra-pane[hidden] { display: none; }
+.ra-chart { min-width: 0; border-radius: var(--r-s); }
+.ra-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ra-sentence { font-size: var(--t-m); line-height: 1.6; max-width: 62ch; }
+.ra-edu { font-size: var(--t-xs); line-height: 1.5; color: var(--muted); }
+/* The approved line as the last line of a card that shows computed figures: its own element,
+   set apart from the text above it by a rule, so it is never one of a group of lines. */
+.ra-edu-line { border-top: 1px solid var(--line); padding-top: var(--s3); }
+.ra-form .ra-edu-line { border-top: 0; padding-top: 0; }
+/* What the chosen outcome is: inside the sentence on wide screens, under the chart on phones. */
+.ra-gloss-below { display: none; }
+
+.ra-figs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--s2); margin: 0; }
+.ra-fig { display: grid; gap: 2px; align-content: start; padding: var(--s3) var(--s4); background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--r-s); min-width: 0; }
+.ra-fig dt { font-size: var(--t-xs); line-height: 1.3; color: var(--muted); }
+.ra-fig dd { margin: 0; font-size: var(--t-l); font-weight: 700; letter-spacing: -.01em; line-height: 1.25; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ra-fig .ra-fig-sub { font-size: var(--t-xs); font-weight: 400; letter-spacing: 0; color: var(--muted); line-height: 1.4; }
+.ra-fig .ra-fig-sub.ra-fig-sub-long { font-size: var(--t-m); line-height: 1.6; }
+@media (max-width: 620px) { .ra-figs { grid-auto-flow: row; } }
+.ra-figs-block { display: grid; gap: var(--s3); }
+
+.ra-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 15px; line-height: 1.3; color: var(--ink); margin: 0; padding: 0; list-style: none; }
+.ra-legend li { display: inline-flex; align-items: center; gap: 8px; }
+.ra-legend li[hidden], .ra-detail[hidden], .ra-figs-block[hidden] { display: none; }
+.ra-legend.ra-legend-col { display: grid; gap: 8px; }
+.ra-legend.ra-legend-col li { display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: start; gap: 8px; font-size: var(--t-m); line-height: 1.6; color: var(--muted); }
+.ra-legend.ra-legend-col strong { color: var(--ink); }
+.ra-legend.ra-legend-col .ra-sw { justify-self: center; margin-top: 7px; }
+.ra-legend.ra-legend-col .ra-sw.ra-sw-line, .ra-legend.ra-legend-col .ra-sw.ra-sw-dot { margin-top: 11px; }
+.ra-legend.ra-legend-col .ra-sw.ra-sw-vline { margin-top: 5px; }
+.ra-detail { display: grid; gap: var(--s3); }
+
+/* The three hero figures: glass cards in a column beside the chart on wide screens. */
+.ra-tiles { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s4); margin: 0; align-content: start; }
+.ra-tile { background: var(--glass); border: 1px solid var(--line); border-radius: var(--r-m); padding: var(--s4) 20px; box-shadow: var(--shadow); display: grid; gap: 2px; align-content: start; min-width: 0;
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(1.2); backdrop-filter: blur(var(--blur)) saturate(1.2); }
+.ra-tile dt { font-size: var(--t-s); line-height: 1.3; color: var(--muted); }
+.ra-tile dd { margin: 0; }
+.ra-tile-big { font-size: 40px; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+.ra-tile-big small { font-size: var(--t-m); font-weight: 600; letter-spacing: 0; color: var(--muted); }
+.ra-tile-big .ra-about { margin-right: 8px; }
+.ra-tile-big .ra-unit { margin-left: 8px; }
+/* The exact figure is a sentence directly above the tile's caption, so it is body size too. */
+.ra-tile-exact { font-size: var(--t-m); line-height: 1.6; color: var(--ink); font-variant-numeric: tabular-nums; }
+.ra-tile-sub { font-size: var(--t-m); line-height: 1.6; color: var(--muted); margin-top: 6px; }
+/* Three across: the figure scales with the tile and "about" takes its own line, so a money
+   figure stays inside its tile from 700 to 1099 px. */
+@media (min-width: 700px) and (max-width: 1099px) {
+  .ra-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ra-tile-big { font-size: clamp(23px, 3.3vw, 30px); }
+  .ra-tile-big .ra-about { display: block; margin-right: 0; line-height: 1.4; }
+}
+@media (max-width: 420px) { .ra-tile-big { font-size: 34px; } }
+
+/* The yearly category details: one column at every width, with Income, Expenses and Events as
+   subheadings, so a key and its description never wrap a word or two at a time. */
+.ra-cats { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s4); }
+.ra-cat-h { font-weight: 700; font-size: var(--t-s); line-height: 1.3; color: var(--ink); margin-bottom: var(--s2); }
+.ra-sw { display: inline-block; flex: none; width: 12px; height: 12px; border-radius: 3px; background: currentColor; }
+.ra-sw.ra-sw-line { width: 18px; height: 3px; border-radius: 2px; }
+.ra-sw.ra-sw-dash { width: 18px; height: 0; border-top: 3px dashed currentColor; background: none; border-radius: 0; }
+.ra-sw.ra-sw-dot { width: 18px; height: 0; border-top: 3px dotted currentColor; background: none; border-radius: 0; }
+.ra-sw.ra-sw-vline { width: 2px; height: 16px; border-radius: 0; background: var(--ink); margin: 0 5px; }
+.ra-sw.ra-sw-hatch { border-radius: 2px; background: repeating-linear-gradient(135deg, var(--muted) 0 2px, var(--panel) 2px 5px); border: 1px solid var(--muted); }
+.ra-sw.ra-sw-dots { border-radius: 2px; background: radial-gradient(circle at 50% 50%, var(--panel) 0 1px, var(--withdraw) 1.3px) 0 0 / 4px 4px; border: 1px solid var(--withdraw); }
+.ra-sw.ra-sw-band { border-radius: 2px; background: var(--ledger-tint); border: 1px dashed var(--muted); }
+
+.ra-c-cash { color: var(--cat-cash); } .ra-c-invest { color: var(--cat-invest); } .ra-c-property { color: var(--cat-property); } .ra-c-other { color: var(--cat-other); }
+.ra-c-iris-light { color: var(--iris-light); } .ra-c-iris-deep { color: var(--iris-deep); }
+.ra-c-ink { color: var(--ink); } .ra-c-have { color: var(--muted); } .ra-c-need { color: var(--ink); } .ra-c-income { color: var(--income); }
+/* Scenario A is ink and solid; Scenario B is the comparison colour and dashed. Neither is a verdict. */
+.ra-c-a { color: var(--ink); } .ra-c-b { color: var(--compare); }
+
+.ra-switch { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-size: 15px; line-height: 1.4; cursor: pointer; color: var(--ink); }
+.ra .ra-switch input { all: unset; box-sizing: border-box; flex: none; width: 46px; height: 26px; border-radius: 999px; background: var(--paper); border: 1px solid var(--muted); position: relative; cursor: pointer; transition: background-color var(--dur) var(--ease); }
+.ra .ra-switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--muted); box-sizing: border-box; transition: transform var(--dur) var(--ease); }
+.ra .ra-switch input:checked { background: var(--ledger); border-color: var(--ledger); }
+.ra .ra-switch input:checked::after { transform: translateX(20px); background: var(--on-ledger); }
+.ra .ra-switch input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 999px; }
+.ra .ra-switch input:checked:focus-visible { outline-color: var(--ink); }
+.ra-switches { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s6); }
+
+/* ---------- Chart internals ---------- */
+.ra-gridline { stroke: var(--line); stroke-width: 1; }
+.ra-base { stroke: var(--muted); stroke-opacity: .6; stroke-width: 1; }
+.ra-tick { fill: var(--muted); font: 13px var(--font); font-variant-numeric: tabular-nums; }
+.ra-area { stroke: none; opacity: .85; }
+.ra-area.ra-area-soft { opacity: .10; }
+.ra-area-line { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; }
+.ra-latest .ra-halo { fill: var(--ledger); opacity: .22; filter: drop-shadow(0 0 6px var(--ledger)); }
+.ra-latest .ra-core { fill: var(--ink); stroke: var(--panel); stroke-width: 2; }
+.ra-line-label, .ra-end-label { fill: var(--ink); font: 600 13px var(--font); paint-order: stroke; stroke: var(--panel); stroke-width: 4px; stroke-linejoin: round; }
+.ra-end-label { fill: currentColor; font-weight: 700; }
+.ra-marker.ra-marker-thin line { stroke-width: 1; }
+.ra-stop-top, .ra-stop-bottom { stop-color: currentColor; stop-opacity: 1; }
+.ra-stop-bottom { stop-opacity: .72; }
+/* With the range on, the areas step back to 70% and their top lines stay at full strength. */
+.ra-areas-fade .ra-area { opacity: .7; }
+.ra-areas-fade .ra-area-line { opacity: 1; }
+.ra-total-line { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.ra-band { fill: var(--ledger); opacity: .16; }
+.ra-band-edge { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 4; }
+.ra-marker line { stroke: var(--ink); stroke-width: 1.5; }
+.ra-marker text, .ra-mark-text { fill: var(--ink); font: 600 13px var(--font); paint-order: stroke; stroke: var(--panel); stroke-width: 4px; stroke-linejoin: round; }
+.ra-cursor { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 2 3; }
+.ra-hit { fill: transparent; cursor: crosshair; touch-action: pan-y; }
+.ra-enddot .ra-core { fill: currentColor; stroke: var(--panel); stroke-width: 2; }
+.ra-bar:not(.ra-draw-rect):not(.ra-gap-rect) { fill: currentColor; }
+.ra-bar-track { fill: var(--panel-2); }
+.ra-bar-label { fill: var(--ink); font: 15px var(--font); }
+.ra-bar-value { fill: var(--ink); font: 700 16px var(--font); font-variant-numeric: tabular-nums; }
+.ra-hatch-bg { fill: var(--panel); } .ra-hatch-fg { fill: var(--muted); }
+.ra-gap-rect { stroke: var(--muted); stroke-width: 1; }
+.ra-gap-text { fill: var(--ink); font: 700 13px var(--font); paint-order: stroke; stroke: var(--panel); stroke-width: 5px; stroke-linejoin: round; font-variant-numeric: tabular-nums; }
+/* Withdrawals: the withdraw colour with a dotted texture, so they differ from income by pattern too. */
+.ra-dots-bg { fill: var(--withdraw); } .ra-dots-fg { fill: var(--panel); }
+.ra-draw-rect { stroke: var(--withdraw); stroke-width: 1; }
+.ra-col-on .ra-bar { stroke: var(--ink); stroke-width: 1.5; }
+.ra-line { fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.ra-line-main { stroke-width: 3; }
+.ra-line-dash { stroke-dasharray: 7 5; }
+.ra-line-dot { stroke-dasharray: 1 5; }
+/* The track shows only in the 2 px gaps between segments: it is the donut card's own ground. */
+.ra-donut-track { fill: none; stroke: var(--panel-2); stroke-width: 26; }
+.ra-donut-seg { fill: none; stroke: currentColor; stroke-width: 26; }
+.ra-donut-big { fill: var(--ink); font: 700 26px var(--font); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.ra-donut-small { fill: var(--muted); font: 13px var(--font); }
+.ra-donut { width: 168px; flex: none; }
+
+/* The readout: the year under the pointer, with each series keyed by its colour or pattern, its name and its figure. */
+.ra-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--r-s); padding: 10px 14px; font-size: var(--t-s); line-height: 1.4; margin-top: var(--s2); min-height: 44px; }
+.ra-readout-title { font-weight: 700; font-variant-numeric: tabular-nums; }
+.ra-readout-items { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0; padding: 0; }
+.ra-readout-items li { display: inline-flex; align-items: baseline; gap: 6px; }
+.ra-readout-items .ra-sw { align-self: center; }
+.ra-readout-label { color: var(--muted); }
+.ra-readout-value { font-weight: 700; }
+
+/* ---------- Tables: a solid panel, a panel-2 header row, right-aligned tabular figures ---------- */
+.ra-table-wrap { overflow: auto; max-height: 560px; border: 1px solid var(--line); border-radius: var(--r-s); background: var(--panel); }
+.ra-table-wrap:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ra table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 0; font-variant-numeric: tabular-nums; font-size: var(--t-s); line-height: 1.4; }
+.ra caption { caption-side: top; text-align: left; padding: 10px 16px; font-size: var(--t-xs); line-height: 1.5; color: var(--muted); background: var(--panel); border-bottom: 1px solid var(--line); }
+.ra th, .ra td { text-align: right; padding: 11px 16px; border: 0; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--panel); color: var(--ink); }
+.ra th:first-child, .ra td:first-child { text-align: left; position: sticky; left: 0; z-index: 1; }
+.ra thead th { position: sticky; top: 0; z-index: 2; background: var(--panel-2); color: var(--muted); font-weight: 600; font-size: var(--t-xs); white-space: normal; vertical-align: bottom; line-height: 1.3; min-width: 96px; }
+.ra thead th:first-child { z-index: 3; }
+.ra thead th:first-child, .ra thead th:nth-child(2) { min-width: 0; }
+.ra thead th .ra-sw { margin-right: 8px; vertical-align: middle; }
+.ra tbody th { font-weight: 600; }
+.ra tbody tr:last-child th, .ra tbody tr:last-child td { border-bottom: 0; }
+.ra tbody tr:hover td, .ra tbody tr:hover th { background-image: linear-gradient(var(--ledger-tint), var(--ledger-tint)); }
+.ra th.ra-colgroup, .ra td.ra-colgroup { background: var(--panel-2); }
+.ra td.ra-total { font-weight: 700; }
+.ra td.ra-gapcell { font-weight: 700; }
+.ra tr.ra-rowmark th, .ra tr.ra-rowmark td { border-top: 2px solid var(--ink); }
+.ra-assume .ra-table-wrap { max-height: none; }
+/* Side by side on a narrow screen: the sticky Figure column is narrow and wraps, so the scenario
+   columns start inside the visible part and the rest is reached by scrolling sideways. */
+@media (max-width: 639px) {
+  .ra #ra-table-compare th:first-child { white-space: normal; width: 7.25rem; min-width: 7.25rem; max-width: 7.25rem; }
+  .ra #ra-table-compare thead th { min-width: 0; }
+}
+.ra-table-wrap.ra-scrolled th:first-child, .ra-table-wrap.ra-scrolled td:first-child { box-shadow: 6px 0 8px -4px rgba(0,0,0,.45); border-right: 1px solid var(--line); }
+/* The sources table holds notes of two or more sentences, so its cells are body size. */
+.ra #ra-table-sources th, .ra #ra-table-sources td { white-space: normal; text-align: left; vertical-align: top; font-size: var(--t-s); line-height: 1.45; }
+.ra #ra-table-sources tbody th, .ra #ra-table-sources td { font-size: var(--t-m); line-height: 1.6; }
+.ra #ra-table-sources td:nth-child(2), .ra #ra-table-sources td:nth-child(3) { min-width: 240px; }
+.ra #ra-table-sources td:nth-child(4), .ra #ra-table-sources td:nth-child(5) { white-space: nowrap; }
+/* Each source's note on reuse: full paragraphs under the table, never cut short; a long address wraps. */
+.ra-source-notes, .ra-source-list { display: grid; gap: var(--s3); min-width: 0; }
+.ra-source-note { margin: 0; overflow-wrap: anywhere; }
+.ra-source-note strong { color: var(--ink); }
+.ra-table-foot { text-align: right; font-size: var(--t-s); display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 0 10px; color: var(--muted); }
+
+/* ---------- The inputs summary: one glass card, four panel-2 wells ---------- */
+.ra-lower { display: grid; gap: var(--s5); min-width: 0; }
+@media (min-width: 1100px) { .ra-lower { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); align-items: start; } }
+.ra-card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s2) var(--s4); }
+.ra-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); }
+@media (max-width: 620px) { .ra-cards { grid-template-columns: minmax(0, 1fr); } }
+.ra-cards-note { grid-column: 1 / -1; }
+/* The wells end clear of the rule above the approved line, so their bottom edge is not read as cut off. */
+#ra-cards + .ra-edu-line { margin-top: var(--s4); }
+.ra-sum { display: flex; flex-direction: column; gap: var(--s2); background: var(--panel-2); border: 1px solid var(--glass-edge); border-radius: var(--r-s); padding: var(--s3) var(--s4); min-width: 0; }
+.ra-sum-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); }
+.ra-sum-head .ra-h3 { font-size: var(--t-s); color: var(--muted); font-weight: 600; }
+.ra-sum-head .ra-link { min-height: 44px; min-width: 44px; justify-content: flex-end; margin: -12px 0; font-size: var(--t-s); }
+.ra-sum-big { font-size: var(--t-xl); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.ra-sum-big small { font-size: var(--t-m); font-weight: 600; color: var(--muted); letter-spacing: 0; margin-left: 6px; }
+.ra-rows { margin: 0; display: grid; }
+.ra-rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); padding: 6px 0; border-top: 1px solid var(--line); font-size: var(--t-s); line-height: 1.4; }
+.ra-rows > div:first-child { border-top: 0; }
+.ra-rows dt { color: var(--muted); }
+.ra-rows dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.ra-sum details { font-size: var(--t-s); }
+.ra .ra-sum details { background: none; border: 0; padding: 0; border-radius: 0; }
+.ra-sum summary { color: var(--ledger); font-weight: 600; min-height: 44px; display: flex; align-items: center; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+/* The two scenario columns are one height: the wells keep their own size at the top and the
+   approved line sits at the bottom of each column (rows: tag, sentence, wells, line). */
+.ra-ab { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5); align-items: stretch; }
+@media (max-width: 760px) { .ra-ab { grid-template-columns: minmax(0, 1fr); gap: var(--s4); } }
+.ra-ab-col { display: grid; gap: var(--s3); min-width: 0; grid-template-rows: auto auto 1fr auto; }
+.ra-ab-col > * + * { margin-top: 0; }
+.ra-ab-col .ra-cards { grid-template-columns: minmax(0, 1fr); align-content: start; }
+.ra-ab-tag { display: inline-flex; align-items: center; gap: 10px; }
+
+/* The disclaimer: the required sentence alone, then the longer paragraph. */
+.ra-disclaimer > * + * { margin-top: 4px; }
+.ra-disclaimer .ra-edu { color: var(--ink); font-weight: 600; font-size: var(--t-m); line-height: 1.6; }
+/* One-sentence lines that sit directly above or below body copy are body size as well: the
+   education line above the Differences notes, and a field's hint with its error message. */
+#ra-compare .ra-table-wrap + .ra-small { font-size: var(--t-m); line-height: 1.6; }
+.ra-disclaimer-body { font-size: var(--t-m); line-height: 1.6; color: var(--muted); max-width: 110ch; }
+.ra-disclaimer-body strong { color: var(--ink); }
+.ra .ra-assume { padding: 0; }
+.ra-assume > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--s3); padding: var(--s4) 20px; min-height: 64px; cursor: pointer; border-radius: var(--r-m); transition: background-color var(--dur) var(--ease); }
+.ra-assume > summary::-webkit-details-marker { display: none; }
+.ra-assume > summary > span:first-child { display: grid; gap: 2px; min-width: 0; }
+.ra-assume > summary:hover, .ra-assume[open] > summary { background: var(--ledger-tint); }
+.ra-assume[open] > summary { border-radius: var(--r-m) var(--r-m) 0 0; }
+.ra-caret { width: 9px; height: 9px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); margin: -4px 8px 0 0; flex: none; }
+.ra-assume[open] > summary .ra-caret { transform: rotate(225deg); margin-top: 6px; border-color: var(--ledger); }
+.ra-assume-body { margin-top: 0; padding: var(--s4) 20px 20px; display: grid; gap: var(--s4); }
+.ra-assume-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5); }
+@media (max-width: 760px) { .ra-assume-grid { grid-template-columns: minmax(0, 1fr); } }
+.ra-assume-block { display: grid; gap: var(--s3); align-content: start; min-width: 0; }
+.ra-list { margin: 0; padding: 0 0 0 20px; display: grid; gap: 8px; font-size: var(--t-m); line-height: 1.6; color: var(--muted); }
+.ra-empty { border-style: dashed; border-color: var(--muted); }
+
+/* ---------- Planning profile: a section list and one glass card per section ---------- */
+.ra-profile { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: var(--s5); align-items: start; }
+@media (max-width: 900px) { .ra-profile { grid-template-columns: minmax(0, 1fr); gap: var(--s4); } }
+.ra-profile-side { display: grid; gap: var(--s4); }
+@media (min-width: 901px) { .ra-profile-side { position: sticky; top: var(--s4); } }
+.ra-sections { padding: var(--s3); }
+.ra-sections ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.ra-sections button { all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 48px; padding: 8px 14px; border-radius: var(--r-s); font: 15px/1.3 var(--font); color: var(--muted); cursor: pointer; transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+.ra-sections button:hover { color: var(--ink); background: var(--panel-2); }
+.ra-sections button[aria-current="step"] { background: var(--ledger-tint); box-shadow: 0 0 0 1px var(--ledger); color: var(--ink); font-weight: 600; }
+.ra-sections button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ra-sections button[aria-current="step"]:focus-visible { outline-color: var(--ink); }
+/* A validation error: the alert colour, the message in words and a stroke-only line icon, drawn
+   as a mask so its colour is the token. */
+.ra-err, .ra-flag { color: var(--alert); font-weight: 600; }
+.ra-err { font-size: var(--t-s); line-height: 1.4; display: flex; align-items: flex-start; gap: 6px; }
+.ra-flag { font-size: var(--t-xs); line-height: 1.3; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.ra-err:empty, .ra-flag:empty { display: none; }
+.ra-err::before, .ra-flag::before { content: ""; flex: none; width: 16px; height: 16px; background-color: var(--alert);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='8' cy='8' r='6.25'/%3E%3Cpath d='M8 4.75v3.75M8 11v.25'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='8' cy='8' r='6.25'/%3E%3Cpath d='M8 4.75v3.75M8 11v.25'/%3E%3C/svg%3E") center / contain no-repeat; }
+.ra-err::before { margin-top: 2px; }
+.ra-side-card { display: grid; gap: var(--s2); justify-items: start; }
+.ra-side-card > * + * { margin-top: 0; }
+.ra-side-card .ra-btn { width: 100%; margin-top: var(--s2); }
+/* Narrow screens: the section list becomes one horizontal row and the scenario card one compact line. */
+@media (max-width: 900px) {
+  .ra-profile-side { gap: var(--s3); }
+  .ra-sections { padding: var(--s2); }
+  .ra-sections ol { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: thin; padding: 3px; }
+  .ra-sections li { flex: none; }
+  .ra-sections button { width: auto; white-space: nowrap; min-height: 44px; padding: 8px 14px; border-radius: 999px; font-size: var(--t-s); }
+  .ra-side-card { grid-template-columns: minmax(0, 1fr) auto; align-items: center; padding: var(--s3) var(--s4); gap: 0 var(--s3); }
+  .ra-side-card .ra-body, .ra-side-card .ra-btn { display: none; }
+}
+.ra-profile-main { display: grid; gap: var(--s4); min-width: 0; }
+.ra-form[hidden] { display: none; }
+.ra-form { display: grid; gap: var(--s5); min-width: 0; }
+.ra-form > * + * { margin-top: 0; }
+.ra-form-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); }
+@media (max-width: 720px) { .ra-form-cards { grid-template-columns: minmax(0, 1fr); } }
+.ra-mini { background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--r-s); padding: var(--s3) var(--s4); display: grid; gap: 2px; align-content: start; min-width: 0; }
+.ra-mini .ra-h3 { font-size: var(--t-xs); font-weight: 400; color: var(--muted); line-height: 1.3; }
+.ra-mini-big { font-size: 22px; font-weight: 700; letter-spacing: -.01em; line-height: 1.25; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ra-mini-big small { font-size: var(--t-xs); font-weight: 400; letter-spacing: 0; color: var(--muted); }
+.ra-mini .ra-rows > div { padding: 3px 0; border-top: 0; font-size: var(--t-xs); }
+/* A group inside a section: a small heading, an optional note, then its fields as wells. */
+.ra-group { display: grid; gap: var(--s3); min-width: 0; }
+.ra-group + .ra-group, .ra-form-cards + .ra-group { border-top: 1px solid var(--line); padding-top: var(--s5); }
+.ra-group-title { font-size: var(--t-m); font-weight: 700; }
+.ra-fields { display: grid; gap: var(--s3); align-items: stretch; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 720px) { .ra-fields { grid-template-columns: minmax(0, 1fr); } }
+.ra-field { display: grid; gap: 8px; align-content: start; min-width: 0; background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--r-s); padding: var(--s3) var(--s4); }
+.ra-row .ra-field { background: none; border: 0; padding: 0; }
+.ra-field[hidden] { display: none; }
+.ra-field label, .ra-field .ra-lab-text { font-size: var(--t-s); font-weight: 600; line-height: 1.35; margin: 0; color: var(--ink); }
+.ra-ctl { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.ra-val { display: flex; align-items: center; gap: 6px; flex: none; width: 9.25rem; max-width: 100%; background: var(--paper); border: 1px solid var(--muted); border-radius: var(--r-s); padding: 0 12px; min-height: 46px; color: var(--muted);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+.ra-val.ra-val-short { width: 5.75rem; }
+.ra-row .ra-val { width: 100%; }
+.ra-val:hover { border-color: var(--ink); }
+.ra-val:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ra .ra-val input { all: unset; box-sizing: border-box; flex: 1; min-width: 0; min-height: 44px; font: 700 16px/1.2 var(--font); color: var(--ink); font-variant-numeric: tabular-nums; text-align: right; }
+.ra-val.ra-val-bad { border-color: var(--alert); border-width: 2px; }
+.ra-val.ra-val-off { background: var(--panel-2); border-style: dashed; }
+.ra-val.ra-val-off input { color: var(--muted); }
+/* Sliders, drawn for each engine so the track has a real boundary: a 1px muted edge over a paper
+   fill, and a ledger handle with an ink edge. Firefox also fills the part below the value. Safari
+   and Chromium cannot fill it without an inline style, so the bold figure beside it carries the
+   amount. The input keeps a 44px height as the touch target. */
+.ra .ra-range { -webkit-appearance: none; appearance: none; flex: 1 1 auto; width: auto; min-width: 0; height: 44px; min-height: 0; margin: 0; padding: 0; border: 0; border-radius: 999px; background: transparent; accent-color: var(--ledger); cursor: pointer; }
+.ra .ra-range:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 999px; }
+.ra .ra-range::-webkit-slider-runnable-track { box-sizing: border-box; height: 8px; border: 1px solid var(--muted); border-radius: 999px; background: var(--paper); }
+.ra .ra-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; box-sizing: border-box; width: 22px; height: 22px; margin-top: -8px; border: 2px solid var(--ink); border-radius: 50%; background: var(--ledger); }
+.ra .ra-range::-moz-range-track { box-sizing: border-box; height: 8px; border: 1px solid var(--muted); border-radius: 999px; background: var(--paper); }
+.ra .ra-range::-moz-range-progress { box-sizing: border-box; height: 8px; border: 1px solid var(--muted); border-radius: 999px; background: var(--ledger); }
+.ra .ra-range::-moz-range-thumb { box-sizing: border-box; width: 22px; height: 22px; border: 2px solid var(--ink); border-radius: 50%; background: var(--ledger); }
+.ra .ra-range:disabled { opacity: .4; cursor: default; }
+.ra-hint { font-size: var(--t-m); line-height: 1.6; color: var(--muted); max-width: 64ch; }
+.ra-field .ra-hint { font-size: var(--t-xs); line-height: 1.45; }
+.ra-field .ra-hint.ra-hint-long { font-size: var(--t-m); line-height: 1.6; }
+.ra-field .ra-hint:has(+ .ra-err:not(:empty)), .ra-field .ra-hint + .ra-err:not(:empty) { font-size: var(--t-m); line-height: 1.6; }
+/* Radios drawn here so the ring is the muted token and the dot is ledger. */
+.ra-radiorow { display: flex; flex-wrap: wrap; gap: 4px var(--s5); border: 0; margin: 0; padding: 0; min-width: 0; }
+.ra-radiorow legend { padding: 0; margin-bottom: 4px; }
+.ra-radiorow label { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 400; font-size: 16px; cursor: pointer; }
+.ra .ra-radiorow input, .ra .ra-radio input, .ra .ra-stops input { -webkit-appearance: none; appearance: none; box-sizing: border-box; width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; flex: none; border: 1px solid var(--muted); border-radius: 50%; background: var(--paper); cursor: pointer; }
+.ra .ra-radiorow input:checked, .ra .ra-radio input:checked, .ra .ra-stops input:checked { border: 2px solid var(--ledger); background: radial-gradient(circle at 50% 50%, var(--ledger) 0 4.5px, var(--paper) 5.5px); }
+.ra .ra-radiorow input:focus-visible, .ra .ra-radio input:focus-visible, .ra .ra-stops input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 50%; }
+.ra-row { border: 1px solid var(--line); background: var(--panel-2); border-radius: var(--r-s); padding: var(--s3) var(--s4); display: grid; gap: var(--s3); }
+.ra-row-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3) var(--s4); }
+@media (max-width: 620px) { .ra-row-fields { grid-template-columns: minmax(0, 1fr); } }
+.ra-rowlist { display: grid; gap: var(--s3); }
+.ra-rowlist:empty { display: none; }
+.ra-addline { display: flex; }
+.ra-link.ra-link-tight { min-height: 44px; margin: -10px 0; justify-self: start; }
+.ra-form-foot { display: flex; flex-wrap: wrap; gap: var(--s3); border-top: 1px solid var(--line); padding-top: var(--s4); }
+
+/* ---------- Modal pickers ---------- */
+.ra-dialog { border: 1px solid var(--line); border-radius: var(--r-m); padding: 0; background: var(--panel); color: var(--ink); width: min(640px, calc(100vw - 24px)); max-height: calc(100vh - 24px); box-shadow: 0 24px 64px rgba(0,0,0,.45); font: 16px/1.6 var(--font); }
+.ra-dialog.ra-dialog-wide { width: min(900px, calc(100vw - 24px)); }
+.ra-dialog::backdrop { background: rgba(0,0,0,.6); }
+.ra-dialog-in { padding: var(--s5); display: grid; gap: var(--s4); }
+.ra-dialog-foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--s3); }
+.ra-radios { border: 0; margin: 0; padding: 0; display: grid; gap: var(--s2); min-width: 0; }
+.ra-radio { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--s3); align-items: start; padding: 12px var(--s4); border: 1px solid var(--line); background: var(--panel-2); border-radius: var(--r-s); cursor: pointer; }
+.ra-radio input { margin-top: 3px; }
+.ra-radio:has(input:checked) { border-color: var(--ledger); background-image: linear-gradient(var(--ledger-tint), var(--ledger-tint)); }
+.ra-radio strong { display: block; font-size: var(--t-m); line-height: 1.3; }
+.ra-radio span span { display: block; font-size: var(--t-m); line-height: 1.6; color: var(--muted); margin-top: 2px; }
+.ra-stops { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: var(--s2) 2px; min-width: 0; }
+.ra-stops label { display: grid; justify-items: center; gap: 6px; padding: 10px 2px; min-height: 44px; border-radius: var(--r-s); border: 1px solid transparent; cursor: pointer; text-align: center; font-size: var(--t-s); line-height: 1.25; }
+.ra-stops label:hover { background: var(--panel-2); }
+.ra-stops label:has(input:checked) { border-color: var(--ledger); background: var(--ledger-tint); font-weight: 700; }
+.ra-stops small { display: block; font-size: var(--t-xs); color: var(--muted); font-weight: 400; }
+@media (max-width: 720px) { .ra-stops { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.ra-ends { display: flex; justify-content: space-between; gap: var(--s4); font-size: var(--t-m); line-height: 1.6; color: var(--muted); }
+.ra-ends span { max-width: 26ch; }
+.ra-ends span:last-child { text-align: right; }
+.ra-donuts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); }
+@media (max-width: 720px) { .ra-donuts { grid-template-columns: minmax(0, 1fr); } }
+.ra-donuts.ra-donuts-one { grid-template-columns: minmax(0, 1fr); }
+.ra-donut-card[hidden] { display: none; }
+.ra-donut-card { border: 1px solid var(--line); background: var(--panel-2); border-radius: var(--r-s); padding: var(--s4); display: grid; gap: var(--s2); align-content: start; min-width: 0; }
+.ra-donut-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--s4); min-height: 168px; }
+.ra-mix-legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: var(--t-s); line-height: 1.3; flex: 1 1 170px; }
+.ra-mix-legend li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.ra-mix-legend strong { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+@media (max-width: 639px) {
+  .ra { padding-top: var(--s4); }
+  .ra-card { padding: var(--s4); }
+  .ra h1 { font-size: 24px; }
+  .ra-screen, .ra-live, .ra-results, .ra-lower { gap: var(--s4); }
+  .ra-screen { margin-top: var(--s4); }
+  .ra-bar { margin-top: var(--s3); padding-top: var(--s3); gap: var(--s2) var(--s3); }
+  .ra-scen { gap: var(--s2); }
+  .ra-chart-card > * + * { margin-top: var(--s2); }
+  .ra-chart-top { gap: var(--s2); align-items: flex-end; }
+  .ra-select-block { flex: 1 1 0; }
+  .ra-chart-top .ra-tabs { align-self: flex-end; }
+  .ra-chart-top .ra-chip { order: 3; margin-left: 0; }
+  .ra-select, .ra .ra-select select { width: 100%; }
+  .ra .ra-select select { font-size: 15px; padding-left: 12px; padding-right: 34px; text-overflow: ellipsis; }
+  .ra-select::after { right: 14px; }
+  .ra-tabs [role=tab], .ra-seg button { padding: 8px 12px; }
+  .ra-chart-card .ra-showing { line-height: 1.5; }
+  .ra th, .ra td { padding: 10px 12px; }
+  .ra-dialog-in { padding: var(--s4); }
+  .ra-assume > summary { padding: var(--s4); }
+  .ra-assume-body { padding: var(--s4); }
+  .ra-form { gap: var(--s4); }
+  .ra-group + .ra-group, .ra-form-cards + .ra-group { padding-top: var(--s4); }
+}
+/* Below 520 px the view select has a full row to itself, so its text is never cut; the chip and
+   the Chart and Table control share the next row, the chip wrapping to two lines where it must. */
+@media (max-width: 519px) {
+  .ra-select-block { flex: 1 1 100%; }
+  .ra-chart-top .ra-chip { order: 2; margin-left: 0; margin-right: auto; max-width: calc(100% - 150px); white-space: normal; border-radius: 14px; }
+  .ra-chart-top .ra-tabs { order: 3; }
+}
+/* Phones: no breadcrumb (it stays in the markup), the example chip and the privacy note share a
+   line, and the yearly chart's two line labels give way to the keyed samples in the readout row. */
+@media (max-width: 479px) {
+  .ra .breadcrumb { display: none; }
+  .ra-top-side { display: block; }
+  .ra-top-side .ra-chip { margin-right: 4px; vertical-align: middle; }
+  /* The privacy note shows its first sentence; the second stays in the markup and is still read aloud. */
+  .ra-privacy-more { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .ra-line-label { display: none; }
+  /* The plot is taller on phones (ra-chart.js), so the chart card gives back padding and spacing,
+     and the readout puts its total beside the year, to keep the card inside a 667px screen. */
+  .ra-chart-card { padding: var(--s3) var(--s4); }
+  .ra-chart-card > * + * { margin-top: 6px; }
+  .ra-chart-card .ra-showing { line-height: 20px; }
+  .ra-chart-card .ra-word { line-height: 20px; padding: 12px 0; margin: -12px 0; }
+  /* The gloss of the chosen outcome moves from the sentence to its own line under the chart. */
+  .ra-gloss-inline { display: none; }
+  .ra-gloss-below { display: block; }
+  .ra-gloss-below:empty { display: none; }
+  /* "Total, this run" shares the year's line only where it always fits, so the row never changes
+     height as the reader moves from year to year: from 380 px up, with the range off. With the
+     range on the total carries a line sample and takes the line under the year, as it does on
+     every screen narrower than 380 px (the rule after this block). */
+  .ra-readout { padding: 5px 10px; margin-top: var(--s1); font-size: var(--t-xs); line-height: 1.25; gap: 0 8px; }
+  .ra-readout-items { display: contents; }
+  .ra-readout-items li { flex: 0 0 100%; order: 2; }
+  .ra-readout-items li.ra-readout-lead { flex: 0 1 auto; order: 1; margin-left: auto; }
+  .ra-readout-items li.ra-readout-lead:has(.ra-sw) { flex: 0 0 100%; margin-left: 0; }
+  /* The range row always takes two lines on phones, its name and then its two figures, so the row
+     keeps one height when the figures grow longer in later years. */
+  .ra-readout-items li:has(.ra-sw-band) { flex-wrap: wrap; gap: 0 6px; }
+  .ra-readout-items li:has(.ra-sw-band) .ra-readout-value { flex: 0 0 100%; }
+  /* The caption under the chart gives way on phones (it stays in the markup; the chart's own
+     accessible name says the same), so the chart card fits a 667px screen. */
+  #ra-view-sub { display: none; }
+}
+@media (max-width: 379px) { .ra-readout-items li.ra-readout-lead { flex: 0 0 100%; margin-left: 0; } }
+@media (prefers-reduced-motion: reduce) { .ra *, .ra *::before, .ra *::after { transition: none !important; animation: none !important; } }
