@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Long straddle payoff at expiry | Stepwell Financial</title>
+<meta name="description" content="Free educational page: the payoff at expiry of a long straddle with example numbers, with its maximum profit, maximum loss and break-even prices. Not advice to buy, sell or use any option.">
+<link rel="canonical" href="https://stepwellfinancial.com/options-calculator/learn/long-straddle/">
+<meta name="theme-color" content="#171e1b">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="icon" href="/favicon-32.svg" type="image/svg+xml" sizes="32x32">
+<link rel="icon" href="/favicon-16.svg" type="image/svg+xml" sizes="16x16">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<link rel="stylesheet" href="/options-calculator/learn/learn.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/"><img src="/logo/lockup.svg" alt="Stepwell Financial" width="172" height="44"></a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a class="nav-app" href="https://app.stepwellfinancial.com/">Open the app</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li><a href="/options-calculator/">Option modeler</a></li><li><a href="/options-calculator/learn/">Learn</a></li><li aria-current="page">Long straddle</li></ol>
+  </nav>
+
+  <article class="learn wrap">
+    <h1>Long straddle</h1>
+
+    <h2>What it is</h2>
+    <p>A call and a put with the same strike are bought.</p>
+
+    <h2>Worked example</h2>
+    <div class="risk">
+      <p>Options can lose all the money paid for them. Selling an option can lose far more than the money received for it, and some positions have no limit on the loss. Nothing here is advice to buy, sell or use any option.</p>
+      <p class="muted">For education only, not financial advice.</p>
+    </div>
+    <div class="exline"><p>Every price, strike and premium here is a made-up example until you type your own. A profit or loss here is arithmetic on the numbers shown. It does not show what any real option has done or would do.</p></div>
+    <table class="ex-table">
+      <caption>Example legs</caption>
+      <thead><tr><th scope="col">Side</th><th scope="col">Type</th><th scope="col">Strike</th><th scope="col">Premium per share</th></tr></thead>
+      <tbody>
+        <tr><td>Bought (long)</td><td>Call</td><td>$50.00</td><td>$3.00</td></tr>
+        <tr><td>Bought (long)</td><td>Put</td><td>$50.00</td><td>$2.00</td></tr>
+      </tbody>
+    </table>
+    <p>Example: strike $50.00, premiums $3.00 and $2.00: debit $5.00; most lost $500.00 at exactly $50.00; break-evens $45.00 and $55.00 per share; in this model the total keeps rising as the price at expiry rises above $55.00.</p>
+    <dl class="results">
+      <dt>Maximum loss (example)</dt><dd>$500.00, at a price of $50.00</dd>
+      <dt>Break-even prices (example)</dt><dd>$45.00 and $55.00 per share</dd>
+      <dt>Net debit paid (example)</dt><dd>$5.00 per share</dd>
+    </dl>
+    <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="hatch-bg" width="8" height="8"/><line class="hatch-ln" x1="0" y1="0" x2="0" y2="8"/></pattern></defs></svg>
+    <figure class="chart">
+      <svg viewBox="0 0 560 306" role="img" aria-label="Example payoff at expiry of a long straddle" aria-describedby="alt-chart">
+        <rect class="zp" x="0" y="32.0" width="560" height="183.0"/><rect class="zl" x="0" y="215.0" width="560" height="47.0"/>
+        <line class="zero" x1="0" y1="215.0" x2="560" y2="215.0"/><line class="ax" x1="0" y1="262.0" x2="560" y2="262.0"/>
+        <text class="zt" x="38.0" y="50.0">Profit at expiry</text>
+        <text class="zt" x="38.0" y="254.0">Loss at expiry</text>
+        <text class="nt a-end" x="522.0" y="193.0">Keeps rising in this model</text>
+        <line class="tk" x1="461.0" y1="32.0" x2="461.0" y2="262.0"/>
+        <line class="tk" x1="417.9" y1="215.0" x2="417.9" y2="268.0"/><line class="tk" x1="504.1" y1="215.0" x2="504.1" y2="268.0"/>
+        <polyline class="ln" points="30.0,62.0 461.0,232.0 530.0,204.8"/>
+        <circle class="be" cx="417.9" cy="215.0" r="5"/><circle class="be" cx="504.1" cy="215.0" r="5"/>
+        <text class="a-mid" x="461.0" y="16.0">$50.00</text>
+        <text class="a-mid" x="417.9" y="278.0">$45.00</text><text class="a-mid" x="504.1" y="278.0">$55.00</text>
+        <text class="a-mid tick" x="30.0" y="298.0">$0</text><text class="a-mid tick" x="116.2" y="298.0">$10</text><text class="a-mid tick" x="202.4" y="298.0">$20</text><text class="a-mid tick" x="288.6" y="298.0">$30</text><text class="a-mid tick" x="374.8" y="298.0">$40</text><text class="a-mid tick" x="461.0" y="298.0">$50</text>
+      </svg>
+      <figcaption>Profit or loss at expiry for the example position shown. Every price on this chart is a made-up example. This chart shows expiry only: it does not show the value on any earlier day.</figcaption>
+      <div class="alt" id="alt-chart">
+        <p>Chart: profit or loss at expiry for long straddle, example numbers. The horizontal axis is the price at expiry per share, from $0.00 to $58.00. The vertical axis is the total profit or loss in dollars. The total at each price below is for the whole example position.</p>
+        <p>At a price of $0.00 per share (example): a profit of $4,500.00.</p>
+        <p>Break-even at $45.00 per share: a total of $0.00.</p>
+        <p>At a price of $50.00 per share (example): a loss of $500.00.</p>
+        <p>Break-even at $55.00 per share: a total of $0.00.</p>
+        <p>At a price of $58.00 per share (example): a profit of $300.00.</p>
+        <p>Above $50.00 per share: the total keeps rising in this model.</p>
+      </div>
+    </figure>
+    <p class="muted">For education only, not financial advice.</p>
+
+    <h2>What can go wrong</h2>
+    <p>If the price stays near the strike, most or all of the $500.00 paid is lost.</p>
+
+    <p class="tool-link"><a href="/options-calculator/option-modeler/">Open the option modeler</a></p>
+
+    <section class="notice" aria-labelledby="notice-h">
+      <p id="notice-h"><strong>About this tool.</strong> The option modeler works out what a position typed by you would pay at expiry. It uses only the numbers you type and the simplifications listed under "What can go wrong".</p>
+      <p>It does not know what any option costs, whether a price will rise or fall, or which positions are available in any market. The calculation runs in your browser; the numbers you type are not stored, saved, logged or sent anywhere by this tool.</p>
+      <p>The results are illustrations of arithmetic. They do not show what any real option has done or would do. Options can lose all the money paid for them, and selling an option can lose far more than the money received for it.</p>
+      <p>A result is arithmetic on the numbers typed and may not match a real position. We do not give financial advice, and nothing on this page is advice to buy, sell or use any option. This tool is also not investment advice, tax advice or legal advice.</p>
+      <p>This page sells nothing. Apart from other pages of this site and our own app, it links to nothing.</p>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/">Savings</a></li><li><a href="/apy-calculator/">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/">With inflation</a></li><li><a href="/rule-of-72-calculator/">Rule of 72</a></li><li><a href="/rmd-calculator/">RMD</a></li><li><a href="/options-calculator/option-modeler/">Option modeler</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li><li><a href="/options-calculator/learn/">Options basics</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p>For education only, not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The calculator runs entirely in your browser.</p>
+    <p class="muted">Last updated: <time datetime="2026-11-17">2026-11-17</time></p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iron butterfly payoff at expiry | Stepwell Financial</title>
+<meta name="description" content="Free educational page: the payoff at expiry of an iron butterfly with example numbers, with its maximum profit, maximum loss and break-even prices. Not advice to buy, sell or use any option.">
+<link rel="canonical" href="https://stepwellfinancial.com/options-calculator/learn/iron-butterfly/">
+<meta name="theme-color" content="#171e1b">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="icon" href="/favicon-32.svg" type="image/svg+xml" sizes="32x32">
+<link rel="icon" href="/favicon-16.svg" type="image/svg+xml" sizes="16x16">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<link rel="stylesheet" href="/options-calculator/learn/learn.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/"><img src="/logo/lockup.svg" alt="Stepwell Financial" width="172" height="44"></a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a class="nav-app" href="https://app.stepwellfinancial.com/">Open the app</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li><a href="/options-calculator/">Option modeler</a></li><li><a href="/options-calculator/learn/">Learn</a></li><li aria-current="page">Iron butterfly</li></ol>
+  </nav>
+
+  <article class="learn wrap">
+    <h1>Iron butterfly</h1>
+
+    <h2>What it is</h2>
+    <p>A put and a call at the middle strike are sold; a put below and a call above are bought.</p>
+
+    <h2>Worked example</h2>
+    <div class="risk">
+      <p>Options can lose all the money paid for them. Selling an option can lose far more than the money received for it, and some positions have no limit on the loss. Nothing here is advice to buy, sell or use any option.</p>
+      <p class="muted">For education only, not financial advice.</p>
+    </div>
+    <div class="exline"><p>Every price, strike and premium here is a made-up example until you type your own. A profit or loss here is arithmetic on the numbers shown. It does not show what any real option has done or would do.</p></div>
+    <table class="ex-table">
+      <caption>Example legs</caption>
+      <thead><tr><th scope="col">Side</th><th scope="col">Type</th><th scope="col">Strike</th><th scope="col">Premium per share</th></tr></thead>
+      <tbody>
+        <tr><td>Bought (long)</td><td>Put</td><td>$45.00</td><td>$0.80</td></tr>
+        <tr><td>Sold (short)</td><td>Put</td><td>$50.00</td><td>$2.60</td></tr>
+        <tr><td>Sold (short)</td><td>Call</td><td>$50.00</td><td>$2.40</td></tr>
+        <tr><td>Bought (long)</td><td>Call</td><td>$55.00</td><td>$0.70</td></tr>
+      </tbody>
+    </table>
+    <p>Example: $45.00 put bought ($0.80), $50.00 put and call sold ($2.60, $2.40), $55.00 call bought ($0.70): credit $3.50; most made $350.00 at $50.00; most lost $150.00; break-evens $46.50 and $53.50 per share.</p>
+    <dl class="results">
+      <dt>Maximum profit (example)</dt><dd>$350.00, at a price of $50.00</dd>
+      <dt>Maximum loss (example)</dt><dd>$150.00</dd>
+      <dt>Break-even prices (example)</dt><dd>$46.50 and $53.50 per share</dd>
+      <dt>Net credit received (example)</dt><dd>$3.50 per share</dd>
+    </dl>
+    <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="hatch-bg" width="8" height="8"/><line class="hatch-ln" x1="0" y1="0" x2="0" y2="8"/></pattern></defs></svg>
+    <figure class="chart">
+      <svg viewBox="0 0 560 322" role="img" aria-label="Example payoff at expiry of an iron butterfly" aria-describedby="alt-chart">
+        <rect class="zp" x="0" y="48.0" width="560" height="149.0"/><rect class="zl" x="0" y="197.0" width="560" height="81.0"/>
+        <line class="zero" x1="0" y1="197.0" x2="560" y2="197.0"/><line class="ax" x1="0" y1="278.0" x2="560" y2="278.0"/>
+        <text class="zt" x="38.0" y="66.0">Profit at expiry</text>
+        <text class="zt" x="38.0" y="270.0">Loss at expiry</text>
+        <line class="tk" x1="405.0" y1="48.0" x2="405.0" y2="278.0"/><line class="tk" x1="446.7" y1="48.0" x2="446.7" y2="278.0"/><line class="tk" x1="488.3" y1="48.0" x2="488.3" y2="278.0"/>
+        <line class="tk" x1="417.5" y1="197.0" x2="417.5" y2="284.0"/><line class="tk" x1="475.8" y1="197.0" x2="475.8" y2="284.0"/>
+        <polyline class="ln" points="30.0,248.0 405.0,248.0 446.7,78.0 488.3,248.0 530.0,248.0"/>
+        <circle class="be" cx="417.5" cy="197.0" r="5"/><circle class="be" cx="475.8" cy="197.0" r="5"/>
+        <text class="a-mid" x="405.0" y="16.0">$45.00</text><text class="a-mid" x="446.7" y="32.0">$50.00</text><text class="a-mid" x="488.3" y="16.0">$55.00</text>
+        <text class="a-mid" x="417.5" y="294.0">$46.50</text><text class="a-mid" x="475.8" y="294.0">$53.50</text>
+        <text class="a-mid tick" x="30.0" y="314.0">$0</text><text class="a-mid tick" x="113.3" y="314.0">$10</text><text class="a-mid tick" x="196.7" y="314.0">$20</text><text class="a-mid tick" x="280.0" y="314.0">$30</text><text class="a-mid tick" x="363.3" y="314.0">$40</text><text class="a-mid tick" x="446.7" y="314.0">$50</text><text class="a-mid tick" x="530.0" y="314.0">$60</text>
+      </svg>
+      <figcaption>Profit or loss at expiry for the example position shown. Every price on this chart is a made-up example. This chart shows expiry only: it does not show the value on any earlier day.</figcaption>
+      <div class="alt" id="alt-chart">
+        <p>Chart: profit or loss at expiry for iron butterfly, example numbers. The horizontal axis is the price at expiry per share, from $0.00 to $60.00. The vertical axis is the total profit or loss in dollars. The total at each price below is for the whole example position.</p>
+        <p>From $0.00 to $45.00 per share: a loss of $150.00 at every price.</p>
+        <p>Break-even at $46.50 per share: a total of $0.00.</p>
+        <p>At a price of $50.00 per share (example): a profit of $350.00.</p>
+        <p>Break-even at $53.50 per share: a total of $0.00.</p>
+        <p>From $55.00 to $60.00 per share: a loss of $150.00 at every price.</p>
+      </div>
+    </figure>
+    <p class="muted">For education only, not financial advice.</p>
+
+    <h2>What can go wrong</h2>
+    <p>The most lost is the width between strikes less the credit.</p>
+
+    <p class="tool-link"><a href="/options-calculator/option-modeler/">Open the option modeler</a></p>
+
+    <section class="notice" aria-labelledby="notice-h">
+      <p id="notice-h"><strong>About this tool.</strong> The option modeler works out what a position typed by you would pay at expiry. It uses only the numbers you type and the simplifications listed under "What can go wrong".</p>
+      <p>It does not know what any option costs, whether a price will rise or fall, or which positions are available in any market. The calculation runs in your browser; the numbers you type are not stored, saved, logged or sent anywhere by this tool.</p>
+      <p>The results are illustrations of arithmetic. They do not show what any real option has done or would do. Options can lose all the money paid for them, and selling an option can lose far more than the money received for it.</p>
+      <p>A result is arithmetic on the numbers typed and may not match a real position. We do not give financial advice, and nothing on this page is advice to buy, sell or use any option. This tool is also not investment advice, tax advice or legal advice.</p>
+      <p>This page sells nothing. Apart from other pages of this site and our own app, it links to nothing.</p>
+    </section>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/">Savings</a></li><li><a href="/apy-calculator/">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/">With inflation</a></li><li><a href="/rule-of-72-calculator/">Rule of 72</a></li><li><a href="/rmd-calculator/">RMD</a></li><li><a href="/options-calculator/option-modeler/">Option modeler</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li><li><a href="/options-calculator/learn/">Options basics</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p>For education only, not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The calculator runs entirely in your browser.</p>
+    <p class="muted">Last updated: <time datetime="2026-11-17">2026-11-17</time></p>
+  </div>
+</footer>
+</body>
+</html>

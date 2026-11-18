@@ -1,0 +1,56 @@
+/* Option modeler learn pages. Static, no script. Uses the site tokens from /styles.css. */
+.learn { padding-top: 24px; padding-bottom: 48px; max-width: 760px; }
+.learn h1 { margin-top: 10px; overflow-wrap: anywhere; }
+.learn h2 { font-size: 1.45rem; margin: 34px 0 8px; }
+.learn p, .learn li, .learn dd, .learn dt, .learn td, .learn th { font-size: 1rem; line-height: 1.6; }
+.learn .muted { font-size: .9rem; }
+
+.risk, .exline, .notice { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+.risk p, .exline p, .notice p { margin: 0; }
+.risk p + p, .notice p + p { margin-top: 8px; }
+.notice { margin-top: 40px; }
+
+.tool-link { margin: 24px 0 0; }
+.tool-link a { display: inline-block; min-height: 44px; line-height: 44px; padding: 0 18px; border-radius: 10px; background: var(--brand); color: var(--brand-ink); font-weight: 600; text-decoration: none; }
+.tool-link a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.ex-table { width: 100%; border-collapse: collapse; margin: 10px 0; display: block; overflow-x: auto; }
+.ex-table caption { text-align: left; font-weight: 600; padding: 4px 0; }
+.ex-table th, .ex-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.ex-table th { border-bottom: 2px solid var(--field-line); }
+
+.results { margin: 10px 0; }
+.results dt { font-weight: 600; margin-top: 8px; }
+.results dd { margin: 0; overflow-wrap: anywhere; }
+
+.chart { margin: 14px 0; }
+.chart svg { display: block; width: 100%; height: auto; max-width: 560px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+@media (max-width: 600px) {
+  .chart { overflow-x: auto; -webkit-overflow-scrolling: touch; aspect-ratio: auto; }
+  .chart svg { width: 560px; max-width: none; }
+}
+.chart figcaption { font-size: .9rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+.chart figcaption strong { color: var(--ink); }
+.chart text { font-size: 12px; fill: var(--ink); font-family: inherit; paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round; }
+.chart .zt { font-size: 13px; font-weight: 600; }
+.chart .nt { font-size: 12px; font-style: italic; }
+.chart .tick { fill: var(--muted); }
+.chart .ax { stroke: var(--ink); stroke-width: 1; }
+.chart .zp { fill: var(--line); }
+.chart .zl { fill: url(#hatch); }
+.chart .zero { stroke: var(--ink); stroke-width: 1.5; }
+.chart .ln { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
+.chart .tk { stroke: var(--muted); stroke-width: 1.25; stroke-dasharray: 2 4; }
+.chart .be { fill: var(--panel); stroke: var(--ink); stroke-width: 2.5; }
+.chart .a-end { text-anchor: end; }
+.chart .a-mid { text-anchor: middle; }
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.hatch-bg { fill: var(--panel); }
+.hatch-ln { stroke: var(--field-line); stroke-width: 1.5; }
+
+.hub-list { padding-left: 1.2em; }
+.hub-list li { margin: 6px 0; }
+.hub-list a { display: inline-block; min-height: 32px; }
+
+.alt { margin: 6px 0 0; }
+.alt p { margin: 4px 0; font-size: .95rem; }

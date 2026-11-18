@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option modeler: payoff at expiry | Stepwell Financial</title>
+<meta name="description" content="Free educational tool: type example numbers to see the payoff at expiry of an option position, with its maximum profit, maximum loss and break-even prices. Not advice to buy, sell or use any option.">
+<link rel="canonical" href="https://stepwellfinancial.com/options-calculator/option-modeler/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Option modeler: payoff at expiry | Stepwell Financial">
+<meta property="og:description" content="Free educational tool: type example numbers to see the payoff at expiry of an option position, with its maximum profit, maximum loss and break-even prices. Not advice to buy, sell or use any option.">
+<meta property="og:url" content="https://stepwellfinancial.com/options-calculator/option-modeler/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#171e1b">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="icon" href="/favicon-32.svg" type="image/svg+xml" sizes="32x32">
+<link rel="icon" href="/favicon-16.svg" type="image/svg+xml" sizes="16x16">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/main.css">
+<link rel="stylesheet" href="/options-calculator/option-modeler/modeler.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Option modeler",
+  "url": "https://stepwellfinancial.com/options-calculator/option-modeler/",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free educational tool: type example numbers to see the payoff at expiry of an option position, with its maximum profit, maximum loss and break-even prices. Not advice to buy, sell or use any option."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://stepwellfinancial.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Option modeler", "item": "https://stepwellfinancial.com/options-calculator/option-modeler/" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#calculator">Skip to the calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand-block"><a class="brand" href="/"><img src="/logo/lockup.svg" alt="Stepwell Financial" width="172" height="44"></a><span class="descriptor">Money education and free tools</span></div>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#calculators">Calculators</a></li>
+        <li><a href="/compound-interest-formula/">Formula</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a class="nav-app" href="https://app.stepwellfinancial.com/">Open the app</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="om-page">
+  <section id="calculator" class="tool wrap" aria-labelledby="om-title">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol><li><a href="/">Home</a></li><li aria-current="page">Option modeler</li></ol>
+    </nav>
+    <h1 id="om-title">Option modeler</h1>
+    <p class="om-risk om-intro">Options can lose all the money paid for them. Selling an option can lose far more than the money received for it, and some positions have no limit on the loss. Nothing here is advice to buy, sell or use any option.</p>
+    <p class="om-risk om-intro"><strong>About this tool.</strong> You type every number. The tool does arithmetic on them. It does not look up prices or connect to any market, and it does not store or send the numbers you type.</p>
+
+    <div class="om-grid">
+      <div class="om-left">
+        <fieldset class="om-card om-picker" id="om-picker">
+          <legend class="om-title">Choose a strategy</legend>
+          <div class="om-pick-sum" id="om-picker-sum" hidden>
+            <p class="om-pick-name" id="om-picker-name"></p>
+            <button type="button" class="om-pill" id="om-picker-toggle" aria-expanded="false" aria-controls="om-picker-list">Change strategy</button>
+          </div>
+          <div id="om-picker-list"></div>
+        </fieldset>
+        <p class="om-note" id="om-name"></p>
+        <p class="om-learn" id="om-learn"></p>
+        <div class="om-card om-inputs" id="om-inputs"></div>
+      </div>
+
+      <div class="om-right">
+        <div class="om-card om-errbox" id="om-errbox" role="alert" hidden>
+          <h2 class="om-title">Check these numbers</h2>
+          <p class="om-errtext" id="om-errtext"></p>
+        </div>
+        <p class="om-empty om-card" id="om-empty">Choose a strategy to see its payoff at expiry.</p>
+        <div id="om-chartwrap" hidden>
+          <figure class="om-card om-chart-card" id="om-chart-card">
+            <div class="om-chart" id="om-chart" tabindex="0" role="group" aria-label="Chart of the total at expiry" aria-describedby="om-alt om-readout"></div>
+            <p class="om-readout" id="om-readout" aria-live="polite"></p>
+            <figcaption class="om-fine" id="om-caption"></figcaption>
+            <p class="om-fine om-example-line">Every price, strike and premium here is a made-up example until you type your own. A profit or loss here is arithmetic on the numbers shown. It does not show what any real option has done or would do.</p>
+            <p class="om-fine" id="om-alt"></p>
+            <p class="om-w1">For education only, not financial advice.</p>
+          </figure>
+        </div>
+      </div>
+
+      <div class="om-resultscol" id="om-results" hidden>
+          <div class="om-card om-resultsblock">
+            <h2 class="om-title" id="om-results-title">Results at expiry</h2>
+            <div class="om-cards" id="om-cards"></div>
+            <p class="om-w1">For education only, not financial advice.</p>
+            <p class="om-note">Options can lose all the money paid for them. Selling an option can lose far more than the money received for it, and some positions have no limit on the loss. Nothing here is advice to buy, sell or use any option.</p>
+            <div id="om-notes"></div>
+            <p class="om-note">If you type numbers you have found elsewhere, the result is only as good as those numbers. Prices in a real market can change, and a typed premium may not be available.</p>
+            <details class="om-more om-table">
+              <summary>Show the numbers behind the graph</summary>
+              <p class="om-fine" id="om-table-cap"></p>
+              <div class="table-wrap" tabindex="0" role="region" aria-label="Numbers behind the graph">
+                <table class="live-table">
+                  <thead><tr><th scope="col">Price at expiry (per share)</th><th scope="col">Total for the whole position</th></tr></thead>
+                  <tbody id="om-rows"></tbody>
+                </table>
+              </div>
+              <p class="om-w1">For education only, not financial advice.</p>
+            </details>
+          </div>
+      </div>
+    </div>
+
+    <div class="om-boxes" id="om-boxes" hidden>
+      <section class="om-card om-side" aria-labelledby="om-b1">
+        <h2 class="om-title" id="om-b1">What this position is</h2>
+        <div id="om-box"></div>
+      </section>
+      <section class="om-card om-side" aria-labelledby="om-b2">
+        <details class="om-more">
+          <summary><h2 class="om-title" id="om-b2">What can go wrong</h2></summary>
+          <ol class="om-list" id="om-wrong"></ol>
+        </details>
+      </section>
+      <section class="om-card om-side" aria-labelledby="om-b3">
+        <details class="om-more">
+          <summary><h2 class="om-title" id="om-b3">Key terms</h2></summary>
+          <ul class="om-list">
+            <li>Option: a contract giving the buyer a right, not a duty, to buy (a call) or sell (a put) shares at a set price by a set date.</li>
+            <li>Call: the right, but not the duty, to buy shares at the strike price by the expiry date.</li>
+            <li>Put: the right, but not the duty, to sell shares at the strike price by the expiry date.</li>
+            <li>Long: bought. The buyer pays the premium. Short: sold, also called written. The seller receives the premium and takes on the duty if the buyer uses the right.</li>
+            <li>Strike: the set price in the contract. Premium: the price of the option, quoted per share. Expiry: the last day the option exists.</li>
+            <li>Contract: a standard contract is usually for 100 shares. For example, a made-up premium of $3.00 per share is $300.00 for one standard contract.</li>
+            <li>In the money: a call with the share price above its strike, or a put with the share price below. At the money: the share price equals the strike. Out of the money: the reverse of in the money. In the money is not the same as a profit: the premium paid comes off.</li>
+            <li>Break-even: the price at expiry where the position's profit or loss is exactly $0.00.</li>
+            <li>Net debit and net credit: the money paid, or received, in total when all the legs are opened.</li>
+            <li>Payoff at expiry: what the options pay, or cost, on the last day, from the price on that day.</li>
+          </ul>
+        </details>
+      </section>
+    </div>
+
+    <div class="om-card om-fullnotice">
+      <details class="om-more">
+        <summary>More about this tool</summary>
+        <p class="om-note">About this tool. The option modeler works out what a position typed by you would pay at expiry. It uses only the numbers you type and the simplifications listed under "What can go wrong". It does not know what any option costs, whether a price will rise or fall, or which positions are available in any market. The calculation runs in your browser; the numbers you type are not stored, saved, logged or sent anywhere by this tool. The results are illustrations of arithmetic. They do not show what any real option has done or would do. Options can lose all the money paid for them, and selling an option can lose far more than the money received for it. A result is arithmetic on the numbers typed and may not match a real position. We do not give financial advice, and nothing on this page is advice to buy, sell or use any option. This tool is also not investment advice, tax advice or legal advice. This tool sells nothing. Apart from other pages of this site and our own app, it links to nothing.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="footer-nav" aria-label="Footer">
+      <div>
+        <p class="footer-head" id="calculators">Calculators</p>
+        <ul><li><a href="/compound-interest-calculator/">Compound interest</a></li><li><a href="/savings-calculator/">Savings</a></li><li><a href="/apy-calculator/">APY</a></li><li><a href="/compound-interest-calculator-with-inflation/">With inflation</a></li><li><a href="/rule-of-72-calculator/">Rule of 72</a></li><li><a href="/rmd-calculator/">RMD</a></li><li><a href="/options-calculator/option-modeler/" aria-current="page">Option modeler</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Learn</p>
+        <ul><li><a href="/compound-interest-formula/">Compound interest formula</a></li><li><a href="/options-calculator/learn/">Options basics</a></li></ul>
+      </div>
+      <div>
+        <p class="footer-head">Site</p>
+        <ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+      </div>
+    </nav>
+    <p>Money education and free tools. Not financial advice.</p>
+    <p>For education only, not financial advice.</p>
+    <p class="muted"><a href="/privacy/">No cookies, no tracking.</a> The calculator runs entirely in your browser.</p>
+    <p class="muted">Last updated: <time datetime="2026-11-17">2026-11-17</time></p>
+  </div>
+</footer>
+
+<script src="/options-calculator/option-modeler/options.js"></script>
+<script src="/options-calculator/option-modeler/options-multi.js"></script>
+<script src="/options-calculator/option-modeler/modeler.js"></script>
+</body>
+</html>
